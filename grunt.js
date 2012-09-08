@@ -3,6 +3,9 @@ module.exports = function(grunt) {
         lint: {
             src: ['src/*.js']
         },
+        test: {
+            src: ['test/*.js']
+        },
         rigger: {
             'bilby.js': 'src/rigger-bilby.js'
         },
@@ -24,5 +27,5 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask('default', 'lint rigger min');
+    grunt.registerTask('default', 'lint test rigger min');
 };
