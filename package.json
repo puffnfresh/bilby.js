@@ -5,7 +5,7 @@
   "homepage": "http://bilby.brianmckenna.org/",
   "repository": {"type": "git", "url": "git://github.com/pufuwozu/bilby.js.git"},
 
-  "scripts": {"prepublish": "./node_modules/grunt/bin/grunt"},
+  "scripts": {"prepublish": "./node_modules/grunt/bin/grunt", "test": "./node_modules/grunt/bin/grunt test"},
   "devDependencies": {
     "grunt": "0.3.15",
     "rigger": "0.3.19"
