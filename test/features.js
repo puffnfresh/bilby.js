@@ -4,7 +4,7 @@ var add = curry(function(a, b) {
     return a + b;
 });
 
-exports.testCurry = function(test) {
+exports.curryTest = function(test) {
     // Curried and uncurried application
     test.equal( add(1)(2) , 3);
     test.equal( add(1, 2) , 3);
@@ -12,14 +12,14 @@ exports.testCurry = function(test) {
     test.done();
 };
 
-exports.testOption = function(test) {
+exports.optionTest = function(test) {
     test.equal( some(3).getOrElse(0) , 3);
     test.equal( none.getOrElse(0) , 0);
 
     test.done();
 };
 
-exports.testMonad = function(test) {
+exports.monadTest = function(test) {
     test.equal(
         Do()(some(1) >= function(x) {
             return x < 0 ? none : some(x + 2);
