@@ -3,6 +3,8 @@
 
     //= helpers.js
 
+    //= multimethods.js
+
     //= do.js
 
     //= data.js

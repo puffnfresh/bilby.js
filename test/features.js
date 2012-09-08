@@ -4,14 +4,6 @@ var add = curry(function(a, b) {
     return a + b;
 });
 
-exports.curryTest = function(test) {
-    // Curried and uncurried application
-    test.equal( add(1)(2) , 3);
-    test.equal( add(1, 2) , 3);
-
-    test.done();
-};
-
 exports.optionTest = function(test) {
     test.equal( some(3).getOrElse(0) , 3);
     test.equal( none.getOrElse(0) , 0);
