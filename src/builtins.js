@@ -1,4 +1,19 @@
 bilby = bilby
+    .method('<', isFunction, function(a, b) {
+        return compose(a, b);
+    })
+    .method('*', isFunction, function(a, b) {
+        return function(x) {
+            return a(x)(b(x));
+        };
+    })
+    .method('>>', isFunction, function(a, b) {
+        var env = this;
+        return function(x) {
+            return env['>='](a(x), b);
+        };
+    })
+
     .method('equal', isNumber, function(a, b) {
         return a == b;
     })
@@ -62,12 +77,6 @@ bilby = bilby
     })
     .method('+', isString, function(a, b) {
         return a + b;
-    })
-    .method('>>', isFunction, function(a, b) {
-        var env = this;
-        return function(x) {
-            return env['>='](a(x), b);
-        };
     });
 
 Do.setValueOf(Array.prototype);

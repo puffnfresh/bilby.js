@@ -54,9 +54,8 @@ var none = {
 };
 Do.setValueOf(none);
 
-function isOption(x) {
-    return isInstanceOf(some, x) || x === none;
-}
+var isOption = bilby.liftA2(or, isInstanceOf(some), strictEquals(none));
+
 
 // Either (right biased)
 function left(x) {
@@ -130,9 +129,7 @@ function right(x) {
     };
 }
 
-function isEither(x) {
-    return isInstanceOf(left, x) || isInstanceOf(right, x);
-}
+var isEither = bilby.liftA2(or, isInstanceOf(left), isInstanceOf(right));
 
 
 bilby = bilby

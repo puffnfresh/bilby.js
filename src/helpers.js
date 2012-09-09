@@ -29,6 +29,12 @@ function curry(f) {
     };
 }
 
+function compose(f, g) {
+    return function() {
+        return f(g.apply(this, [].slice.call(arguments)));
+    };
+}
+
 function error(s) {
     return function() {
         throw new Error(s);
@@ -90,9 +96,24 @@ var isInstanceOf = curry(function(c, o) {
     return o instanceof c;
 });
 
+var or = curry(function(a, b) {
+    return a || b;
+});
+var and = curry(function(a, b) {
+    return a && b;
+});
+var strictEquals = curry(function(a, b) {
+    return a === b;
+});
+
+function liftA2(a, b, c) {
+    return this['*'](this['<'](a, b), c);
+}
+
 bilby = bilby
     .property('bind', bind)
     .property('curry', curry)
+    .property('compose', compose)
     .property('error', error)
     .property('identity', identity)
     .property('constant', constant)
@@ -104,4 +125,8 @@ bilby = bilby
     .property('isString', isString)
     .property('isNumber', isNumber)
     .property('isArray', isArray)
-    .property('isInstanceOf', isInstanceOf);
+    .property('isInstanceOf', isInstanceOf)
+    .property('or', or)
+    .property('and', and)
+    .property('strictEquals', strictEquals)
+    .property('liftA2', liftA2);

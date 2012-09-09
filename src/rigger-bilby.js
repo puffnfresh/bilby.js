@@ -10,9 +10,9 @@
 
     //= do.js
 
-    //= data.js
-
     //= builtins.js
+
+    //= data.js
 
     if(typeof exports != 'undefined') {
         exports = module.exports = bilby;
