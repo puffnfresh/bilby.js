@@ -15,7 +15,6 @@ function bind(f) {
         return g;
     };
 }
-bilby = bilby.property('bind', bind);
 
 function curry(f) {
     return function() {
@@ -29,14 +28,12 @@ function curry(f) {
         return curry(g);
     };
 }
-bilby = bilby.property('curry', curry);
 
 function constant(c) {
     return function() {
         return c;
     };
 }
-bilby = bilby.property('constant', constant);
 
 // TODO: Make into an Option semigroup#append
 function extend(a, b) {
@@ -52,36 +49,36 @@ function extend(a, b) {
 
     return o;
 }
-bilby = bilby.property('extend', extend);
 
 function singleton(k, v) {
     var o = {};
     o[k] = v;
     return o;
 }
-bilby = bilby.property('singleton', singleton);
-
-function isArray(a) {
-    if(Array.isArray) return Array.isArray(a);
-    return Object.prototype.toString.call(a) === "[object Array]";
-}
-bilby = bilby.property('isArray', isArray);
 
 var isTypeOf = curry(function(s, o) {
     return typeof o == s;
 });
-bilby = bilby.property('isTypeOf',  isTypeOf);
-
 var isFunction = isTypeOf('function');
-bilby = bilby.property('isFunction', isFunction);
-
 var isString = isTypeOf('string');
-bilby = bilby.property('isString', isString);
-
 var isNumber = isTypeOf('number');
-bilby = bilby.property('isNumber', isNumber);
-
+function isArray(a) {
+    if(Array.isArray) return Array.isArray(a);
+    return Object.prototype.toString.call(a) === "[object Array]";
+}
 var isInstanceOf = curry(function(c, o) {
     return o instanceof c;
 });
-bilby = bilby.property('isInstanceOf', isInstanceOf);
+
+bilby = bilby
+    .property('bind', bind)
+    .property('curry', curry)
+    .property('constant', constant)
+    .property('extend', extend)
+    .property('singleton', singleton)
+    .property('isTypeOf',  isTypeOf)
+    .property('isFunction', isFunction)
+    .property('isString', isString)
+    .property('isNumber', isNumber)
+    .property('isArray', isArray)
+    .property('isInstanceOf', isInstanceOf);

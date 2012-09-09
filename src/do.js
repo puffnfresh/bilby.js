@@ -47,4 +47,5 @@ Do.setValueOf = function(proto) {
         return 1;
     };
 };
+
 bilby = bilby.property('Do', Do);
