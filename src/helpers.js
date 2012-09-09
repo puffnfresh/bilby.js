@@ -29,6 +29,16 @@ function curry(f) {
     };
 }
 
+function error(s) {
+    return function() {
+        throw new Error(s);
+    };
+}
+
+function identity(o) {
+    return o;
+}
+
 function constant(c) {
     return function() {
         return c;
@@ -73,6 +83,8 @@ var isInstanceOf = curry(function(c, o) {
 bilby = bilby
     .property('bind', bind)
     .property('curry', curry)
+    .property('error', error)
+    .property('identity', identity)
     .property('constant', constant)
     .property('extend', extend)
     .property('singleton', singleton)

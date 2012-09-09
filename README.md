@@ -39,6 +39,11 @@ Option:
     λ.some(3).getOrElse(0) == 3;
     λ.none.getOrElse(0) == 0;
 
+Either:
+
+    λ.left(1).fold(add(1), add(2)) == 2;
+    λ.right(1).fold(add(1), add(2)) == 3;
+
 ### Operator Syntax
 
 Monads:
