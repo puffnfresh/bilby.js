@@ -1,11 +1,11 @@
-require('../bilby').bilbify(global);
+var λ = require('../bilby');
 
 exports.emptyTest = function(test) {
-    var env = environment()
-        .method('length', isArray, function(a) {
+    var env = λ.environment()
+        .method('length', λ.isArray, function(a) {
             return a.length;
         })
-        .method('length', isString, function(s) {
+        .method('length', λ.isString, function(s) {
             return s.length;
         })
         .property('empty', function(o) {
@@ -22,7 +22,7 @@ exports.emptyTest = function(test) {
 };
 
 exports.propertyTest = function(test) {
-    var env = environment()
+    var env = λ.environment()
         .property('one', 1);
 
     test.equal(env.one, 1);

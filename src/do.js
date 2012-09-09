@@ -6,7 +6,9 @@ function Do() {
     if(arguments.length)
         throw new TypeError("Arguments given to Do. Proper usage: Do()(arguments)");
 
-    var oldDoQueue = doQueue;
+    var env = this,
+        oldDoQueue = doQueue;
+
     doQueue = [];
     return function(n) {
         var op, x, i;
@@ -28,7 +30,7 @@ function Do() {
 
         x = doQueue[0];
         for(i = 1; i < doQueue.length; i++) {
-            x = x[op](doQueue[i]);
+            x = env[op](x, doQueue[i]);
         }
 
         doQueue = oldDoQueue;
@@ -45,4 +47,4 @@ Do.setValueOf = function(proto) {
         return 1;
     };
 };
-bilby.Do = Do;
+bilby = bilby.property('Do', Do);

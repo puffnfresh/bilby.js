@@ -5,48 +5,60 @@ function some(x) {
     this.getOrElse = function() {
         return x;
     };
+
+    this.bind = function(f) {
+        return f(x);
+    };
     this.map = function(f) {
         return some(f(x));
     };
-
-    this['>='] = function(f) {
-        return f(x);
-    };
-    this['>'] = function(f) {
-        return this.map(f);
-    };
-    this['*'] = function(s) {
+    this.apply = function(s) {
         return s.map(x);
     };
-    this['+'] = function(s) {
+    this.append = function(s, plus) {
         return s.map(function(y) {
-            return x['+'](y);
+            return plus(x, y);
         });
     };
     Do.setValueOf(this);
 }
-bilby.some = some;
 
 var none = {
     getOrElse: function(x) {
         return x;
     },
+    bind: function() {
+        return this;
+    },
     map: function() {
         return this;
     },
-
-    '>=': function() {
+    apply: function() {
         return this;
     },
-    '>': function() {
-        return this;
-    },
-    '*': function() {
-        return this;
-    },
-    '+': function() {
+    append: function() {
         return this;
     }
 };
 Do.setValueOf(none);
-bilby.none = none;
+
+var isOption = function(x) {
+    return isInstanceOf(some, x) || isInstanceOf(none, x);
+};
+
+bilby = bilby
+    .property('some', some)
+    .property('none', none)
+    .property('isOption', isOption)
+    .method('>=', isOption, function(a, b) {
+        return a.bind(b);
+    })
+    .method('>', isOption, function(a, b) {
+        return a.map(b);
+    })
+    .method('*', isOption, function(a, b) {
+        return a.apply(b);
+    })
+    .method('+', isOption, function(a, b) {
+        return a.append(b, this['+']);
+    });

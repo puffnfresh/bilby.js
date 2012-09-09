@@ -1,6 +1,6 @@
-require('../bilby').bilbify(global);
+var λ = require('../bilby');
 
-var add = curry(function(a, b) {
+var add = λ.curry(function(a, b) {
     return a + b;
 });
 

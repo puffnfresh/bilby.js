@@ -19,7 +19,7 @@ function makeMethod(registrations) {
 function environment(methods, properties) {
     var i;
 
-    if(!(this instanceof environment))
+    if(!(this instanceof environment) || (typeof this.method != 'undefined' && typeof this.property != 'undefined'))
         return new environment(methods, properties);
 
     methods = methods || {};
@@ -46,4 +46,3 @@ function environment(methods, properties) {
         return environment(methods, newProperties);
     });
 }
-bilby.environment = environment;
