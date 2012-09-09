@@ -2,6 +2,8 @@
 
 Serious functional programming library for JavaScript.
 
+![](http://brianmckenna.org/files/bilby.png)
+
 ## Features
 
 ### Multimethods
