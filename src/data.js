@@ -43,7 +43,7 @@ var none = {
 Do.setValueOf(none);
 
 var isOption = function(x) {
-    return isInstanceOf(some, x) || isInstanceOf(none, x);
+    return isInstanceOf(some, x) || x === none;
 };
 
 bilby = bilby

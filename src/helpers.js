@@ -82,9 +82,6 @@ var isNumber = isTypeOf('number');
 bilby = bilby.property('isNumber', isNumber);
 
 var isInstanceOf = curry(function(c, o) {
-    if(typeof o != 'object')
-        return false;
-
     return o instanceof c;
 });
 bilby = bilby.property('isInstanceOf', isInstanceOf);
