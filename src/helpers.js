@@ -45,6 +45,16 @@ function constant(c) {
     };
 }
 
+function zip(a, b) {
+    var accum = [],
+        i;
+    for(i = 0; i < Math.min(a.length, b.length); i++) {
+        accum.push([a[i], b[i]]);
+    }
+
+    return accum;
+}
+
 // TODO: Make into an Option semigroup#append
 function extend(a, b) {
     var o = {},
@@ -86,6 +96,7 @@ bilby = bilby
     .property('error', error)
     .property('identity', identity)
     .property('constant', constant)
+    .property('zip', zip)
     .property('extend', extend)
     .property('singleton', singleton)
     .property('isTypeOf',  isTypeOf)

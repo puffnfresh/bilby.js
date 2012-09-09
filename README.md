@@ -91,7 +91,3 @@ node.js:
 Browser:
 
     <script src="bilby-min.js"></script>
-
-## TODO
-
-* Functional data structures
