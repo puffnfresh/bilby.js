@@ -35,7 +35,7 @@ exports.kleisliTest = function(test) {
 exports.functorTest = function(test) {
     test.equal(
         λ.Do()(
-            λ.some(1) > add(2)
+            λ.some(1) < add(2)
         ).getOrElse(0),
         3
     );

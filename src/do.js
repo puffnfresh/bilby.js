@@ -18,7 +18,7 @@ function Do() {
         }
 
         if(n === true) op = '>=';
-        if(n === false) op = '>';
+        if(n === false) op = '<';
         if(n === 0) op = '>>';
         if(n === 1) op = '*';
         if(n === doQueue.length) op = '+';

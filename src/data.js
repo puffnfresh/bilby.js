@@ -142,7 +142,7 @@ bilby = bilby
     .method('>=', isOption, function(a, b) {
         return a.bind(b);
     })
-    .method('>', isOption, function(a, b) {
+    .method('<', isOption, function(a, b) {
         return a.map(b);
     })
     .method('*', isOption, function(a, b) {
@@ -158,7 +158,7 @@ bilby = bilby
     .method('>=', isEither, function(a, b) {
         return a.bind(b);
     })
-    .method('>', isEither, function(a, b) {
+    .method('<', isEither, function(a, b) {
         return a.map(b);
     })
     .method('*', isEither, function(a, b) {

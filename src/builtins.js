@@ -30,7 +30,7 @@ bilby = bilby
 
         return accum;
     })
-    .method('>', isArray, function(a, b) {
+    .method('<', isArray, function(a, b) {
         var accum = [],
             i;
 

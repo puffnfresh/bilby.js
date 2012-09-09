@@ -69,7 +69,7 @@ Kleislis:
 Functors:
 
     λ.Do()(
-        λ.some(1) > add(2)
+        λ.some(1) < add(2)
     ).getOrElse(0) == 3;
 
 Applicatives:
