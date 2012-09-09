@@ -3,7 +3,7 @@ var λ = require('../bilby');
 var add = λ.curry(function(a, b) {
     return a + b;
 });
-/*
+
 exports.monadTest = function(test) {
     test.equal(
         λ.Do()(
@@ -21,9 +21,9 @@ exports.kleisliTest = function(test) {
     test.equal(
         λ.Do()(
             function(x) {
-                return x < 0 ? none : some(x + 1);
+                return x < 0 ? λ.none : λ.some(x + 1);
             } >> function(x) {
-                return x % 2 !== 0 ? none : some(x + 1);
+                return x % 2 !== 0 ? λ.none : λ.some(x + 1);
             }
         )(1).getOrElse(0),
         3
@@ -51,7 +51,7 @@ exports.applicativeTest = function (test) {
     );
     test.done();
 };
-*/
+
 exports.semigroupTest = function (test) {
     test.equal(
         λ.Do()(
