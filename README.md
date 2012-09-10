@@ -36,6 +36,24 @@ Curried and uncurried application:
     add(1)(2) == 3;
     add(1, 2) == 3;
 
+Lenses for immutable updates of nested data structures:
+
+    var person = {
+            name: "Brian",
+            address: {
+                number: 100,
+                street: "Pitt St",
+                state: "QLD"
+            }
+        },
+        addressLens = λ.objectLens('address'),
+        stateLens = λ.objectLens('state'),
+        personStateStore = stateLens.compose(addressLens).run(person),
+        newPerson = personStateStore.setter("TAS");
+
+    newPerson.address.state == "TAS";
+    person.address.state == "QLD";
+
 ### Functional data structures
 
 Option:
