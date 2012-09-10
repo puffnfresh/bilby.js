@@ -106,8 +106,8 @@ var strictEquals = curry(function(a, b) {
     return a === b;
 });
 
-function liftA2(a, b, c) {
-    return this['*'](this['<'](a, b), c);
+function liftA2(f, a, b) {
+    return this['*'](this['<'](a, f), b);
 }
 
 bilby = bilby

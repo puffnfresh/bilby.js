@@ -1,12 +1,14 @@
 bilby = bilby
     .method('<', isFunction, function(a, b) {
-        return compose(a, b);
+        return compose(b, a);
     })
     .method('*', isFunction, function(a, b) {
         return function(x) {
             return a(x)(b(x));
         };
-    })
+    });
+
+bilby = bilby
     .method('>>', isFunction, function(a, b) {
         var env = this;
         return function(x) {
@@ -14,10 +16,7 @@ bilby = bilby
         };
     })
 
-    .method('equal', isNumber, function(a, b) {
-        return a == b;
-    })
-    .method('equal', isString, function(a, b) {
+    .method('equal', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a == b;
     })
     .method('equal', isArray, function(a, b) {
@@ -72,10 +71,7 @@ bilby = bilby
         return a.concat(b);
     })
 
-    .method('+', isNumber, function(a, b) {
-        return a + b;
-    })
-    .method('+', isString, function(a, b) {
+    .method('+', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a + b;
     });
 
