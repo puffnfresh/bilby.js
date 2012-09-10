@@ -14,6 +14,8 @@
 
     //= data.js
 
+    //= lens.js
+
     if(typeof exports != 'undefined') {
         exports = module.exports = bilby;
     } else {
