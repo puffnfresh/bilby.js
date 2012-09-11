@@ -11,6 +11,10 @@ module.exports = function(grunt) {
         },
         min: {
             'bilby-min.js': 'bilby.js'
+        },
+        watch: {
+            files: ['<config:lint.src>', '<config:test.src>'],
+            tasks: 'lint test'
         }
     });
 
