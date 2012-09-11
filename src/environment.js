@@ -45,4 +45,39 @@ function environment(methods, properties) {
         var newProperties = extend(properties, singleton(name, value));
         return environment(methods, newProperties);
     });
+
+    this.extend = function(extraMethods, extraProperties) {
+        var newMethods = {},
+            newProperties = {},
+            i;
+
+        for(i in methods) {
+            newMethods[i] = methods[i].concat(extraMethods[i]);
+        }
+        for(i in extraMethods) {
+            if(i in newMethods) continue;
+            newMethods[i] = extraMethods[i];
+        }
+
+        return environment(
+            newMethods,
+            extend(properties, extraProperties)
+        );
+    };
+
+    this.append = function(e) {
+        return e.extend(methods, properties);
+    };
 }
+
+environment.concat = function(es) {
+    // Before environment is setup; can't use a generic monoid concat.
+    var accum = environment(),
+        i;
+
+    for(i = 0; i < es.length; i++) {
+        accum = accum.append(es[i]);
+    }
+
+    return accum;
+};

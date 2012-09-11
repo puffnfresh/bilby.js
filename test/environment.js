@@ -29,3 +29,40 @@ exports.propertyTest = function(test) {
 
     test.done();
 };
+
+exports.appendTest = function(test) {
+    var env = λ.environment()
+        .method('length', λ.isArray, function(a) {
+            return a.length;
+        })
+        .append(
+            λ.environment()
+                .method('length', λ.isString, function(s) {
+                    return s.length;
+                })
+        );
+
+    test.equal(env.length([1, 2, 3]), 3);
+    test.equal(env.length('test'), 4);
+
+    test.done();
+};
+
+exports.concatTest = function(test) {
+    var env = λ.environment.concat([
+        λ.environment()
+            .method('length', λ.isArray, function(a) {
+                return a.length;
+            }),
+        λ.environment()
+            .method('length', λ.isString, function(s) {
+                return s.length;
+            })
+        ]);
+
+
+    test.equal(env.length([1, 2, 3]), 3);
+    test.equal(env.length('test'), 4);
+
+    test.done();
+};
