@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         },
         watch: {
             files: ['<config:lint.src>', '<config:test.src>'],
-            tasks: 'lint test'
+            tasks: 'rigger lint test'
         }
     });
 
