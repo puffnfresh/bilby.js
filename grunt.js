@@ -7,7 +7,7 @@ module.exports = function(grunt) {
             src: ['test/*.js']
         },
         rigger: {
-            'bilby.js': 'src/rigger-bilby.js'
+            'bilby.js': 'rigger-bilby.js'
         },
         min: {
             'bilby-min.js': 'bilby.js'
