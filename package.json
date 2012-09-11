@@ -3,6 +3,7 @@
   "description": "Serious functional programming library for JavaScript",
   "author": "Brian McKenna <brian@brianmckenna.org> (http://brianmckenna.org/)",
   "homepage": "http://bilby.brianmckenna.org/",
+  "license": "MIT",
   "repository": {"type": "git", "url": "git://github.com/pufuwozu/bilby.js.git"},
 
   "scripts": {"prepublish": "./node_modules/grunt/bin/grunt", "test": "./node_modules/grunt/bin/grunt rigger test"},
