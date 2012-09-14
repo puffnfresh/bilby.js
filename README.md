@@ -104,6 +104,31 @@ Semigroups:
         λ.some(1) + λ.some(2)
     ).getOrElse(0) == 3;
 
+### QuickCheck
+
+Automates generating arguments for a function and shrinking them when
+a test failure is found:
+
+    // Any string appended with its reverse is a palindrome.
+    exports.isPalindromeTest = function(test) {
+        var report = λ.forAll(
+            function(s) {
+                var reversed = s.split('').reverse().join('');
+                return isPalindrome(s + reversed);
+            },
+            [String]
+        );
+
+        test.ok(report.success, report.fold(
+            "OK",
+            function(inputs, tries) {
+                return "Failed after " + tries + " tries: " + inputs.toString();
+            }
+        ));
+
+        test.done();
+    };
+
 ## Usage
 
 node.js:

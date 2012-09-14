@@ -24,6 +24,8 @@
 
     //= src/lens.js
 
+    //= src/check.js
+
     if(typeof exports != 'undefined') {
         /*jshint node: true*/
         exports = module.exports = bilby;

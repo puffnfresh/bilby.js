@@ -1,8 +1,5 @@
 var λ = require('../bilby');
 
-var badLeft = λ.error("Got left side"),
-    badRight = λ.error("Got right side");
-
 exports.isTest = function(test) {
     test.ok(λ.left(0).isLeft);
     test.ok(λ.right(0).isRight);
@@ -10,8 +7,8 @@ exports.isTest = function(test) {
 };
 
 exports.foldTest = function(test) {
-    test.equal(λ.left(3).fold(λ.identity, badRight), 3);
-    test.equal(λ.right(3).fold(badLeft, λ.identity), 3);
+    test.equal(λ.left(3).fold(λ.identity, λ.badRight), 3);
+    test.equal(λ.right(3).fold(λ.badLeft, λ.identity), 3);
     test.done();
 };
 
@@ -37,13 +34,13 @@ exports.mapTest = function(test) {
     test.equal(
         λ.right(1).map(function(x) {
             return x + 2;
-        }).fold(badLeft, λ.identity),
+        }).fold(λ.badLeft, λ.identity),
         3
     );
     test.equal(
         λ.left(0).map(function(x) {
             return x + 2;
-        }).fold(λ.identity, badRight),
+        }).fold(λ.identity, λ.badRight),
         0
     );
     test.done();
@@ -55,7 +52,7 @@ exports.bindTest = function(test) {
             return λ.right(x + 1);
         }).bind(function(x) {
             return λ.right(x + 1);
-        }).fold(badLeft, λ.identity),
+        }).fold(λ.badLeft, λ.identity),
         3
     );
     test.equal(
@@ -63,7 +60,7 @@ exports.bindTest = function(test) {
             return λ.left(x + 1);
         }).bind(function(x) {
             return λ.right(x + 1);
-        }).fold(λ.identity, badRight),
+        }).fold(λ.identity, λ.badRight),
         2
     );
     test.equal(
@@ -71,7 +68,7 @@ exports.bindTest = function(test) {
             return λ.right(x + 1);
         }).bind(function(x) {
             return λ.right(x + 1);
-        }).fold(λ.identity, badRight),
+        }).fold(λ.identity, λ.badRight),
         1
     );
     test.done();
@@ -82,15 +79,15 @@ exports.applyTest = function(test) {
         return x + 1;
     }
     test.equal(
-        λ.right(f).apply(λ.right(1)).fold(badLeft, λ.identity),
+        λ.right(f).apply(λ.right(1)).fold(λ.badLeft, λ.identity),
         2
     );
     test.equal(
-        λ.right(f).apply(λ.left(1)).fold(λ.identity, badRight),
+        λ.right(f).apply(λ.left(1)).fold(λ.identity, λ.badRight),
         1
     );
     test.equal(
-        λ.left(f).apply(λ.right(1)).fold(λ.identity, badRight),
+        λ.left(f).apply(λ.right(1)).fold(λ.identity, λ.badRight),
         f
     );
     test.done();
@@ -98,19 +95,19 @@ exports.applyTest = function(test) {
 
 exports.appendTest = function(test) {
     test.equal(
-        λ.right(1).append(λ.right(2), λ['+']).fold(badLeft, λ.identity),
+        λ.right(1).append(λ.right(2), λ['+']).fold(λ.badLeft, λ.identity),
         3
     );
     test.equal(
-        λ.right(1).append(λ.left(2), λ['+']).fold(λ.identity, badRight),
+        λ.right(1).append(λ.left(2), λ['+']).fold(λ.identity, λ.badRight),
         2
     );
     test.equal(
-        λ.left(1).append(λ.right(2), λ['+']).fold(λ.identity, badRight),
+        λ.left(1).append(λ.right(2), λ['+']).fold(λ.identity, λ.badRight),
         1
     );
     test.equal(
-        λ.left(1).append(λ.left(2), λ['+']).fold(λ.identity, badRight),
+        λ.left(1).append(λ.left(2), λ['+']).fold(λ.identity, λ.badRight),
         3
     );
     test.done();

@@ -1,8 +1,4 @@
-var λ = require('../bilby');
-
-var add = λ.curry(function(a, b) {
-    return a + b;
-});
+var λ = require('./lib/test');
 
 exports.monadTest = function(test) {
     test.equal(
@@ -35,7 +31,7 @@ exports.kleisliTest = function(test) {
 exports.functorTest = function(test) {
     test.equal(
         λ.Do()(
-            λ.some(1) < add(2)
+            λ.some(1) < λ.add(2)
         ).getOrElse(0),
         3
     );
@@ -45,7 +41,7 @@ exports.functorTest = function(test) {
 exports.applicativeTest = function (test) {
     test.equal(
         λ.Do()(
-            λ.some(add) * λ.some(1) * λ.some(2)
+            λ.some(λ.add) * λ.some(1) * λ.some(2)
         ).getOrElse(0),
         3
     );

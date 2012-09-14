@@ -1,19 +1,43 @@
-var λ = require('../bilby');
+var λ = require('./lib/test');
 
-exports.getOrElseTest = function(test) {
-    test.equal(λ.some(3).getOrElse(0), 3);
-    test.equal(λ.none.getOrElse(0), 0);
-    test.done();
-};
+exports.someGetOrElseTest = λ.check(
+    function(a, b) {
+        return λ.some(a).getOrElse(b) == a;
+    },
+    [Number, Number]
+);
 
-exports.toLeftTest = function(test) {
-    test.equal(λ.some(3).toLeft(0).fold(λ.identity, λ.error("Got right side")), 3);
-    test.equal(λ.none.toLeft(0).fold(λ.error("Got left side"), λ.identity), 0);
-    test.done();
-};
+exports.noneGetOrElseTest = λ.check(
+    function(a) {
+        return λ.none.getOrElse(a) == a;
+    },
+    [Number]
+);
 
-exports.toRightTest = function(test) {
-    test.equal(λ.some(3).toRight(0).fold(λ.error("Got left side"), λ.identity), 3);
-    test.equal(λ.none.toRight(0).fold(λ.identity, λ.error("Got right side")), 0);
-    test.done();
-};
+exports.someToLeftTest = λ.check(
+    function(a, b) {
+        return λ.some(a).toLeft(b).fold(λ.identity, λ.badRight) == a;
+    },
+    [Number]
+);
+
+exports.noneToLeftTest = λ.check(
+    function(a) {
+        return λ.none.toLeft(a).fold(λ.badLeft, λ.identity) == a;
+    },
+    [Number]
+);
+
+exports.someToRightTest = λ.check(
+    function(a, b) {
+        return λ.some(a).toRight(b).fold(λ.badLeft, λ.identity) == a;
+    },
+    [Number]
+);
+
+exports.noneToRightTest = λ.check(
+    function(a) {
+        return λ.none.toRight(a).fold(λ.identity, λ.badRight) == a;
+    },
+    [Number]
+);

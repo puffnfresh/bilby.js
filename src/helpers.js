@@ -86,8 +86,9 @@ var isTypeOf = curry(function(s, o) {
     return typeof o == s;
 });
 var isFunction = isTypeOf('function');
-var isString = isTypeOf('string');
+var isBoolean = isTypeOf('boolean');
 var isNumber = isTypeOf('number');
+var isString = isTypeOf('string');
 function isArray(a) {
     if(Array.isArray) return Array.isArray(a);
     return Object.prototype.toString.call(a) === "[object Array]";
@@ -96,11 +97,31 @@ var isInstanceOf = curry(function(c, o) {
     return o instanceof c;
 });
 
+var AnyVal = {};
+var Char = {};
+function arrayOf(type) {
+    if(!(this instanceof arrayOf))
+        return new arrayOf(type);
+
+    this.type = type;
+}
+var isArrayOf = isInstanceOf(arrayOf);
+function objectLike(props) {
+    if(!(this instanceof objectLike))
+        return new objectLike(props);
+
+    this.props = props;
+}
+var isObjectLike = isInstanceOf(objectLike);
+
 var or = curry(function(a, b) {
     return a || b;
 });
 var and = curry(function(a, b) {
     return a && b;
+});
+var add = curry(function(a, b) {
+    return a + b;
 });
 var strictEquals = curry(function(a, b) {
     return a === b;
@@ -121,12 +142,20 @@ bilby = bilby
     .property('extend', extend)
     .property('singleton', singleton)
     .property('isTypeOf',  isTypeOf)
-    .property('isFunction', isFunction)
-    .property('isString', isString)
-    .property('isNumber', isNumber)
     .property('isArray', isArray)
+    .property('isBoolean', isBoolean)
+    .property('isFunction', isFunction)
+    .property('isNumber', isNumber)
+    .property('isString', isString)
     .property('isInstanceOf', isInstanceOf)
+    .property('AnyVal', AnyVal)
+    .property('Char', Char)
+    .property('arrayOf', arrayOf)
+    .property('isArrayOf', isArrayOf)
+    .property('objectLike', objectLike)
+    .property('isObjectLike', isObjectLike)
     .property('or', or)
     .property('and', and)
+    .property('add', add)
     .property('strictEquals', strictEquals)
     .property('liftA2', liftA2);
