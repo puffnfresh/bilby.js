@@ -1,4 +1,4 @@
-(function() {
+(function(root) {
     'use strict';
 
     /* bilby's environment means `this` is special */
@@ -30,6 +30,6 @@
         /*jshint node: true*/
         exports = module.exports = bilby;
     } else {
-        this.bilby = bilby;
+        root.bilby = bilby;
     }
 })(this);
