@@ -131,6 +131,19 @@ function liftA2(f, a, b) {
     return this['*'](this['<'](a, f), b);
 }
 
+function sequence(m, a) {
+    var env = this;
+
+    if(!a.length)
+        return env.pure(m, []);
+
+    return env['>='](a[0], function(x) {
+        return env['>='](env.sequence(m, a.slice(1)), function(y) {
+            return env.pure(m, [x].concat(y));
+        });
+    });
+}
+
 bilby = bilby
     .property('bind', bind)
     .property('curry', curry)
@@ -158,4 +171,5 @@ bilby = bilby
     .property('and', and)
     .property('add', add)
     .property('strictEquals', strictEquals)
-    .property('liftA2', liftA2);
+    .property('liftA2', liftA2)
+    .property('sequence', sequence);
