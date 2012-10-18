@@ -24,6 +24,8 @@
 
     //= src/lens.js
 
+    //= src/io.js
+
     //= src/check.js
 
     if(typeof exports != 'undefined') {
