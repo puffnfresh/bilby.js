@@ -70,6 +70,9 @@ bilby = bilby
     .method('+', isArray, function(a, b) {
         return a.concat(b);
     })
+    .method('pure', strictEquals(Array), function(m, a) {
+        return [a];
+    })
 
     .method('+', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a + b;
