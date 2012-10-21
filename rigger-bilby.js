@@ -16,6 +16,8 @@
 
     //= src/helpers.js
 
+    //= src/trampoline.js
+
     //= src/do.js
 
     //= src/builtins.js
