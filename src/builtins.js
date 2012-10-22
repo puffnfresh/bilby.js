@@ -174,6 +174,19 @@ bilby = bilby
         }
 
         return accum;
+    })
+    .method('shrink', isArray, function(a) {
+        var accum = [[]],
+        x = a.length;
+
+        while(x) {
+            x = Math.floor(x / 2);
+            if(x) {
+                accum.push(s.slice(s.length - x));
+            }
+        }
+
+        return accum;
     });
 
 Do.setValueOf(Array.prototype);
