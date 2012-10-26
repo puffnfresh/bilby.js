@@ -1,3 +1,15 @@
+/**
+   # Lenses
+
+   Lenses allow immutable updating of nested data structures.
+**/
+
+/**
+   ## store(setter, getter)
+
+   A `store` is a combined getter and setter that can be composed with
+   other stores.
+**/
 function store(setter, getter) {
     if(!(this instanceof store))
         return new store(setter, getter);
@@ -9,8 +21,22 @@ function store(setter, getter) {
         return store(compose(f, setter), getter);
     };
 }
+/**
+   ## isStore(a)
+
+   Returns `true` iff `a` is a `store`.
+**/
 var isStore = isInstanceOf(store);
 
+/**
+   ## lens(f)
+
+   A total `lens` takes a function, `f`, which itself takes a value
+   and returns a `store`.
+
+   * run(x) - gets the lens' `store` from `x`
+   * compose(l) - lens composition
+**/
 function lens(f) {
     if(!(this instanceof lens))
         return new lens(f);
@@ -32,8 +58,18 @@ function lens(f) {
         });
     };
 }
+/**
+   ## isLens(a)
+
+   Returns `true` iff `a` is a `lens`.
+**/
 var isLens = isInstanceOf(lens);
 
+/**
+   ## objectLens(k)
+
+   Creates a total `lens` over an object for the `k` key.
+**/
 function objectLens(k) {
     return lens(function(o) {
         return store(function(v) {

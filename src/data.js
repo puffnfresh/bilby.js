@@ -1,9 +1,48 @@
-// Option
+/**
+   # Data structures
+
+   Church-encoded versions of common functional data
+   structures. Disjunction is enoded by multiple constructors with
+   different implementations of common functions.
+**/
+
+
+/**
+   ## Option
+
+       Option a = Some a + None
+
+   The option type encodes the presence and absence of a value. The
+   `some` constructor represents a value and `none` represents the
+   absence.
+
+   * fold(a, b) - applies `a` to value if `some` or defaults to `b`
+   * getOrElse(a) - default value for `none`
+   * isSome - `true` iff `this` is `some`
+   * isNone - `true` iff `this` is `none`
+   * toLeft(r) - `left(x)` if `some(x)`, `right(r)` if none
+   * toRight(l) - `right(x)` if `some(x)`, `left(l)` if none
+   * bind(f) - monadic bind
+   * map(f) - functor map
+   * apply(s) - applicative apply
+   * append(s, plus) - semigroup append
+**/
+
+/**
+   ### some(x)
+
+   Constructor to represent the existance of a value, `x`.
+**/
 function some(x) {
     if(!(this instanceof some)) return new some(x);
+    this.fold = function(a) {
+        return a(x);
+    };
     this.getOrElse = function() {
         return x;
     };
+    this.isSome = true;
+    this.isNone = false;
     this.toLeft = function() {
         return left(x);
     };
@@ -28,10 +67,20 @@ function some(x) {
     Do.setValueOf(this);
 }
 
+/**
+   ### none
+
+   Represents the absence of a value.
+**/
 var none = {
+    fold: function(a, b) {
+        return b;
+    },
     getOrElse: function(x) {
         return x;
     },
+    isSome: false,
+    isNone: true,
     toLeft: function(r) {
         return right(r);
     },
@@ -54,10 +103,39 @@ var none = {
 };
 Do.setValueOf(none);
 
+/**
+   ## isOption(a)
+
+   Returns `true` iff `a` is a `some` or `none`.
+**/
 var isOption = bilby.liftA2(or, isInstanceOf(some), strictEquals(none));
 
 
-// Either (right biased)
+/**
+   ## Either
+
+       Either a b = Left a + Right b
+
+   Represents a tagged disjunction between two sets of values; `a` or
+   `b`. Methods are right-biased.
+
+   * fold(a, b) - `a` applied to value if `left`, `b` if `right`
+   * swap() - turns `left` into `right` and vice-versa
+   * isLeft - `true` iff `this` is `left`
+   * isRight - `true` iff `this` is `right`
+   * toOption() - `none` if `left`, `some` value of `right`
+   * toArray() - `[]` if `left`, singleton value if `right`
+   * bind(f) - monadic bind
+   * map(f) - functor map
+   * apply(s) - applicative apply
+   * append(s, plus) - semigroup append
+**/
+
+/**
+   ### left(x)
+
+   Constructor to represent the left case.
+**/
 function left(x) {
     if(!(this instanceof left)) return new left(x);
     this.fold = function(a, b) {
@@ -94,6 +172,11 @@ function left(x) {
     };
 }
 
+/**
+   ### right(x)
+
+   Constructor to represent the (biased) right case.
+**/
 function right(x) {
     if(!(this instanceof right)) return new right(x);
     this.fold = function(a, b) {
@@ -129,6 +212,11 @@ function right(x) {
     };
 }
 
+/**
+   ## isEither(a)
+
+   Returns `true` iff `a` is a `left` or a `right`.
+**/
 var isEither = bilby.liftA2(or, isInstanceOf(left), isInstanceOf(right));
 
 
@@ -136,6 +224,9 @@ bilby = bilby
     .property('some', some)
     .property('none', none)
     .property('isOption', isOption)
+    .method('fold', isOption, function(a, b, c) {
+        return a.fold(b, c);
+    })
     .method('>=', isOption, function(a, b) {
         return a.bind(b);
     })

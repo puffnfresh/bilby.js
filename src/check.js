@@ -1,27 +1,47 @@
+/**
+   # QuickCheck
+
+   QuickCheck is a form of *automated specification testing*. Instead
+   of manually writing tests cases like so:
+
+       assert(0 + 1 == 1);
+       assert(1 + 1 == 2);
+       assert(3 + 3 == 6);
+
+   We can just write the assertion algebraicly and tell QuickCheck to
+   automaticaly generate lots of inputs:
+
+       bilby.forAll(
+           function(n) {
+               return n + n == 2 * n;
+           },
+           [Number]
+       ).fold(
+           function(fail) {
+               return "Failed after " + fail.tries + " tries: " + fail.inputs.toString();
+           },
+           "All tests passed!",
+       )
+**/
+
 function generateInputs(env, args, size) {
     return env['<'](args, function(arg) {
         return env.arb(arg, size);
     });
 }
 
-function successReporter() {
-    if(!(this instanceof successReporter))
-        return new successReporter();
+/**
+   ### failureReporter
 
-    this.success = true;
-    this.fold = function(a, b) {
-        return a;
-    };
-}
-
+   * inputs - the arguments to the property that failed
+   * tries - number of times inputs were tested before failure
+**/
 function failureReporter(inputs, tries) {
     if(!(this instanceof failureReporter))
         return new failureReporter(inputs, tries);
 
-    this.success = false;
-    this.fold = function(a, b) {
-        return b(inputs, tries);
-    };
+    this.inputs = inputs;
+    this.tries = tries;
 }
 
 function findSmallest(env, property, inputs) {
@@ -44,6 +64,22 @@ function findSmallest(env, property, inputs) {
     return smallest;
 }
 
+/**
+   ## forAll(property, args)
+
+   Generates values for each type in `args` using `bilby.arb` and
+   then passes them to `property`, a function returning a
+   `Boolean`. Tries `goal` number of times or until failure.
+
+   Returns an `Option` of a `failureReporter`:
+
+       var reporter = bilby.forAll(
+           function(s) {
+               return isPalindrome(s + s.split('').reverse().join(''));
+           },
+           [String]
+       );
+**/
 function forAll(property, args) {
     var inputs,
         i;
@@ -51,15 +87,28 @@ function forAll(property, args) {
     for(i = 0; i < this.goal; i++) {
         inputs = generateInputs(this, args, i);
         if(!property.apply(this, inputs))
-            return failureReporter(
+            return some(failureReporter(
                 findSmallest(this, property, inputs),
                 i
-            );
+            ));
     }
 
-    return successReporter();
+    return none;
 }
 
+/**
+   ## goal
+
+   The number of successful inputs necessary to declare the whole
+   property a success:
+
+       var _ = bilby.property('goal', 1000);
+
+   Default is `100`.
+**/
+var goal = 100;
+
 bilby = bilby
+    .property('failureReporter', failureReporter)
     .property('forAll', forAll)
-    .property('goal', 100);
+    .property('goal', goal);

@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "grunt": "0.3.15",
-    "rigger": "0.3.19"
+    "rigger": "0.3.19",
+    "emu": "0.0.1"
   },
 
   "main": "bilby.js",

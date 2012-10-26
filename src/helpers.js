@@ -1,3 +1,21 @@
+/**
+   # Helpers
+
+   The helpers module is a collection of functions used often inside
+   of bilby.js or are generally useful for programs.
+**/
+
+/**
+   ## bind(f)(o)
+
+   Makes `this` inside of `f` equal to `o`:
+
+       bilby.bind(function() { return this; })(a)() == a
+
+   Also partially applies arguments:
+
+       bilby.bind(bilby.add)(null, 10)(32) == 42
+**/
 function bind(f) {
     return function(o) {
         if(f.bind)
@@ -16,6 +34,24 @@ function bind(f) {
     };
 }
 
+/**
+   ## curry(f)
+
+   Takes a normal function `f` and allows partial application of its
+   named arguments:
+
+       var add = bilby.curry(function(a, b) {
+               return a + b;
+           }),
+           add15 = add(15);
+
+       add15(27) == 42;
+
+   Retains ability of complete application by calling the function
+   when enough arguments are filled:
+
+       add(15, 27) == 42;
+**/
 function curry(f) {
     return function() {
         var g = bind(f).apply(f, [this].concat([].slice.call(arguments))),
@@ -29,31 +65,68 @@ function curry(f) {
     };
 }
 
-function compose(f, g) {
-    return function() {
-        return f(g.apply(this, [].slice.call(arguments)));
-    };
-}
+/**
+   ## identity(o)
 
-function error(s) {
-    return function() {
-        throw new Error(s);
-    };
-}
+   Identity function. Returns `o`:
 
+       forall a. identity(a) == a
+**/
 function identity(o) {
     return o;
 }
 
+/**
+   ## constant(c)
+
+   Constant function. Creates a function that always returns `c`, no
+   matter the argument:
+
+       forall a b. constant(a)(b) == a
+**/
 function constant(c) {
     return function() {
         return c;
     };
 }
 
+/**
+   ## compose(f, g)
+
+   Creates a new function that applies `f` to the result of `g` of the
+   input argument:
+
+       forall f g x. compose(f, g)(x) == f(g(x))
+**/
+function compose(f, g) {
+    return function() {
+        return f(g.apply(this, [].slice.call(arguments)));
+    };
+}
+
+/**
+   ## error(s)
+
+   Turns the `throw new Error(s)` statement into an expression.
+**/
+function error(s) {
+    return function() {
+        throw new Error(s);
+    };
+}
+
+/**
+   ## zip(a, b)
+
+   Takes two lists and pairs their values together into a "tuple" (2
+   length list):
+
+       zip([1, 2, 3], [4, 5, 6]) == [[1, 4], [2, 5], [3, 6]]
+**/
 function zip(a, b) {
     var accum = [],
         i;
+
     for(i = 0; i < Math.min(a.length, b.length); i++) {
         accum.push([a[i], b[i]]);
     }
@@ -61,7 +134,29 @@ function zip(a, b) {
     return accum;
 }
 
-// TODO: Make into an Option semigroup#append
+/**
+   ## singleton(k, v)
+
+   Creates a new single object using `k` as the key and `v` as the
+   value. Useful for creating arbitrary keyed objects without
+   mutation:
+
+       singleton(['Hello', 'world'].join(' '), 42) == {'Hello world': 42}
+**/
+function singleton(k, v) {
+    var o = {};
+    o[k] = v;
+    return o;
+}
+
+/**
+   ## extend(a, b)
+
+   Right-biased key-value append of objects `a` and `b`:
+
+       bilby.extend({a: 1, b: 2}, {b: true, c: false}) == {a: 1, b: true, c: false}
+**/
+// TODO: Make into an Object semigroup#append
 function extend(a, b) {
     var o = {},
         i;
@@ -76,61 +171,170 @@ function extend(a, b) {
     return o;
 }
 
-function singleton(k, v) {
-    var o = {};
-    o[k] = v;
-    return o;
-}
+/**
+   ## isTypeOf(s)(o)
 
+   Returns `true` iff `o` has `typeof s`.
+**/
 var isTypeOf = curry(function(s, o) {
     return typeof o == s;
 });
+/**
+   ## isFunction(a)
+
+   Returns `true` iff `a` is a `Function`.
+**/
 var isFunction = isTypeOf('function');
+/**
+   ## isBoolean(a)
+
+   Returns `true` iff `a` is a `Boolean`.
+**/
 var isBoolean = isTypeOf('boolean');
+/**
+   ## isNumber(a)
+
+   Returns `true` iff `a` is a `Number`.
+**/
 var isNumber = isTypeOf('number');
+/**
+   ## isString(a)
+
+   Returns `true` iff `a` is a `String`.
+**/
 var isString = isTypeOf('string');
+/**
+   ## isArray(a)
+
+   Returns `true` iff `a` is an `Array`.
+**/
 function isArray(a) {
     if(Array.isArray) return Array.isArray(a);
     return Object.prototype.toString.call(a) === "[object Array]";
 }
+/**
+   ## isArray(c)(o)
+
+   Returns `true` iff `o` is an instance of `c`.
+**/
 var isInstanceOf = curry(function(c, o) {
     return o instanceof c;
 });
 
+/**
+   ## AnyVal
+
+   Sentinal value for when any type of primitive value is needed.
+**/
 var AnyVal = {};
+/**
+   ## Char
+
+   Sentinal value for when a single character string is needed.
+**/
 var Char = {};
+/**
+   ## arrayOf(type)
+
+   Sentinal value for when an array of a particular type is needed:
+
+       arrayOf(Number)
+**/
 function arrayOf(type) {
     if(!(this instanceof arrayOf))
         return new arrayOf(type);
 
     this.type = type;
 }
+/**
+   ## isArrayOf(a)
+
+   Returns `true` iff `a` is an instance of `arrayOf`.
+**/
 var isArrayOf = isInstanceOf(arrayOf);
+/**
+   ## objectLike(props)
+
+   Sentinal value for when an object with specified properties is
+   needed:
+
+       objectLike({
+           age: Number,
+           name: String
+       })
+**/
 function objectLike(props) {
     if(!(this instanceof objectLike))
         return new objectLike(props);
 
     this.props = props;
 }
+/**
+   ## isObjectLike(a)
+
+   Returns `true` iff `a` is an instance of `objectLike`.
+**/
 var isObjectLike = isInstanceOf(objectLike);
 
+/**
+   ## or(a)(b)
+
+   Curried function for `||`.
+**/
 var or = curry(function(a, b) {
     return a || b;
 });
+/**
+   ## and(a)(b)
+
+   Curried function for `&&`.
+**/
 var and = curry(function(a, b) {
     return a && b;
 });
+/**
+   ## add(a)(b)
+
+   Curried function for `+`.
+**/
 var add = curry(function(a, b) {
     return a + b;
 });
+/**
+   ## strictEquals(a)(b)
+
+   Curried function for `===`.
+**/
 var strictEquals = curry(function(a, b) {
     return a === b;
 });
 
+/**
+   ## liftA2(f, a, b)
+
+   Lifts a curried, binary function `f` into the applicative passes
+   `a` and `b` as parameters.
+**/
 function liftA2(f, a, b) {
     return this['*'](this['<'](a, f), b);
 }
 
+/**
+   ## sequence(m, a)
+
+   Sequences an array, `a`, of values belonging to the `m` monad:
+
+        bilby.sequence(Array, [
+            [1, 2],
+            [3],
+            [4, 5]
+        ]) == [
+            [1, 3, 4],
+            [1, 3, 5],
+            [2, 3, 4],
+            [2, 3, 5]
+        ]
+**/
 function sequence(m, a) {
     var env = this;
 

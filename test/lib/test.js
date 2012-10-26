@@ -4,11 +4,11 @@ var λ = require('../../bilby');
     .property('check', λ.curry(function(property, args, test) {
         var report = λ.forAll(property, args);
 
-        test.ok(report.success, report.fold(
-            "OK",
-            function(inputs, tries) {
-                return "Failed after " + tries + " tries: " + inputs.toString();
-            }
+        test.ok(report.isNone, report.fold(
+            function(fail) {
+                return "Failed after " + fail.tries + " tries: " + fail.inputs.toString();
+            },
+            "OK"
         ));
 
         test.done();
