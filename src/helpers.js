@@ -6,6 +6,24 @@
 **/
 
 /**
+    ## functionLength(f)
+
+    Returns the name of function `f`.
+**/
+function functionName(f) {
+    return f._name || f.name;
+}
+
+/**
+    ## functionLength(f)
+
+    Returns the arity of function `f`.
+**/
+function functionLength(f) {
+    return f._length || f.length;
+}
+
+/**
    ## bind(f)(o)
 
    Makes `this` inside of `f` equal to `o`:
@@ -21,7 +39,7 @@ function bind(f) {
         if(f.bind)
             return f.bind.apply(f, [o].concat([].slice.call(arguments, 1)));
 
-        var length = f._length || f.length,
+        var length = functionLength(f),
             args = [].slice.call(arguments, 1),
             g = function() {
                 return f.apply(o || this, args.concat([].slice.call(arguments)));
@@ -56,7 +74,7 @@ function curry(f) {
     return function() {
         var g = bind(f).apply(f, [this].concat([].slice.call(arguments))),
             // Special hack for polyfilled Function.prototype.bind
-            length = g._length || g.length;
+            length = functionLength(g);
 
         if(length === 0)
             return g();
@@ -427,6 +445,8 @@ function sequence(m, a) {
 }
 
 bilby = bilby
+    .property('functionName', functionName)
+    .property('functionLength', functionLength)
     .property('bind', bind)
     .property('curry', curry)
     .property('compose', compose)
