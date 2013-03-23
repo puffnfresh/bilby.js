@@ -4,6 +4,10 @@
     /**
        % bilby.js
 
+       ![](http://brianmckenna.org/files/bilby.png)
+
+       [![Build Status](https://secure.travis-ci.org/pufuwozu/bilby.js.png)](http://travis-ci.org/pufuwozu/bilby.js)
+
        # Description
 
        bilby.js is a serious functional programming library. Serious,
