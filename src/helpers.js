@@ -84,6 +84,24 @@ function curry(f) {
 }
 
 /**
+   ## flip(f)
+
+   Flips the order of arguments to `f`:
+
+       var append = bilby.curry(function(a, b) {
+               return a + b;
+           }),
+           prepend = flip(concat);
+**/
+function flip(f) {
+    return function(a) {
+        return function(b) {
+            return f(b, a);
+        };
+    };
+}
+
+/**
    ## identity(o)
 
    Identity function. Returns `o`:
@@ -449,12 +467,13 @@ bilby = bilby
     .property('functionLength', functionLength)
     .property('bind', bind)
     .property('curry', curry)
+    .property('flip', flip)
+    .property('identity', identity)
+    .property('constant', constant)
     .property('compose', compose)
     .property('tagged', tagged)
     .property('taggedSum', taggedSum)
     .property('error', error)
-    .property('identity', identity)
-    .property('constant', constant)
     .property('zip', zip)
     .property('extend', extend)
     .property('singleton', singleton)

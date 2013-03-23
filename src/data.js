@@ -6,7 +6,6 @@
    different implementations of common functions.
 **/
 
-
 /**
    ## Option
 
