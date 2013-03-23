@@ -135,13 +135,21 @@ This means that bilby's methods can be extended:
     
 * method(name, predicate, f) - adds an multimethod implementation
 * property(name, value) - sets a property to value
-* extend(extraMethods, extraProperties) - adds methods + properties
+* concat(extraMethods, extraProperties) - adds methods + properties
 * append(e) - combines two environemts, biased to `e`
 
 # Helpers
     
 The helpers module is a collection of functions used often inside
 of bilby.js or are generally useful for programs.
+
+## functionLength(f)
+    
+Returns the name of function `f`.
+
+## functionLength(f)
+    
+Returns the arity of function `f`.
 
 ## bind(f)(o)
     
@@ -170,6 +178,15 @@ when enough arguments are filled:
     
     add(15, 27) == 42;
 
+## flip(f)
+    
+Flips the order of arguments to `f`:
+    
+    var append = bilby.curry(function(a, b) {
+            return a + b;
+        }),
+        prepend = flip(concat);
+
 ## identity(o)
     
 Identity function. Returns `o`:
@@ -189,6 +206,35 @@ Creates a new function that applies `f` to the result of `g` of the
 input argument:
     
     forall f g x. compose(f, g)(x) == f(g(x))
+
+## tagged(name, fields)
+    
+Creates a simple constructor for a tagged object.
+    
+    var Tuple = tagged('Tuple', ['a', 'b']);
+    var x = Tuple(1, 2);
+    var y = new Tuple(3, 4);
+    x instanceof Tuple && y instanceof Tuple;
+
+## taggedSum(constructors)
+    
+Creates a disjoint union of constructors, with a catamorphism.
+    
+    var List = taggedSum({
+        Cons: ['car', 'cdr'],
+        Nil: []
+    });
+    function listLength(l) {
+        return l.cata(
+            function(car, cdr) {
+                return 1 + listLength(cdr);
+            },
+            function() {
+                return 0;
+            }
+        );
+    }
+    listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
 
 ## error(s)
     
@@ -239,7 +285,7 @@ Returns `true` iff `a` is a `String`.
     
 Returns `true` iff `a` is an `Array`.
 
-## isArray(c)(o)
+## isInstanceOf(c)(o)
     
 Returns `true` iff `o` is an instance of `c`.
 
