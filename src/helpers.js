@@ -154,7 +154,7 @@ function tagged(name, fields) {
     function Ctor() {}
     Ctor.prototype = wrapped.prototype;
     function wrapped() {
-        var instance;
+        var instance, i;
         if(!(this instanceof wrapped)) {
             instance = new Ctor();
             wrapped.apply(instance, arguments);

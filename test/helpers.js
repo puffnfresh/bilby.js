@@ -1,4 +1,4 @@
-var λ = require('../bilby');
+var λ = require('./lib/test');
 
 exports.curriedTest = function(test) {
     test.equal(λ.add(1)(2), 3);
@@ -26,3 +26,27 @@ exports.sequenceTest = function(test) {
     );
     test.done();
 };
+
+exports.taggedTest = λ.check(
+    function(a) {
+        var Id = λ.tagged('Id', ['value']);
+        return Id(a).value == a;
+    },
+    [Number]
+);
+
+exports.taggedSumTest = λ.check(
+    function(a, b) {
+        var Either = λ.taggedSum({
+            Left: ['leftValue'],
+            Right: ['rightValue']
+        });
+
+        return (function() {
+            var gotLeft = Either.Left(a).cata(λ.identity, λ.error("Got right")) == a,
+                gotRight = Either.Right(b).cata(λ.error("Got left"), λ.identity) == b;
+            return gotLeft && gotRight;
+        })();
+    },
+    [Number, String]
+);
