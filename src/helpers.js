@@ -105,6 +105,84 @@ function compose(f, g) {
 }
 
 /**
+   ## tagged(name, fields)
+
+   Creates a simple constructor for a tagged object.
+
+       var Tuple = tagged('Tuple', ['a', 'b']);
+       var x = Tuple(1, 2);
+       var y = new Tuple(3, 4);
+       x instanceof Tuple && y instanceof Tuple;
+**/
+function tagged(name, fields) {
+    function Ctor() {}
+    Ctor.prototype = wrapped.prototype;
+    function wrapped() {
+        var instance;
+        if(!(this instanceof wrapped)) {
+            instance = new Ctor();
+            wrapped.apply(instance, arguments);
+            return instance;
+        }
+        if(arguments.length != fields.length) {
+            throw new TypeError("Expected " + fields.length + " arguments, got " + arguments.length);
+        }
+        for(i = 0; i < fields.length; i++) {
+            this[fields[i]] = arguments[i];
+        }
+    }
+    wrapped.name = wrapped._name = name;
+    wrapped.length = wrapped._length = fields.length;
+    return wrapped;
+}
+
+/**
+    ## taggedSum(constructors)
+
+    Creates a disjoint union of constructors, with a catamorphism.
+
+        var List = taggedSum({
+            Cons: ['car', 'cdr'],
+            Nil: []
+        });
+        function listLength(l) {
+            return l.cata(
+                function(car, cdr) {
+                    return 1 + listLength(cdr);
+                },
+                function() {
+                    return 0;
+                }
+            );
+        }
+        listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
+**/
+function taggedSum(constructors) {
+    var defined = 0, definitions = {}, key;
+
+    function makeCata(fields, index) {
+        return function() {
+            var args = [], i;
+            if(arguments.length != defined) {
+                throw new TypeError("Expected " + defined + " arguments, got " + arguments.length);
+            }
+            for(i = 0; i < fields.length; i++) {
+                args.push(this[fields[i]]);
+            }
+            return arguments[index].apply(this, args);
+        };
+    }
+
+    for(key in constructors) {
+        definitions[key] = tagged(key, constructors[key]);
+        definitions[key].prototype.cata = makeCata(constructors[key], defined);
+        defined++;
+    }
+
+    return definitions;
+}
+
+/**
    ## error(s)
 
    Turns the `throw new Error(s)` statement into an expression.
@@ -213,7 +291,7 @@ function isArray(a) {
     return Object.prototype.toString.call(a) === "[object Array]";
 }
 /**
-   ## isArray(c)(o)
+   ## isInstanceOf(c)(o)
 
    Returns `true` iff `o` is an instance of `c`.
 **/
@@ -352,6 +430,8 @@ bilby = bilby
     .property('bind', bind)
     .property('curry', curry)
     .property('compose', compose)
+    .property('tagged', tagged)
+    .property('taggedSum', taggedSum)
     .property('error', error)
     .property('identity', identity)
     .property('constant', constant)
