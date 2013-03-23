@@ -182,7 +182,7 @@ bilby = bilby
         while(x) {
             x = Math.floor(x / 2);
             if(x) {
-                accum.push(s.slice(s.length - x));
+                accum.push(a.slice(a.length - x));
             }
         }
 
