@@ -108,7 +108,7 @@ function makeMethod(registrations) {
 
    * method(name, predicate, f) - adds an multimethod implementation
    * property(name, value) - sets a property to value
-   * extend(extraMethods, extraProperties) - adds methods + properties
+   * concat(extraMethods, extraProperties) - adds methods + properties
    * append(e) - combines two environemts, biased to `e`
 **/
 function environment(methods, properties) {
@@ -119,14 +119,6 @@ function environment(methods, properties) {
 
     methods = methods || {};
     properties = properties || {};
-
-    for(i in methods) {
-        this[i] = makeMethod(methods[i]);
-    }
-
-    for(i in properties) {
-        this[i] = properties[i];
-    }
 
     this.method = curry(function(name, predicate, f) {
         var newMethods = extend(methods, singleton(name, (methods[name] || []).concat({
@@ -141,7 +133,7 @@ function environment(methods, properties) {
         return environment(methods, newProperties);
     });
 
-    this.extend = function(extraMethods, extraProperties) {
+    this.concat = function(extraMethods, extraProperties) {
         var newMethods = {},
             newProperties = {},
             i;
@@ -161,6 +153,16 @@ function environment(methods, properties) {
     };
 
     this.append = function(e) {
-        return e.extend(methods, properties);
+        return e.concat(methods, properties);
     };
+
+    for(i in methods) {
+        if(this[i]) throw new Error("Method " + i + " already in environment.");
+        this[i] = makeMethod(methods[i]);
+    }
+
+    for(i in properties) {
+        if(this[i]) throw new Error("Property " + i + " already in environment.");
+        this[i] = properties[i];
+    }
 }
