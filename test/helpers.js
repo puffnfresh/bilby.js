@@ -43,8 +43,8 @@ exports.taggedSumTest = λ.check(
         });
 
         return (function() {
-            var gotLeft = Either.Left(a).cata(λ.identity, λ.error("Got right")) == a,
-                gotRight = Either.Right(b).cata(λ.error("Got left"), λ.identity) == b;
+            var gotLeft = Either.Left(a).cata({Left: λ.identity, Right: λ.error("Got right")}) == a,
+                gotRight = Either.Right(b).cata({Right: λ.identity, Left: λ.error("Got left")}) == b;
             return gotLeft && gotRight;
         })();
     },

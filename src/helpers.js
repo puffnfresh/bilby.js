@@ -182,36 +182,41 @@ function tagged(name, fields) {
             Nil: []
         });
         function listLength(l) {
-            return l.cata(
-                function(car, cdr) {
+            return l.cata({
+                Cons: function(car, cdr) {
                     return 1 + listLength(cdr);
                 },
-                function() {
+                Nil: function() {
                     return 0;
                 }
-            );
+            });
         }
         listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
 **/
 function taggedSum(constructors) {
     var defined = 0, definitions = {}, key;
 
-    function makeCata(fields, index) {
-        return function() {
-            var args = [], i;
-            if(arguments.length != defined) {
-                throw new TypeError("Expected " + defined + " arguments, got " + arguments.length);
+    function makeCata(fields, field) {
+        return function(dispatches) {
+            var args = [], length = 0, key, i;
+            for(key in constructors) {
+                if(dispatches[key]) continue;
+                throw new TypeError("Constructors define " + key + " but not supplied to cata");
+            }
+            for(key in dispatches) {
+                if(constructors[key]) continue;
+                throw new TypeError("Found extra constructor supplied to cata: " + key);
             }
             for(i = 0; i < fields.length; i++) {
                 args.push(this[fields[i]]);
             }
-            return arguments[index].apply(this, args);
+            return dispatches[field].apply(this, args);
         };
     }
 
     for(key in constructors) {
         definitions[key] = tagged(key, constructors[key]);
-        definitions[key].prototype.cata = makeCata(constructors[key], defined);
+        definitions[key].prototype.cata = makeCata(constructors[key], key);
         defined++;
     }
 
