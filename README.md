@@ -211,6 +211,11 @@ input argument:
     
     forall f g x. compose(f, g)(x) == f(g(x))
 
+## create(proto)
+    
+Partial polyfill for Object.create - creates a new instance of the
+given prototype.
+
 ## tagged(name, fields)
     
 Creates a simple constructor for a tagged object.
@@ -229,14 +234,14 @@ Creates a disjoint union of constructors, with a catamorphism.
         Nil: []
     });
     function listLength(l) {
-        return l.cata(
-            function(car, cdr) {
+        return l.cata({
+            Cons: function(car, cdr) {
                 return 1 + listLength(cdr);
             },
-            function() {
+            Nil: function() {
                 return 0;
             }
-        );
+        });
     }
     listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
 
@@ -400,7 +405,7 @@ The beginning of the continuation to call. Will repeatedly evaluate
     
 Adds operator overloading for functional syntax:
     
-  * `>=` - monads:
+  * `>=` - monad flatMap/bind:
     
         bilby.Do()(
             bilby.some(1) >= function(x) {
@@ -408,7 +413,7 @@ Adds operator overloading for functional syntax:
             }
         ).getOrElse(0) == 3;
     
-  * `>>` - kleislis:
+  * `>>` - kleisli:
     
         bilby.Do()(
             function(x) {
@@ -418,19 +423,19 @@ Adds operator overloading for functional syntax:
             }
         )(1).getOrElse(0) == 3;
     
-  * `<` - functors:
+  * `<` - functor map:
     
         bilby.Do()(
             bilby.some(1) < add(2)
         ).getOrElse(0) == 3;
     
-  * `*` - applicatives:
+  * `*` - applicative ap(ply):
     
         bilby.Do()(
             bilby.some(add) * bilby.some(1) * bilby.some(2)
         ).getOrElse(0) == 3;
     
-  * `+` - semigroups:
+  * `+` - semigroup append:
     
         bilby.Do()(
             bilby.some(1) + bilby.some(2)
@@ -441,20 +446,20 @@ Adds operator overloading for functional syntax:
 Creates a new syntax scope. The `a` expression is allowed multiple
 usages of a single operator per `Do` call:
     
-* `>=`
-* `>>`
-* `<`
-* `*`
-* `+`
+* `>=` - flatMap
+* `>>` - kleisli
+* `<` - map
+* `*` - ap
+* `+` - append
     
-The string name of the operator will be called on the bilby
-environment with the operands, for example:
+The associated name will be called on the bilby environment with
+the operands. For example:
     
     bilby.Do()(bilby.some(1) + bilby.some(2))
     
-Will desugar into:
+Desugars into:
     
-    bilby['+'](bilby.some(1), bilby.some(2))
+    bilby.append(bilby.some(1), bilby.some(2))
 
 ## Do.setValueOf(proto)
     
@@ -486,9 +491,9 @@ absence.
 * isNone - `true` iff `this` is `none`
 * toLeft(r) - `left(x)` if `some(x)`, `right(r)` if none
 * toRight(l) - `right(x)` if `some(x)`, `left(l)` if none
-* bind(f) - monadic bind
+* flatMap(f) - monadic flatMap/bind
 * map(f) - functor map
-* apply(s) - applicative apply
+* ap(s) - applicative ap(ply)
 * append(s, plus) - semigroup append
 
 ### some(x)
@@ -516,9 +521,9 @@ Represents a tagged disjunction between two sets of values; `a` or
 * isRight - `true` iff `this` is `right`
 * toOption() - `none` if `left`, `some` value of `right`
 * toArray() - `[]` if `left`, singleton value if `right`
-* bind(f) - monadic bind
+* flatMap(f) - monadic flatMap/bind
 * map(f) - functor map
-* apply(s) - applicative apply
+* ap(s) - applicative ap(ply)
 * append(s, plus) - semigroup append
 
 ### left(x)
@@ -571,7 +576,7 @@ Purely functional IO wrapper.
 Pure wrapper around a side-effecting `f` function.
     
 * perform() - action to be called a single time per program
-* bind(f) - monadic bind
+* flatMap(f) - monadic flatMap/bind
 
 ## isIO(a)
     
