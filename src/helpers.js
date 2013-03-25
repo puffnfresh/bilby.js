@@ -141,6 +141,19 @@ function compose(f, g) {
 }
 
 /**
+   ## create(proto)
+
+   Partial polyfill for Object.create - creates a new instance of the
+   given prototype.
+**/
+
+function create(proto) {
+    function Ctor() {}
+    Ctor.prototype = proto;
+    return new Ctor();
+}
+
+/**
    ## tagged(name, fields)
 
    Creates a simple constructor for a tagged object.
@@ -151,12 +164,10 @@ function compose(f, g) {
        x instanceof Tuple && y instanceof Tuple;
 **/
 function tagged(name, fields) {
-    function Ctor() {}
-    Ctor.prototype = wrapped.prototype;
     function wrapped() {
         var instance, i;
         if(!(this instanceof wrapped)) {
-            instance = new Ctor();
+            instance = create(wrapped.prototype);
             wrapped.apply(instance, arguments);
             return instance;
         }
@@ -476,6 +487,7 @@ bilby = bilby
     .property('identity', identity)
     .property('constant', constant)
     .property('compose', compose)
+    .property('create', create)
     .property('tagged', tagged)
     .property('taggedSum', taggedSum)
     .property('error', error)
