@@ -78,6 +78,8 @@
 
     //= src/data.js
 
+    //= src/validation.js
+
     //= src/lens.js
 
     //= src/io.js

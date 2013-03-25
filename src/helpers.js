@@ -36,17 +36,19 @@ function functionLength(f) {
 **/
 function bind(f) {
     return function(o) {
-        if(f.bind)
-            return f.bind.apply(f, [o].concat([].slice.call(arguments, 1)));
+        var args = [].slice.call(arguments, 1),
+            g;
 
-        var length = functionLength(f),
-            args = [].slice.call(arguments, 1),
+        if(f.bind) {
+            g = f.bind.apply(f, [o].concat(args));
+        } else {
             g = function() {
-                return f.apply(o || this, args.concat([].slice.call(arguments)));
+                return f.apply(o, args.concat([].slice.call(arguments)));
             };
+        }
 
         // Can't override length but can set _length for currying
-        g._length = length - args.length;
+        g._length = Math.max(functionLength(f) - args.length, 0);
 
         return g;
     };
@@ -73,10 +75,9 @@ function bind(f) {
 function curry(f) {
     return function() {
         var g = bind(f).apply(f, [this].concat([].slice.call(arguments))),
-            // Special hack for polyfilled Function.prototype.bind
             length = functionLength(g);
 
-        if(length === 0)
+        if(!length)
             return g();
 
         return curry(g);
