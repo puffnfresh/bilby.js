@@ -178,8 +178,8 @@ function tagged(name, fields) {
             this[fields[i]] = arguments[i];
         }
     }
-    wrapped.name = wrapped._name = name;
-    wrapped.length = wrapped._length = fields.length;
+    wrapped._name = name;
+    wrapped._length = fields.length;
     return wrapped;
 }
 
