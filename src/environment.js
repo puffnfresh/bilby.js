@@ -108,8 +108,8 @@ function makeMethod(registrations) {
 
    * method(name, predicate, f) - adds an multimethod implementation
    * property(name, value) - sets a property to value
-   * concat(extraMethods, extraProperties) - adds methods + properties
-   * append(e) - combines two environemts, biased to `e`
+   * envConcat(extraMethods, extraProperties) - adds methods + properties
+   * envAppend(e) - combines two environemts, biased to `e`
 **/
 function environment(methods, properties) {
     var i;
@@ -133,7 +133,7 @@ function environment(methods, properties) {
         return environment(methods, newProperties);
     });
 
-    this.concat = function(extraMethods, extraProperties) {
+    this.envConcat = function(extraMethods, extraProperties) {
         var newMethods = {},
             newProperties = {},
             i;
@@ -152,8 +152,8 @@ function environment(methods, properties) {
         );
     };
 
-    this.append = function(e) {
-        return e.concat(methods, properties);
+    this.envAppend = function(e) {
+        return e.envConcat(methods, properties);
     };
 
     for(i in methods) {

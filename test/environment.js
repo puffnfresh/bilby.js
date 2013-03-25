@@ -30,12 +30,12 @@ exports.propertyTest = function(test) {
     test.done();
 };
 
-exports.appendTest = function(test) {
+exports.envAppendTest = function(test) {
     var env = λ.environment()
         .method('length', λ.isArray, function(a) {
             return a.length;
         })
-        .append(
+        .envAppend(
             λ.environment()
                 .method('length', λ.isString, function(s) {
                     return s.length;
