@@ -32,7 +32,7 @@ exports.taggedTest = λ.check(
         var Id = λ.tagged('Id', ['value']);
         return Id(a).value == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
 
 exports.taggedSumTest = λ.check(
@@ -48,5 +48,5 @@ exports.taggedSumTest = λ.check(
             return gotLeft && gotRight;
         })();
     },
-    [Number, String]
+    [λ.AnyVal, λ.AnyVal]
 );

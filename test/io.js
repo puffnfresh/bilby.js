@@ -4,7 +4,7 @@ exports.ioIdentity = λ.check(
     function(a) {
         return λ.io(λ.constant(a)).perform() == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
 
 exports.ioFlatMap = λ.check(
@@ -13,5 +13,5 @@ exports.ioFlatMap = λ.check(
             return λ.io(λ.constant(a == b));
         }).perform();
     },
-    [Number]
+    [λ.AnyVal]
 );

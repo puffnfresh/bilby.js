@@ -4,40 +4,40 @@ exports.someGetOrElseTest = λ.check(
     function(a, b) {
         return λ.some(a).getOrElse(b) == a;
     },
-    [Number, Number]
+    [λ.AnyVal, λ.AnyVal]
 );
 
 exports.noneGetOrElseTest = λ.check(
     function(a) {
         return λ.none.getOrElse(a) == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
 
 exports.someToLeftTest = λ.check(
     function(a, b) {
         return λ.some(a).toLeft(b).fold(λ.identity, λ.badRight) == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
 
 exports.noneToLeftTest = λ.check(
     function(a) {
         return λ.none.toLeft(a).fold(λ.badLeft, λ.identity) == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
 
 exports.someToRightTest = λ.check(
     function(a, b) {
         return λ.some(a).toRight(b).fold(λ.badLeft, λ.identity) == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
 
 exports.noneToRightTest = λ.check(
     function(a) {
         return λ.none.toRight(a).fold(λ.identity, λ.badRight) == a;
     },
-    [Number]
+    [λ.AnyVal]
 );
