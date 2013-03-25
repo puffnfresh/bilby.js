@@ -46,27 +46,27 @@ exports.mapTest = function(test) {
     test.done();
 };
 
-exports.bindTest = function(test) {
+exports.flatMapTest = function(test) {
     test.equal(
-        λ.right(1).bind(function(x) {
+        λ.right(1).flatMap(function(x) {
             return λ.right(x + 1);
-        }).bind(function(x) {
+        }).flatMap(function(x) {
             return λ.right(x + 1);
         }).fold(λ.badLeft, λ.identity),
         3
     );
     test.equal(
-        λ.right(1).bind(function(x) {
+        λ.right(1).flatMap(function(x) {
             return λ.left(x + 1);
-        }).bind(function(x) {
+        }).flatMap(function(x) {
             return λ.right(x + 1);
         }).fold(λ.identity, λ.badRight),
         2
     );
     test.equal(
-        λ.left(1).bind(function(x) {
+        λ.left(1).flatMap(function(x) {
             return λ.right(x + 1);
-        }).bind(function(x) {
+        }).flatMap(function(x) {
             return λ.right(x + 1);
         }).fold(λ.identity, λ.badRight),
         1
@@ -74,20 +74,20 @@ exports.bindTest = function(test) {
     test.done();
 };
 
-exports.applyTest = function(test) {
+exports.apTest = function(test) {
     function f(x) {
         return x + 1;
     }
     test.equal(
-        λ.right(f).apply(λ.right(1)).fold(λ.badLeft, λ.identity),
+        λ.right(f).ap(λ.right(1)).fold(λ.badLeft, λ.identity),
         2
     );
     test.equal(
-        λ.right(f).apply(λ.left(1)).fold(λ.identity, λ.badRight),
+        λ.right(f).ap(λ.left(1)).fold(λ.identity, λ.badRight),
         1
     );
     test.equal(
-        λ.left(f).apply(λ.right(1)).fold(λ.identity, λ.badRight),
+        λ.left(f).ap(λ.right(1)).fold(λ.identity, λ.badRight),
         f
     );
     test.done();
@@ -95,19 +95,19 @@ exports.applyTest = function(test) {
 
 exports.appendTest = function(test) {
     test.equal(
-        λ.right(1).append(λ.right(2), λ['+']).fold(λ.badLeft, λ.identity),
+        λ.right(1).append(λ.right(2), λ.append).fold(λ.badLeft, λ.identity),
         3
     );
     test.equal(
-        λ.right(1).append(λ.left(2), λ['+']).fold(λ.identity, λ.badRight),
+        λ.right(1).append(λ.left(2), λ.append).fold(λ.identity, λ.badRight),
         2
     );
     test.equal(
-        λ.left(1).append(λ.right(2), λ['+']).fold(λ.identity, λ.badRight),
+        λ.left(1).append(λ.right(2), λ.append).fold(λ.identity, λ.badRight),
         1
     );
     test.equal(
-        λ.left(1).append(λ.left(2), λ['+']).fold(λ.identity, λ.badRight),
+        λ.left(1).append(λ.left(2), λ.append).fold(λ.identity, λ.badRight),
         3
     );
     test.done();

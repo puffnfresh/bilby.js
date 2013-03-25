@@ -25,7 +25,7 @@
 **/
 
 function generateInputs(env, args, size) {
-    return env['<'](args, function(arg) {
+    return env.map(args, function(arg) {
         return env.arb(arg, size);
     });
 }
@@ -45,7 +45,7 @@ function failureReporter(inputs, tries) {
 }
 
 function findSmallest(env, property, inputs) {
-    var shrunken = env['<'](inputs, env.shrink),
+    var shrunken = env.map(inputs, env.shrink),
         smallest = [].concat(inputs),
         args,
         i,

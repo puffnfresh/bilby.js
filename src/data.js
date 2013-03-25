@@ -21,9 +21,9 @@
    * isNone - `true` iff `this` is `none`
    * toLeft(r) - `left(x)` if `some(x)`, `right(r)` if none
    * toRight(l) - `right(x)` if `some(x)`, `left(l)` if none
-   * bind(f) - monadic bind
+   * flatMap(f) - monadic flatMap/bind
    * map(f) - functor map
-   * apply(s) - applicative apply
+   * ap(s) - applicative ap(ply)
    * append(s, plus) - semigroup append
 **/
 
@@ -49,13 +49,13 @@ function some(x) {
         return right(x);
     };
 
-    this.bind = function(f) {
+    this.flatMap = function(f) {
         return f(x);
     };
     this.map = function(f) {
         return some(f(x));
     };
-    this.apply = function(s) {
+    this.ap = function(s) {
         return s.map(x);
     };
     this.append = function(s, plus) {
@@ -87,13 +87,13 @@ var none = {
         return left(l);
     },
 
-    bind: function() {
+    flatMap: function() {
         return this;
     },
     map: function() {
         return this;
     },
-    apply: function() {
+    ap: function() {
         return this;
     },
     append: function() {
@@ -124,9 +124,9 @@ var isOption = bilby.liftA2(or, isInstanceOf(some), strictEquals(none));
    * isRight - `true` iff `this` is `right`
    * toOption() - `none` if `left`, `some` value of `right`
    * toArray() - `[]` if `left`, singleton value if `right`
-   * bind(f) - monadic bind
+   * flatMap(f) - monadic flatMap/bind
    * map(f) - functor map
-   * apply(s) - applicative apply
+   * ap(s) - applicative ap(ply)
    * append(s, plus) - semigroup append
 **/
 
@@ -152,13 +152,13 @@ function left(x) {
         return [];
     };
 
-    this.bind = function() {
+    this.flatMap = function() {
         return this;
     };
     this.map = function() {
         return this;
     };
-    this.apply = function(e) {
+    this.ap = function(e) {
         return this;
     };
     this.append = function(l, plus) {
@@ -193,13 +193,13 @@ function right(x) {
         return [x];
     };
 
-    this.bind = function(f) {
+    this.flatMap = function(f) {
         return f(x);
     };
     this.map = function(f) {
         return right(f(x));
     };
-    this.apply = function(e) {
+    this.ap = function(e) {
         return e.map(x);
     };
     this.append = function(r, plus) {
@@ -226,31 +226,31 @@ bilby = bilby
     .method('fold', isOption, function(a, b, c) {
         return a.fold(b, c);
     })
-    .method('>=', isOption, function(a, b) {
-        return a.bind(b);
+    .method('flatMap', isOption, function(a, b) {
+        return a.flatMap(b);
     })
-    .method('<', isOption, function(a, b) {
+    .method('map', isOption, function(a, b) {
         return a.map(b);
     })
-    .method('*', isOption, function(a, b) {
-        return a.apply(b);
+    .method('ap', isOption, function(a, b) {
+        return a.ap(b);
     })
-    .method('+', isOption, function(a, b) {
-        return a.append(b, this['+']);
+    .method('append', isOption, function(a, b) {
+        return a.append(b, this.append);
     })
 
     .property('left', left)
     .property('right', right)
     .property('isEither', isEither)
-    .method('>=', isEither, function(a, b) {
-        return a.bind(b);
+    .method('flatMap', isEither, function(a, b) {
+        return a.flatMap(b);
     })
-    .method('<', isEither, function(a, b) {
+    .method('map', isEither, function(a, b) {
         return a.map(b);
     })
-    .method('*', isEither, function(a, b) {
-        return a.apply(b);
+    .method('ap', isEither, function(a, b) {
+        return a.ap(b);
     })
-    .method('+', isEither, function(a, b) {
-        return a.append(b, this['+']);
+    .method('append', isEither, function(a, b) {
+        return a.append(b, this.append);
     });

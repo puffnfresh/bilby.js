@@ -3,7 +3,7 @@
 
    Adds operator overloading for functional syntax:
 
-     * `>=` - monads:
+     * `>=` - monad flatMap/bind:
 
            bilby.Do()(
                bilby.some(1) >= function(x) {
@@ -11,7 +11,7 @@
                }
            ).getOrElse(0) == 3;
 
-     * `>>` - kleislis:
+     * `>>` - kleisli:
 
            bilby.Do()(
                function(x) {
@@ -21,19 +21,19 @@
                }
            )(1).getOrElse(0) == 3;
 
-     * `<` - functors:
+     * `<` - functor map:
 
            bilby.Do()(
                bilby.some(1) < add(2)
            ).getOrElse(0) == 3;
 
-     * `*` - applicatives:
+     * `*` - applicative ap(ply):
 
            bilby.Do()(
                bilby.some(add) * bilby.some(1) * bilby.some(2)
            ).getOrElse(0) == 3;
 
-     * `+` - semigroups:
+     * `+` - semigroup append:
 
            bilby.Do()(
                bilby.some(1) + bilby.some(2)
@@ -49,20 +49,20 @@ var doQueue;
    Creates a new syntax scope. The `a` expression is allowed multiple
    usages of a single operator per `Do` call:
 
-   * `>=`
-   * `>>`
-   * `<`
-   * `*`
-   * `+`
+   * `>=` - flatMap
+   * `>>` - kleisli
+   * `<` - map
+   * `*` - ap
+   * `+` - append
 
-   The string name of the operator will be called on the bilby
-   environment with the operands, for example:
+   The associated name will be called on the bilby environment with
+   the operands. For example:
 
        bilby.Do()(bilby.some(1) + bilby.some(2))
 
-   Will desugar into:
+   Desugars into:
 
-       bilby['+'](bilby.some(1), bilby.some(2))
+       bilby.append(bilby.some(1), bilby.some(2))
 **/
 function Do() {
     if(arguments.length)
@@ -79,11 +79,11 @@ function Do() {
             return n;
         }
 
-        if(n === true) op = '>=';
-        if(n === false) op = '<';
-        if(n === 0) op = '>>';
-        if(n === 1) op = '*';
-        if(n === doQueue.length) op = '+';
+        if(n === true) op = 'flatMap'; // >=
+        if(n === false) op = 'map'; // <
+        if(n === 0) op = 'kleisli'; // >>
+        if(n === 1) op = 'ap'; // *
+        if(n === doQueue.length) op = 'append'; // +
 
         if(!op) {
             doQueue = oldDoQueue;

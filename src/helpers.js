@@ -446,7 +446,7 @@ var strictEquals = curry(function(a, b) {
    `a` and `b` as parameters.
 **/
 function liftA2(f, a, b) {
-    return this['*'](this['<'](a, f), b);
+    return this.ap(this.map(a, f), b);
 }
 
 /**
@@ -471,8 +471,8 @@ function sequence(m, a) {
     if(!a.length)
         return env.pure(m, []);
 
-    return env['>='](a[0], function(x) {
-        return env['>='](env.sequence(m, a.slice(1)), function(y) {
+    return env.flatMap(a[0], function(x) {
+        return env.flatMap(env.sequence(m, a.slice(1)), function(y) {
             return env.pure(m, [x].concat(y));
         });
     });

@@ -84,7 +84,7 @@ function objectLens(k) {
 bilby = bilby
     .property('store', store)
     .property('isStore', isStore)
-    .method('<', isStore, function(a, b) {
+    .method('map', isStore, function(a, b) {
         return a.map(b);
     })
 

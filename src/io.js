@@ -10,7 +10,7 @@
    Pure wrapper around a side-effecting `f` function.
 
    * perform() - action to be called a single time per program
-   * bind(f) - monadic bind
+   * flatMap(f) - monadic flatMap/bind
 **/
 function io(f) {
     if(!(this instanceof io))
@@ -20,7 +20,7 @@ function io(f) {
         return f();
     };
 
-    this.bind = function(g) {
+    this.flatMap = function(g) {
         return io(function() {
             return g(f()).perform();
         });
@@ -43,6 +43,6 @@ bilby = bilby
             return a;
         });
     })
-    .method('>=', isIO, function(a, b) {
-        return a.bind(b);
+    .method('flatMap', isIO, function(a, b) {
+        return a.flatMap(b);
     });

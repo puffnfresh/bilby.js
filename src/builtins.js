@@ -1,18 +1,18 @@
 bilby = bilby
-    .method('<', isFunction, function(a, b) {
+    .method('map', isFunction, function(a, b) {
         return compose(b, a);
     })
-    .method('*', isFunction, function(a, b) {
+    .method('ap', isFunction, function(a, b) {
         return function(x) {
             return a(x)(b(x));
         };
     });
 
 bilby = bilby
-    .method('>>', isFunction, function(a, b) {
+    .method('kleisli', isFunction, function(a, b) {
         var env = this;
         return function(x) {
-            return env['>='](a(x), b);
+            return env.flatMap(a(x), b);
         };
     })
 
@@ -34,7 +34,7 @@ bilby = bilby
         return b;
     })
 
-    .method('>=', isArray, function(a, b) {
+    .method('flatMap', isArray, function(a, b) {
         var accum = [],
             i;
 
@@ -44,7 +44,7 @@ bilby = bilby
 
         return accum;
     })
-    .method('<', isArray, function(a, b) {
+    .method('map', isArray, function(a, b) {
         var accum = [],
             i;
 
@@ -54,7 +54,7 @@ bilby = bilby
 
         return accum;
     })
-    .method('*', isArray, function(a, b) {
+    .method('ap', isArray, function(a, b) {
         var accum = [],
             i,
             j;
@@ -67,14 +67,14 @@ bilby = bilby
 
         return accum;
     })
-    .method('+', isArray, function(a, b) {
+    .method('append', isArray, function(a, b) {
         return a.concat(b);
     })
     .method('pure', strictEquals(Array), function(m, a) {
         return [a];
     })
 
-    .method('+', bilby.liftA2(or, isNumber, isString), function(a, b) {
+    .method('append', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a + b;
     })
 

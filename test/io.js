@@ -7,9 +7,9 @@ exports.ioIdentity = λ.check(
     [Number]
 );
 
-exports.ioBind = λ.check(
+exports.ioFlatMap = λ.check(
     function(a) {
-        return λ.io(λ.constant(a)).bind(function(b) {
+        return λ.io(λ.constant(a)).flatMap(function(b) {
             return λ.io(λ.constant(a == b));
         }).perform();
     },
