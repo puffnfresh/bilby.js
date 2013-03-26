@@ -15,6 +15,9 @@ module.exports = function(grunt) {
         emu: {
             'README.md': 'bilby.js'
         },
+        pandoc: {
+            'docs.htm': 'README.md'
+        },
         watch: {
             files: ['<config:lint.src>', '<config:test.src>'],
             tasks: 'rigger lint test'
@@ -40,6 +43,16 @@ module.exports = function(grunt) {
             source = fs.readFileSync(this.data, 'utf8');
 
         fs.writeFileSync(this.target, emu.getComments(source));
+    });
+
+    grunt.registerMultiTask('pandoc', 'Website generation by pandoc.', function() {
+        var spawn = require('child_process').spawn,
+            pandoc = spawn('pandoc', ['-c', 'http://kevinburke.bitbucket.org/markdowncss/markdown.css', '-s', '-t', 'html5', '--toc', '-o', this.target, this.data]),
+            done = this.async();
+
+        pandoc.on('close', function() {
+            done(true);
+        });
     });
 
     grunt.registerTask('default', 'lint rigger test emu min');
