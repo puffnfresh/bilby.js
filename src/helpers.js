@@ -35,7 +35,7 @@ function functionLength(f) {
        bilby.bind(bilby.add)(null, 10)(32) == 42
 **/
 function bind(f) {
-    return function(o) {
+    function curriedBind(o) {
         var args = [].slice.call(arguments, 1),
             g;
 
@@ -51,7 +51,10 @@ function bind(f) {
         g._length = Math.max(functionLength(f) - args.length, 0);
 
         return g;
-    };
+    }
+    // Manual currying since `curry` relies in bind.
+    if(arguments.length > 1) return curriedBind.apply(this, [].slice.call(arguments, 1));
+    return curriedBind;
 }
 
 /**
