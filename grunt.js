@@ -12,6 +12,9 @@ module.exports = function(grunt) {
         min: {
             'bilby-min.js': 'bilby.js'
         },
+        emu: {
+            'README.md': 'bilby.js'
+        },
         watch: {
             files: ['<config:lint.src>', '<config:test.src>'],
             tasks: 'rigger lint test'
@@ -31,5 +34,13 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask('default', 'lint rigger test min');
+    grunt.registerMultiTask('emu', 'Documentation extraction by emu.', function() {
+        var emu = require('emu'),
+            fs = require('fs'),
+            source = fs.readFileSync(this.data, 'utf8');
+
+        fs.writeFileSync(this.target, emu.getComments(source));
+    });
+
+    grunt.registerTask('default', 'lint rigger test emu min');
 };
