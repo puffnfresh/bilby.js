@@ -147,7 +147,7 @@ This means that bilby's methods can be extended:
 The helpers module is a collection of functions used often inside
 of bilby.js or are generally useful for programs.
 
-## functionLength(f)
+## functionName(f)
     
 Returns the name of function `f`.
 

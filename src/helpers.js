@@ -6,7 +6,7 @@
 **/
 
 /**
-    ## functionLength(f)
+    ## functionName(f)
 
     Returns the name of function `f`.
 **/
