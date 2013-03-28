@@ -4,8 +4,10 @@
   "author": "Brian McKenna <brian@brianmckenna.org> (http://brianmckenna.org/)",
   "homepage": "http://bilby.brianmckenna.org/",
   "license": "MIT",
-  "repository": {"type": "git", "url": "git://github.com/pufuwozu/bilby.js.git"},
-
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pufuwozu/bilby.js.git"
+  },
   "scripts": {
     "prepublish": "./node_modules/grunt/bin/grunt",
     "test": "./node_modules/grunt/bin/grunt lint rigger test"
@@ -15,7 +17,6 @@
     "rigger": "0.3.19",
     "emu": "0.0.2"
   },
-
   "main": "bilby.js",
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
