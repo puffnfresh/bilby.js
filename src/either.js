@@ -24,32 +24,32 @@
    Constructor to represent the left case.
 **/
 function left(x) {
-    if(!(this instanceof left)) return new left(x);
-    this.fold = function(a, b) {
+    var self = getInstance(this, left);
+    self.fold = function(a, b) {
         return a(x);
     };
-    this.swap = function() {
+    self.swap = function() {
         return right(x);
     };
-    this.isLeft = true;
-    this.isRight = false;
-    this.toOption = function() {
+    self.isLeft = true;
+    self.isRight = false;
+    self.toOption = function() {
         return none;
     };
-    this.toArray = function() {
+    self.toArray = function() {
         return [];
     };
 
-    this.flatMap = function() {
-        return this;
+    self.flatMap = function() {
+        return self;
     };
-    this.map = function() {
-        return this;
+    self.map = function() {
+        return self;
     };
-    this.ap = function(e) {
-        return this;
+    self.ap = function(e) {
+        return self;
     };
-    this.append = function(l, plus) {
+    self.append = function(l, plus) {
         var t = this;
         return l.fold(function(y) {
             return left(plus(x, y));
@@ -57,6 +57,7 @@ function left(x) {
             return t;
         });
     };
+    return self;
 }
 
 /**
@@ -65,38 +66,39 @@ function left(x) {
    Constructor to represent the (biased) right case.
 **/
 function right(x) {
-    if(!(this instanceof right)) return new right(x);
-    this.fold = function(a, b) {
+    var self = getInstance(this, right);
+    self.fold = function(a, b) {
         return b(x);
     };
-    this.swap = function() {
+    self.swap = function() {
         return left(x);
     };
-    this.isLeft = false;
-    this.isRight = true;
-    this.toOption = function() {
+    self.isLeft = false;
+    self.isRight = true;
+    self.toOption = function() {
         return some(x);
     };
-    this.toArray = function() {
+    self.toArray = function() {
         return [x];
     };
 
-    this.flatMap = function(f) {
+    self.flatMap = function(f) {
         return f(x);
     };
-    this.map = function(f) {
+    self.map = function(f) {
         return right(f(x));
     };
-    this.ap = function(e) {
+    self.ap = function(e) {
         return e.map(x);
     };
-    this.append = function(r, plus) {
+    self.append = function(r, plus) {
         return r.fold(function(x) {
             return left(x);
         }, function(y) {
             return right(plus(x, y));
         });
     };
+    return self;
 }
 
 /**

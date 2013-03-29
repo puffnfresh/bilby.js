@@ -150,11 +150,22 @@ function compose(f, g) {
    Partial polyfill for Object.create - creates a new instance of the
    given prototype.
 **/
-
 function create(proto) {
     function Ctor() {}
     Ctor.prototype = proto;
     return new Ctor();
+}
+
+/**
+   ## getInstance(self, constructor)
+
+   Always returns an instance of constructor.
+
+   Returns self if it is an instanceof constructor, otherwise
+   constructs an object with the correct prototype.
+**/
+function getInstance(self, constructor) {
+    return self instanceof constructor ? self : create(constructor.prototype);
 }
 
 /**
@@ -169,18 +180,15 @@ function create(proto) {
 **/
 function tagged(name, fields) {
     function wrapped() {
-        var instance, i;
-        if(!(this instanceof wrapped)) {
-            instance = create(wrapped.prototype);
-            wrapped.apply(instance, arguments);
-            return instance;
-        }
+        var self = getInstance(this, wrapped),
+            i;
         if(arguments.length != fields.length) {
             throw new TypeError("Expected " + fields.length + " arguments, got " + arguments.length);
         }
         for(i = 0; i < fields.length; i++) {
-            this[fields[i]] = arguments[i];
+            self[fields[i]] = arguments[i];
         }
+        return self;
     }
     wrapped._name = name;
     wrapped._length = fields.length;
@@ -375,10 +383,9 @@ var Char = {};
        arrayOf(Number)
 **/
 function arrayOf(type) {
-    if(!(this instanceof arrayOf))
-        return new arrayOf(type);
-
-    this.type = type;
+    var self = getInstance(this, arrayOf);
+    self.type = type;
+    return self;
 }
 /**
    ## isArrayOf(a)
@@ -398,10 +405,9 @@ var isArrayOf = isInstanceOf(arrayOf);
        })
 **/
 function objectLike(props) {
-    if(!(this instanceof objectLike))
-        return new objectLike(props);
-
-    this.props = props;
+    var self = getInstance(this, objectLike);
+    self.props = props;
+    return self;
 }
 /**
    ## isObjectLike(a)

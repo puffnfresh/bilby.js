@@ -37,11 +37,10 @@ function generateInputs(env, args, size) {
    * tries - number of times inputs were tested before failure
 **/
 function failureReporter(inputs, tries) {
-    if(!(this instanceof failureReporter))
-        return new failureReporter(inputs, tries);
-
-    this.inputs = inputs;
-    this.tries = tries;
+    var self = getInstance(this, failureReporter);
+    self.inputs = inputs;
+    self.tries = tries;
+    return self;
 }
 
 function findSmallest(env, property, inputs) {

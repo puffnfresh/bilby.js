@@ -112,15 +112,15 @@ function makeMethod(registrations) {
    * envAppend(e) - combines two environemts, biased to `e`
 **/
 function environment(methods, properties) {
-    var i;
-
-    if(!(this instanceof environment) || (typeof this.method != 'undefined' && typeof this.property != 'undefined'))
-        return new environment(methods, properties);
+    // Need to check if this.method and this.property are set incase
+    // we're calling bilby.environment()
+    var self = this instanceof environment && !this.method && !this.property ? this : create(environment.prototype),
+        i;
 
     methods = methods || {};
     properties = properties || {};
 
-    this.method = curry(function(name, predicate, f) {
+    self.method = curry(function(name, predicate, f) {
         var newMethods = extend(methods, singleton(name, (methods[name] || []).concat({
             predicate: predicate,
             f: f
@@ -128,12 +128,12 @@ function environment(methods, properties) {
         return environment(newMethods, properties);
     });
 
-    this.property = curry(function(name, value) {
+    self.property = curry(function(name, value) {
         var newProperties = extend(properties, singleton(name, value));
         return environment(methods, newProperties);
     });
 
-    this.envConcat = function(extraMethods, extraProperties) {
+    self.envConcat = function(extraMethods, extraProperties) {
         var newMethods = {},
             newProperties = {},
             i;
@@ -152,17 +152,19 @@ function environment(methods, properties) {
         );
     };
 
-    this.envAppend = function(e) {
+    self.envAppend = function(e) {
         return e.envConcat(methods, properties);
     };
 
     for(i in methods) {
-        if(this[i]) throw new Error("Method " + i + " already in environment.");
-        this[i] = makeMethod(methods[i]);
+        if(self[i]) throw new Error("Method " + i + " already in environment.");
+        self[i] = makeMethod(methods[i]);
     }
 
     for(i in properties) {
-        if(this[i]) throw new Error("Property " + i + " already in environment.");
-        this[i] = properties[i];
+        if(self[i]) throw new Error("Property " + i + " already in environment.");
+        self[i] = properties[i];
     }
+
+    return self;
 }

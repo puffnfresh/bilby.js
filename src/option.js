@@ -25,37 +25,38 @@
    Constructor to represent the existance of a value, `x`.
 **/
 function some(x) {
-    if(!(this instanceof some)) return new some(x);
-    this.fold = function(a) {
+    var self = getInstance(this, some);
+    self.fold = function(a) {
         return a(x);
     };
-    this.getOrElse = function() {
+    self.getOrElse = function() {
         return x;
     };
-    this.isSome = true;
-    this.isNone = false;
-    this.toLeft = function() {
+    self.isSome = true;
+    self.isNone = false;
+    self.toLeft = function() {
         return left(x);
     };
-    this.toRight = function() {
+    self.toRight = function() {
         return right(x);
     };
 
-    this.flatMap = function(f) {
+    self.flatMap = function(f) {
         return f(x);
     };
-    this.map = function(f) {
+    self.map = function(f) {
         return some(f(x));
     };
-    this.ap = function(s) {
+    self.ap = function(s) {
         return s.map(x);
     };
-    this.append = function(s, plus) {
+    self.append = function(s, plus) {
         return s.map(function(y) {
             return plus(x, y);
         });
     };
-    Do.setValueOf(this);
+    Do.setValueOf(self);
+    return self;
 }
 
 /**

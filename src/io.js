@@ -13,19 +13,20 @@
    * flatMap(f) - monadic flatMap/bind
 **/
 function io(f) {
-    if(!(this instanceof io))
-        return new io(f);
+    var self = this instanceof io ? this : create(io.prototype);
 
-    this.perform = function() {
+    self.perform = function() {
         return f();
     };
 
-    this.flatMap = function(g) {
+    self.flatMap = function(g) {
         return io(function() {
             return g(f()).perform();
         });
     };
-    Do.setValueOf(this);
+    Do.setValueOf(self);
+
+    return self;
 }
 
 /**

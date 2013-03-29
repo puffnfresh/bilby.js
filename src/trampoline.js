@@ -27,10 +27,10 @@
    Result constructor for a continuation.
 **/
 function done(result) {
-    if(!(this instanceof done)) return new done(result);
-
-    this.isDone = true;
-    this.result = result;
+    var self = getInstance(this, done);
+    self.isDone = true;
+    self.result = result;
+    return self;
 }
 
 /**
@@ -40,10 +40,10 @@ function done(result) {
    in a `done` or a `cont`.
 **/
 function cont(thunk) {
-    if(!(this instanceof cont)) return new cont(thunk);
-
-    this.isDone = false;
-    this.thunk = thunk;
+    var self = getInstance(this, cont);
+    self.isDone = false;
+    self.thunk = thunk;
+    return self;
 }
 
 

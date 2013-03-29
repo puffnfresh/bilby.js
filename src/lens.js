@@ -11,15 +11,13 @@
    other stores.
 **/
 function store(setter, getter) {
-    if(!(this instanceof store))
-        return new store(setter, getter);
-
-    this.setter = setter;
-    this.getter = getter;
-
-    this.map = function(f) {
+    var self = getInstance(this, store);
+    self.setter = setter;
+    self.getter = getter;
+    self.map = function(f) {
         return store(compose(f, setter), getter);
     };
+    return self;
 }
 /**
    ## isStore(a)
@@ -38,14 +36,11 @@ var isStore = isInstanceOf(store);
    * compose(l) - lens composition
 **/
 function lens(f) {
-    if(!(this instanceof lens))
-        return new lens(f);
-
-    this.run = function(x) {
+    var self = getInstance(this, lens);
+    self.run = function(x) {
         return f(x);
     };
-
-    this.compose = function(l) {
+    self.compose = function(l) {
         var t = this;
         return lens(function(x) {
             var ls = l.run(x),
@@ -57,6 +52,7 @@ function lens(f) {
             );
         });
     };
+    return self;
 }
 /**
    ## isLens(a)
