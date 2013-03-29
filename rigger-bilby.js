@@ -76,7 +76,9 @@
 
     //= src/builtins.js
 
-    //= src/data.js
+    //= src/option.js
+
+    //= src/either.js
 
     //= src/validation.js
 
