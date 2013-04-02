@@ -47,7 +47,17 @@ module.exports = function(grunt) {
 
     grunt.registerMultiTask('pandoc', 'Website generation by pandoc.', function() {
         var spawn = require('child_process').spawn,
-            pandoc = spawn('pandoc', ['-c', 'http://kevinburke.bitbucket.org/markdowncss/markdown.css', '-s', '-t', 'html5', '--toc', '-o', this.target, this.data]),
+            pandoc = spawn(
+                'pandoc',
+                [
+                    '-c', 'http://kevinburke.bitbucket.org/markdowncss/markdown.css',
+                    '--variable', 'header-includes:<script src="bilby-min.js"></script><script>λ = _ = $ = bilby;</script>',
+                    '-s',
+                    '-t', 'html5',
+                    '--toc',
+                    '-o', this.target,
+                    this.data
+                ]),
             done = this.async();
 
         pandoc.on('close', function() {
