@@ -6,7 +6,15 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <script src="../bilby-min.js"></script>
     <script>
-      window.addEventListener('load', function() {
+      function event(element, name, callback) {
+          if(element.addEventListener) {
+              element.addEventListener(name, callback, false);
+          } else {
+              element.attachEvent('on' + name, callback);
+          }
+      }
+
+      event(window, 'load', function() {
           var _ = bilby,
               Person = _.tagged('Person', ['name', 'age', 'postcode']),
               f = _.curry(Person);
@@ -67,13 +75,13 @@
           }
           updateOutput();
 
-          document.getElementById('name').addEventListener('keyup', updateOutput, false);
-          document.getElementById('name').addEventListener('change', updateOutput, false);
-          document.getElementById('age').addEventListener('keyup', updateOutput, false);
-          document.getElementById('age').addEventListener('change', updateOutput, false);
-          document.getElementById('postcode').addEventListener('keyup', updateOutput, false);
-          document.getElementById('postcode').addEventListener('change', updateOutput, false);
-      }, false);
+          event(document.getElementById('name'), 'keyup', updateOutput);
+          event(document.getElementById('name'), 'change', updateOutput);
+          event(document.getElementById('age'), 'keyup', updateOutput);
+          event(document.getElementById('age'), 'change', updateOutput);
+          event(document.getElementById('postcode'), 'keyup', updateOutput);
+          event(document.getElementById('postcode'), 'change', updateOutput);
+      });
     </script>
   </head>
   <body>
