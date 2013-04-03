@@ -94,7 +94,7 @@ Do.setValueOf(Validation.failure.prototype);
 
    Returns `true` iff `a` is a `success` or a `failure`.
 **/
-var isValidation = bilby.liftA2(or, isInstanceOf(Validation.success), isInstanceOf(Validation.failure));
+var isValidation = isInstanceOf(Validation);
 
 bilby = bilby
     .property('success', Validation.success)

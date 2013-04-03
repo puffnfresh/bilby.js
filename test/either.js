@@ -1,4 +1,4 @@
-var λ = require('../bilby');
+var λ = require('./lib/test');
 
 exports.isTest = function(test) {
     test.ok(λ.left(0).isLeft);
@@ -103,12 +103,12 @@ exports.appendTest = function(test) {
         2
     );
     test.equal(
-        λ.left(1).append(λ.right(2), λ.append).fold(λ.identity, λ.badRight),
-        1
+        λ.left(1).append(λ.right(2), λ.append).fold(λ.badLeft, λ.identity),
+        2
     );
     test.equal(
         λ.left(1).append(λ.left(2), λ.append).fold(λ.identity, λ.badRight),
-        3
+        1
     );
     test.done();
 };

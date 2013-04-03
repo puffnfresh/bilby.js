@@ -19,92 +19,116 @@
    * append(s, plus) - semigroup append
 **/
 
+var Option = taggedSum({
+    some: ['x'],
+    none: []
+});
+
+Do.setValueOf(Option.prototype);
+
+Option.prototype.fold = function(f, g) {
+    return this.cata({
+        some: f,
+        none: g
+    });
+};
+Option.prototype.getOrElse = function(x) {
+    return this.fold(
+        identity,
+        function() {
+            return x;
+        }
+    );
+};
+Option.prototype.toLeft = function(o) {
+    return this.fold(
+        function(x) {
+            return Either.left(x);
+        },
+        function() {
+            return Either.right(o);
+        }
+    );
+};
+Option.prototype.toRight = function(o) {
+    return this.fold(
+        function(x) {
+            return Either.right(x);
+        },
+        function() {
+            return Either.left(o);
+        }
+    );
+};
+Option.prototype.flatMap = function(f) {
+    return this.fold(
+        function(x) {
+            return f(x);
+        },
+        function() {
+            return this;
+        }
+    );
+};
+Option.prototype.map = function(f) {
+    return this.fold(
+        function(x) {
+            return Option.some(f(x));
+        },
+        function() {
+            return this;
+        }
+    );
+};
+Option.prototype.ap = function(s) {
+    return this.fold(
+        function(x) {
+            return s.map(x);
+        },
+        function() {
+            return this;
+        }
+    );
+};
+Option.prototype.append = function(s, plus) {
+    return this.fold(
+        function(x) {
+            return s.map(function(y) {
+                return plus(x, y);
+            });
+        },
+        function() {
+            return this;
+        }
+    );
+};
+
 /**
    ## some(x)
 
    Constructor to represent the existance of a value, `x`.
 **/
-function some(x) {
-    var self = getInstance(this, some);
-    self.fold = function(a) {
-        return a(x);
-    };
-    self.getOrElse = function() {
-        return x;
-    };
-    self.isSome = true;
-    self.isNone = false;
-    self.toLeft = function() {
-        return left(x);
-    };
-    self.toRight = function() {
-        return right(x);
-    };
-
-    self.flatMap = function(f) {
-        return f(x);
-    };
-    self.map = function(f) {
-        return some(f(x));
-    };
-    self.ap = function(s) {
-        return s.map(x);
-    };
-    self.append = function(s, plus) {
-        return s.map(function(y) {
-            return plus(x, y);
-        });
-    };
-    Do.setValueOf(self);
-    return self;
-}
+Option.some.prototype.isSome = true;
+Option.some.prototype.isNone = false;
 
 /**
    ## none
 
    Represents the absence of a value.
 **/
-var none = {
-    fold: function(a, b) {
-        return b;
-    },
-    getOrElse: function(x) {
-        return x;
-    },
-    isSome: false,
-    isNone: true,
-    toLeft: function(r) {
-        return right(r);
-    },
-    toRight: function(l) {
-        return left(l);
-    },
-
-    flatMap: function() {
-        return this;
-    },
-    map: function() {
-        return this;
-    },
-    ap: function() {
-        return this;
-    },
-    append: function() {
-        return this;
-    }
-};
-Do.setValueOf(none);
+Option.none.isSome = false;
+Option.none.isNone = true;
 
 /**
    ## isOption(a)
 
    Returns `true` iff `a` is a `some` or `none`.
 **/
-var isOption = bilby.liftA2(or, isInstanceOf(some), strictEquals(none));
+var isOption = isInstanceOf(Option);
 
 bilby = bilby
-    .property('some', some)
-    .property('none', none)
+    .property('some', Option.some)
+    .property('none', Option.none)
     .property('isOption', isOption)
     .method('fold', isOption, function(a, b, c) {
         return a.fold(b, c);

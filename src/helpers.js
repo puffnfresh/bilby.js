@@ -217,30 +217,34 @@ function tagged(name, fields) {
         listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
 **/
 function taggedSum(constructors) {
-    var defined = 0, definitions = {}, key;
+    var key, proto;
 
-    function makeCata(fields, field) {
+    function definitions() {}
+
+    function makeCata(key) {
         return function(dispatches) {
-            var args = [], length = 0, key, i;
-            for(key in constructors) {
-                if(dispatches[key]) continue;
-                throw new TypeError("Constructors define " + key + " but not supplied to cata");
-            }
-            for(key in dispatches) {
-                if(constructors[key]) continue;
-                throw new TypeError("Found extra constructor supplied to cata: " + key);
-            }
+            var fields = constructors[key], args = [], i;
+            if(!dispatches[key]) throw new TypeError("Constructors given to cata didn't include: " + key);
             for(i = 0; i < fields.length; i++) {
                 args.push(this[fields[i]]);
             }
-            return dispatches[field].apply(this, args);
+            return dispatches[key].apply(this, args);
         };
     }
 
+    function makeProto(key) {
+        var proto = create(definitions.prototype);
+        proto.cata = makeCata(key);
+        return proto;
+    }
+
     for(key in constructors) {
+        if(!constructors[key].length) {
+            definitions[key] = makeProto(key);
+            continue;
+        }
         definitions[key] = tagged(key, constructors[key]);
-        definitions[key].prototype.cata = makeCata(constructors[key], key);
-        defined++;
+        definitions[key].prototype = makeProto(key);
     }
 
     return definitions;

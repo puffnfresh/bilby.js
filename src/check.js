@@ -86,13 +86,13 @@ function forAll(property, args) {
     for(i = 0; i < this.goal; i++) {
         inputs = generateInputs(this, args, i);
         if(!property.apply(this, inputs))
-            return some(failureReporter(
+            return Option.some(failureReporter(
                 findSmallest(this, property, inputs),
                 i
             ));
     }
 
-    return none;
+    return Option.none;
 }
 
 /**

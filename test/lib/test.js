@@ -8,7 +8,9 @@ var λ = require('../../bilby');
             function(fail) {
                 return "Failed after " + fail.tries + " tries: " + fail.inputs.toString();
             },
-            "OK"
+            function() {
+                return "OK";
+            }
         ));
 
         test.done();

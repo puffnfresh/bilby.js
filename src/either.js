@@ -18,99 +18,120 @@
    * append(s, plus) - semigroup append
 **/
 
+var Either = taggedSum({
+    left: ['x'],
+    right: ['x']
+});
+
+Either.prototype.fold = function(a, b) {
+    return this.cata({
+        left: a,
+        right: b
+    });
+};
+Either.prototype.swap = function() {
+    return this.fold(
+        function(x) {
+            return Either.right(x);
+        },
+        function(x) {
+            return Either.left(x);
+        }
+    );
+};
+Either.prototype.toOption = function() {
+    return this.fold(
+        function() {
+            return Option.none;
+        },
+        function(x) {
+            return Option.some(x);
+        }
+    );
+};
+Either.prototype.toArray = function() {
+    return this.fold(
+        function() {
+            return [];
+        },
+        function(x) {
+            return [x];
+        }
+    );
+};
+Either.prototype.flatMap = function(f) {
+    return this.fold(
+        function() {
+            return this;
+        },
+        function(x) {
+            return f(x);
+        }
+    );
+};
+Either.prototype.map = function(f) {
+    return this.fold(
+        function() {
+            return this;
+        },
+        function(x) {
+            return Either.right(f(x));
+        }
+    );
+};
+Either.prototype.ap = function(e) {
+    return this.fold(
+        function() {
+            return this;
+        },
+        function(x) {
+            return e.map(x);
+        }
+    );
+};
+Either.prototype.append = function(s, plus) {
+    return this.fold(
+        function() {
+            var left = this;
+            return s.fold(
+                constant(left),
+                constant(s)
+            );
+        },
+        function(y) {
+            return s.map(function(x) {
+                return plus(x, y);
+            });
+        }
+    );
+};
+
 /**
    ## left(x)
 
    Constructor to represent the left case.
 **/
-function left(x) {
-    var self = getInstance(this, left);
-    self.fold = function(a, b) {
-        return a(x);
-    };
-    self.swap = function() {
-        return right(x);
-    };
-    self.isLeft = true;
-    self.isRight = false;
-    self.toOption = function() {
-        return none;
-    };
-    self.toArray = function() {
-        return [];
-    };
-
-    self.flatMap = function() {
-        return self;
-    };
-    self.map = function() {
-        return self;
-    };
-    self.ap = function(e) {
-        return self;
-    };
-    self.append = function(l, plus) {
-        var t = this;
-        return l.fold(function(y) {
-            return left(plus(x, y));
-        }, function() {
-            return t;
-        });
-    };
-    return self;
-}
+Either.left.prototype.isLeft = true;
+Either.left.prototype.isRight = false;
 
 /**
    ## right(x)
 
    Constructor to represent the (biased) right case.
 **/
-function right(x) {
-    var self = getInstance(this, right);
-    self.fold = function(a, b) {
-        return b(x);
-    };
-    self.swap = function() {
-        return left(x);
-    };
-    self.isLeft = false;
-    self.isRight = true;
-    self.toOption = function() {
-        return some(x);
-    };
-    self.toArray = function() {
-        return [x];
-    };
-
-    self.flatMap = function(f) {
-        return f(x);
-    };
-    self.map = function(f) {
-        return right(f(x));
-    };
-    self.ap = function(e) {
-        return e.map(x);
-    };
-    self.append = function(r, plus) {
-        return r.fold(function(x) {
-            return left(x);
-        }, function(y) {
-            return right(plus(x, y));
-        });
-    };
-    return self;
-}
+Either.right.prototype.isLeft = false;
+Either.right.prototype.isRight = true;
 
 /**
    ## isEither(a)
 
    Returns `true` iff `a` is a `left` or a `right`.
 **/
-var isEither = bilby.liftA2(or, isInstanceOf(left), isInstanceOf(right));
+var isEither = isInstanceOf(Either);
 
 bilby = bilby
-    .property('left', left)
-    .property('right', right)
+    .property('left', Either.left)
+    .property('right', Either.right)
     .property('isEither', isEither)
     .method('flatMap', isEither, function(a, b) {
         return a.flatMap(b);
