@@ -35,7 +35,7 @@ exports.extend = function(test) {
 };
 
 exports.bind = function(test) {
-    var func = function asdf(greeting){ return greeting + ': ' + this.name };
+    var func = function asdf(greeting){ return greeting + ': ' + this.name; };
     func = _.bind(func, {name : 'moe'}, 'hi');
     test.equal(func(), 'hi: moe');
     test.done();

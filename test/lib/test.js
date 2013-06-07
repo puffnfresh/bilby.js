@@ -1,4 +1,4 @@
-var λ = require('../../bilby');
+var λ = require('../../dist/bilby');
 
 λ = λ
     .property('check', λ.curry(function(property, args, test) {

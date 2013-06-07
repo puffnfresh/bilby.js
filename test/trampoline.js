@@ -1,4 +1,4 @@
-var λ = require('../bilby');
+var λ = require('../dist/bilby');
 
 var count = λ.curry(function(x, n) {
     if(n >= x) return λ.done(n);

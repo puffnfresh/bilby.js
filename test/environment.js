@@ -1,4 +1,4 @@
-var λ = require('../bilby');
+var λ = require('../dist/bilby');
 
 exports.emptyTest = function(test) {
     var env = λ.environment()
