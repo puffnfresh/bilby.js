@@ -24,8 +24,6 @@ var Option = taggedSum({
     none: []
 });
 
-Do.setValueOf(Option.prototype);
-
 Option.prototype.fold = function(f, g) {
     return this.cata({
         some: f,

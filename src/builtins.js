@@ -189,5 +189,3 @@ bilby = bilby
         return accum;
     });
 
-Do.setValueOf(Array.prototype);
-Do.setValueOf(Function.prototype);

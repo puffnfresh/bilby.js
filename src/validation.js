@@ -71,7 +71,6 @@ Validation.success.prototype.map = function(f) {
 Validation.success.prototype.ap = function(v) {
     return v.map(this.value);
 };
-Do.setValueOf(Validation.success.prototype);
 
 Validation.failure.prototype.map = function() {
     return this;
@@ -87,7 +86,6 @@ Validation.failure.prototype.ap = function(b, append) {
         }
     });
 };
-Do.setValueOf(Validation.failure.prototype);
 
 /**
    ## isValidation(a)
