@@ -94,7 +94,7 @@ We can now override the environment with some more implementations:
             }
         );
     
-    env2.negate(100) == -100;
+    env.negate(100) == -100;
     env2.negate(true) == false;
     
 The environments are immutable; references to `env` won't see an
