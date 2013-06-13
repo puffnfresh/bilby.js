@@ -437,7 +437,7 @@ Represents the absence of a value.
 
 ## isOption(a)
     
-Returns `true` iff `a` is a `some` or `none`.
+Returns `true` if `a` is a `some` or `none`.
 
 # Either
     
@@ -629,3 +629,23 @@ property a success:
     var _ = bilby.property('goal', 1000);
     
 Default is `100`.
+
+## isTuple(a)
+    
+Returns `true` if `a` is `Tuple`.
+
+## isTuple2(a)
+    
+Returns `true` if `a` is `Tuple2`.
+
+## isTuple4(a)
+    
+Returns `true` if `a` is `Tuple3`.
+
+## isTuple4(a)
+    
+Returns `true` if `a` is `Tuple4`.
+
+## isTuple5(a)
+    
+Returns `true` if `a` is `Tuple5`.

@@ -105,7 +105,7 @@ function forAll(property, args) {
 
    Default is `100`.
 **/
-var goal = 100;
+var goal = 1;
 
 bilby = bilby
     .property('failureReporter', failureReporter)

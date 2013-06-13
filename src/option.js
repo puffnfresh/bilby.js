@@ -120,7 +120,7 @@ Option.none.isNone = true;
 /**
    ## isOption(a)
 
-   Returns `true` iff `a` is a `some` or `none`.
+   Returns `true` if `a` is a `some` or `none`.
 **/
 var isOption = isInstanceOf(Option);
 
