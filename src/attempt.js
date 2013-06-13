@@ -1,10 +1,10 @@
 /**
-   # Validation
+   # Attempt
 
-       Validation e v = Failure e + Success v
+       Attempt e v = Failure e + Success v
 
-   The Validation data type represents a "success" value or a
-   semigroup of "failure" values. Validation has an applicative
+   The Attempt data type represents a "success" value or a
+   semigroup of "failure" values. Attempt has an applicative
    functor which collects failures' errors or creates a new success
    value.
 
@@ -60,47 +60,47 @@
    implementation in the environment).
 **/
 
-var Validation = taggedSum({
+var Attempt = taggedSum({
     success: ['value'],
     failure: ['errors']
 });
 
-Validation.success.prototype.map = function(f) {
-    return Validation.success(f(this.value));
+Attempt.success.prototype.map = function(f) {
+    return Attempt.success(f(this.value));
 };
-Validation.success.prototype.ap = function(v) {
+Attempt.success.prototype.ap = function(v) {
     return v.map(this.value);
 };
 
-Validation.failure.prototype.map = function() {
+Attempt.failure.prototype.map = function() {
     return this;
 };
-Validation.failure.prototype.ap = function(b, append) {
+Attempt.failure.prototype.ap = function(b, append) {
     var a = this;
     return b.cata({
         success: function(value) {
             return a;
         },
         failure: function(errors) {
-            return Validation.failure(append(a.errors, errors));
+            return Attempt.failure(append(a.errors, errors));
         }
     });
 };
 
 /**
-   ## isValidation(a)
+   ## isAttempt(a)
 
    Returns `true` iff `a` is a `success` or a `failure`.
 **/
-var isValidation = isInstanceOf(Validation);
+var isAttempt = isInstanceOf(Attempt);
 
 bilby = bilby
-    .property('success', Validation.success)
-    .property('failure', Validation.failure)
+    .property('success', Attempt.success)
+    .property('failure', Attempt.failure)
 
-    .method('map', isValidation, function(v, f) {
+    .method('map', isAttempt, function(v, f) {
         return v.map(f);
     })
-    .method('ap', isValidation, function(vf, v) {
+    .method('ap', isAttempt, function(vf, v) {
         return vf.ap(v, this.append);
     });
