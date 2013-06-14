@@ -88,7 +88,7 @@ function forAll(property, args) {
         if(!property.apply(this, inputs))
             return Option.some(failureReporter(
                 findSmallest(this, property, inputs),
-                i
+                i + 1
             ));
     }
 
