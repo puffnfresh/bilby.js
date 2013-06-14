@@ -94,7 +94,7 @@ We can now override the environment with some more implementations:
             }
         );
     
-    env.negate(100) == -100;
+    env2.negate(100) == -100;
     env2.negate(true) == false;
     
 The environments are immutable; references to `env` won't see an
@@ -215,6 +215,13 @@ input argument:
     
 Partial polyfill for Object.create - creates a new instance of the
 given prototype.
+
+## getInstance(self, constructor)
+    
+Always returns an instance of constructor.
+    
+Returns self if it is an instanceof constructor, otherwise
+constructs an object with the correct prototype.
 
 ## tagged(name, fields)
     
@@ -471,13 +478,7 @@ the `Do` block's operator overloading. Uses the object's existing
 tries to default back to the normal behaviour when not in a `Do`
 block.
 
-# Data structures
-    
-Church-encoded versions of common functional data
-structures. Disjunction is enoded by multiple constructors with
-different implementations of common functions.
-
-## Option
+# Option
     
     Option a = Some a + None
     
@@ -496,11 +497,11 @@ absence.
 * ap(s) - applicative ap(ply)
 * append(s, plus) - semigroup append
 
-### some(x)
+## some(x)
     
 Constructor to represent the existance of a value, `x`.
 
-### none
+## none
     
 Represents the absence of a value.
 
@@ -508,7 +509,7 @@ Represents the absence of a value.
     
 Returns `true` iff `a` is a `some` or `none`.
 
-## Either
+# Either
     
     Either a b = Left a + Right b
     
@@ -526,11 +527,11 @@ Represents a tagged disjunction between two sets of values; `a` or
 * ap(s) - applicative ap(ply)
 * append(s, plus) - semigroup append
 
-### left(x)
+## left(x)
     
 Constructor to represent the left case.
 
-### right(x)
+## right(x)
     
 Constructor to represent the (biased) right case.
 
@@ -667,7 +668,7 @@ automaticaly generate lots of inputs:
         function(fail) {
             return "Failed after " + fail.tries + " tries: " + fail.inputs.toString();
         },
-        "All tests passed!",
+        "All tests passed!"
     )
 
 ### failureReporter

@@ -20,7 +20,7 @@
            function(fail) {
                return "Failed after " + fail.tries + " tries: " + fail.inputs.toString();
            },
-           "All tests passed!",
+           "All tests passed!"
        )
 **/
 
