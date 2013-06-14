@@ -13,35 +13,35 @@ Tuple2.prototype.flip = function() {
 
 Tuple2.prototype.append = function(b) {
     return Tuple2(
-        this._1.append(b._1),
-        this._2.append(b._2)
+        bilby.append(this._1, b._1),
+        bilby.append(this._2, b._2)
     );
 };
 
 Tuple3.prototype.append = function(b) {
     return Tuple3(
-        this._1.append(b._1),
-        this._2.append(b._2),
-        this._3.append(b._3)
+        bilby.append(this._1, b._1),
+        bilby.append(this._2, b._2),
+        bilby.append(this._3, b._3)
     );
 };
 
 Tuple4.prototype.append = function(b) {
     return Tuple4(
-        this._1.append(b._1),
-        this._2.append(b._2),
-        this._3.append(b._3),
-        this._4.append(b._4)
+        bilby.append(this._1, b._1),
+        bilby.append(this._2, b._2),
+        bilby.append(this._3, b._3),
+        bilby.append(this._4, b._4)
     );
 };
 
 Tuple5.prototype.append = function(b) {
     return Tuple5(
-        this._1.append(b._1),
-        this._2.append(b._2),
-        this._3.append(b._3),
-        this._4.append(b._4),
-        this._5.append(b._5)
+        bilby.append(this._1, b._1),
+        bilby.append(this._2, b._2),
+        bilby.append(this._3, b._3),
+        bilby.append(this._4, b._4),
+        bilby.append(this._5, b._5)
     );
 };
 
@@ -51,6 +51,7 @@ Tuple5.prototype.append = function(b) {
    Returns `true` if `a` is `Tuple`.
 **/
 var isTuple = curry(function(o) {
+    // TODO (Simon) : Could use lift.
     return isTuple2(o) || isTuple3(o) || isTuple4(o) || isTuple5(o);
 });
 
