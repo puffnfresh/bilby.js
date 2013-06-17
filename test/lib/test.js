@@ -48,7 +48,7 @@ function fill(nrOfItems) {
         test.done();
     }))
     // Possibly rename this if it's useful with other things.
-    .property('checkTaggedAppend', λ.curry(function(type, args, exec, access, test) {
+    .property('checkTaggedConcat', λ.curry(function(type, args, exec, access, test) {
         var length = λ.functionLength(type);
         fill(length).forEach(function (value, index) {
             function property() {

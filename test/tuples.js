@@ -32,44 +32,44 @@ exports.tuple5Test = λ.checkTaggedArgs(
     }
 );
 
-exports.tuple2AppendTest = λ.checkTaggedAppend(
+exports.tuple2AppendTest = λ.checkTaggedConcat(
     λ.Tuple2,
     [String, String],
     function (a, b) {
-        return λ.append(a, b);
+        return λ.concat(a, b);
     },
     function (tuple, index) {
         return tuple['_' + (index + 1)];
     }
 );
 
-exports.tuple3AppendTest = λ.checkTaggedAppend(
+exports.tuple3AppendTest = λ.checkTaggedConcat(
     λ.Tuple3,
     [String, String, String],
     function (a, b) {
-        return λ.append(a, b);
+        return λ.concat(a, b);
     },
     function (tuple, index) {
         return tuple['_' + (index + 1)];
     }
 );
 
-exports.tuple4AppendTest = λ.checkTaggedAppend(
+exports.tuple4AppendTest = λ.checkTaggedConcat(
     λ.Tuple4,
     [String, String, String, String],
     function (a, b) {
-        return λ.append(a, b);
+        return λ.concat(a, b);
     },
     function (tuple, index) {
         return tuple['_' + (index + 1)];
     }
 );
 
-exports.tuple5AppendTest = λ.checkTaggedAppend(
+exports.tuple5AppendTest = λ.checkTaggedConcat(
     λ.Tuple5,
     [String, String, String, String, String],
     function (a, b) {
-        return λ.append(a, b);
+        return λ.concat(a, b);
     },
     function (tuple, index) {
         return tuple['_' + (index + 1)];

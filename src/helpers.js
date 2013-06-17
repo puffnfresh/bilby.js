@@ -92,7 +92,7 @@ function curry(f) {
 
    Flips the order of arguments to `f`:
 
-       var append = bilby.curry(function(a, b) {
+       var concat = bilby.curry(function(a, b) {
                return a + b;
            }),
            prepend = flip(concat);
@@ -298,11 +298,11 @@ function singleton(k, v) {
 /**
    ## extend(a, b)
 
-   Right-biased key-value append of objects `a` and `b`:
+   Right-biased key-value concat of objects `a` and `b`:
 
        bilby.extend({a: 1, b: 2}, {b: true, c: false}) == {a: 1, b: true, c: false}
 **/
-// TODO: Make into an Object semigroup#append
+// TODO: Make into an Object semigroup#concat
 function extend(a, b) {
     var o = {},
         i;

@@ -15,7 +15,7 @@
    * flatMap(f) - monadic flatMap/bind
    * map(f) - functor map
    * ap(s) - applicative ap(ply)
-   * append(s, plus) - semigroup append
+   * concat(s, plus) - semigroup concat
 **/
 
 var Either = taggedSum({
@@ -89,7 +89,7 @@ Either.prototype.ap = function(e) {
         }
     );
 };
-Either.prototype.append = function(s, plus) {
+Either.prototype.concat = function(s, plus) {
     return this.fold(
         function() {
             var left = this;
@@ -142,6 +142,6 @@ bilby = bilby
     .method('ap', isEither, function(a, b) {
         return a.ap(b);
     })
-    .method('append', isEither, function(a, b) {
-        return a.append(b, this.append);
+    .method('concat', isEither, function(a, b) {
+        return a.concat(b, this.concat);
     });

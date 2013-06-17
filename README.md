@@ -186,7 +186,7 @@ when enough arguments are filled:
     
 Flips the order of arguments to `f`:
     
-    var append = bilby.curry(function(a, b) {
+    var concat = bilby.curry(function(a, b) {
             return a + b;
         }),
         prepend = flip(concat);
@@ -273,7 +273,7 @@ mutation:
 
 ## extend(a, b)
     
-Right-biased key-value append of objects `a` and `b`:
+Right-biased key-value concat of objects `a` and `b`:
     
     bilby.extend({a: 1, b: 2}, {b: true, c: false}) == {a: 1, b: true, c: false}
 
@@ -425,7 +425,7 @@ absence.
 * flatMap(f) - monadic flatMap/bind
 * map(f) - functor map
 * ap(s) - applicative ap(ply)
-* append(s, plus) - semigroup append
+* concat(s, plus) - semigroup concat
 
 ## some(x)
     
@@ -455,7 +455,7 @@ Represents a tagged disjunction between two sets of values; `a` or
 * flatMap(f) - monadic flatMap/bind
 * map(f) - functor map
 * ap(s) - applicative ap(ply)
-* append(s, plus) - semigroup append
+* concat(s, plus) - semigroup concat
 
 ## left(x)
     
@@ -516,7 +516,7 @@ If both values are invalid:
     ]);
     
 * map(f) - functor map
-* ap(b, append) - applicative ap(ply)
+* ap(b, concat) - applicative ap(ply)
     
 ## success(value)
     
@@ -526,7 +526,7 @@ Represents a successful `value`.
     
 Represents a failure.
     
-`errors` **must** be a semigroup (i.e. have an `append`
+`errors` **must** be a semigroup (i.e. have an `concat`
 implementation in the environment).
 
 ## isAttempt(a)

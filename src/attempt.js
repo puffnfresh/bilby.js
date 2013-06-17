@@ -46,7 +46,7 @@
        ]);
 
    * map(f) - functor map
-   * ap(b, append) - applicative ap(ply)
+   * ap(b, concat) - applicative ap(ply)
 
    ## success(value)
 
@@ -56,7 +56,7 @@
 
    Represents a failure.
 
-   `errors` **must** be a semigroup (i.e. have an `append`
+   `errors` **must** be a semigroup (i.e. have an `concat`
    implementation in the environment).
 **/
 
@@ -75,14 +75,14 @@ Attempt.success.prototype.ap = function(v) {
 Attempt.failure.prototype.map = function() {
     return this;
 };
-Attempt.failure.prototype.ap = function(b, append) {
+Attempt.failure.prototype.ap = function(b, concat) {
     var a = this;
     return b.cata({
         success: function(value) {
             return a;
         },
         failure: function(errors) {
-            return Attempt.failure(append(a.errors, errors));
+            return Attempt.failure(concat(a.errors, errors));
         }
     });
 };
@@ -102,5 +102,5 @@ bilby = bilby
         return v.map(f);
     })
     .method('ap', isAttempt, function(vf, v) {
-        return vf.ap(v, this.append);
+        return vf.ap(v, this.concat);
     });

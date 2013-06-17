@@ -67,14 +67,14 @@ bilby = bilby
 
         return accum;
     })
-    .method('append', isArray, function(a, b) {
+    .method('concat', isArray, function(a, b) {
         return a.concat(b);
     })
     .method('pure', strictEquals(Array), function(m, a) {
         return [a];
     })
 
-    .method('append', bilby.liftA2(or, isNumber, isString), function(a, b) {
+    .method('concat', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a + b;
     })
 

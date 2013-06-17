@@ -93,21 +93,21 @@ exports.apTest = function(test) {
     test.done();
 };
 
-exports.appendTest = function(test) {
+exports.concatTest = function(test) {
     test.equal(
-        λ.right(1).append(λ.right(2), λ.append).fold(λ.badLeft, λ.identity),
+        λ.right(1).concat(λ.right(2), λ.concat).fold(λ.badLeft, λ.identity),
         3
     );
     test.equal(
-        λ.right(1).append(λ.left(2), λ.append).fold(λ.identity, λ.badRight),
+        λ.right(1).concat(λ.left(2), λ.concat).fold(λ.identity, λ.badRight),
         2
     );
     test.equal(
-        λ.left(1).append(λ.right(2), λ.append).fold(λ.badLeft, λ.identity),
+        λ.left(1).concat(λ.right(2), λ.concat).fold(λ.badLeft, λ.identity),
         2
     );
     test.equal(
-        λ.left(1).append(λ.left(2), λ.append).fold(λ.identity, λ.badRight),
+        λ.left(1).concat(λ.left(2), λ.concat).fold(λ.identity, λ.badRight),
         1
     );
     test.done();
