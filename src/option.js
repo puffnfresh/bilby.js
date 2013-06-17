@@ -102,6 +102,15 @@ Option.prototype.concat = function(s, plus) {
 };
 
 /**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option` with value of `x`.
+**/
+Option.of = function(x) {
+    return Option.some(x);
+};
+
+/**
    ## some(x)
 
    Constructor to represent the existance of a value, `x`.
@@ -110,12 +119,30 @@ Option.some.prototype.isSome = true;
 Option.some.prototype.isNone = false;
 
 /**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.some` with value of `x`.
+**/
+Option.some.of = function(x) {
+    return Option.some(x);
+};
+
+/**
    ## none
 
    Represents the absence of a value.
 **/
 Option.none.isSome = false;
 Option.none.isNone = true;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.none`.
+**/
+Option.none.of = function(a) {
+    return Option.none;
+};
 
 /**
    ## isOption(a)

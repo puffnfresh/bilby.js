@@ -427,13 +427,25 @@ absence.
 * ap(s) - applicative ap(ply)
 * concat(s, plus) - semigroup concat
 
+## of(x)
+    
+Constructor `of` Monad creating `Option` with value of `x`.
+
 ## some(x)
     
 Constructor to represent the existance of a value, `x`.
 
+## of(x)
+    
+Constructor `of` Monad creating `Option.some` with value of `x`.
+
 ## none
     
 Represents the absence of a value.
+
+## of(x)
+    
+Constructor `of` Monad creating `Option.none`.
 
 ## isOption(a)
     
@@ -629,6 +641,22 @@ property a success:
     var _ = bilby.property('goal', 1000);
     
 Default is `100`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple2`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple3`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple4`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple5`.
 
 ## isTuple(a)
     
