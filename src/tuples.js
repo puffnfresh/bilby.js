@@ -160,16 +160,67 @@ bilby = bilby
     .property('isTuple3', isTuple3)
     .property('isTuple4', isTuple4)
     .property('isTuple5', isTuple5)
-    .method('concat', isTuple2, function (a, b) {
-        return a.concat(b, this.concat);
+    .method('arb', strictEquals(Tuple2), function() {
+        var env = this;
+        var t = env.fill(2)(function() {
+            return Number;
+        });
+        return Tuple2.of.apply(this, env.map(t, function(arg) {
+            return env.arb(arg, t.length);
+        }));
     })
-    .method('concat', isTuple3, function (a, b) {
-        return a.concat(b, this.concat);
+    .method('arb', strictEquals(Tuple3), function() {
+        var env = this;
+        var t = env.fill(3)(function() {
+            return Number;
+        });
+        return Tuple3.of.apply(this, env.map(t, function(arg) {
+            return env.arb(arg, t.length);
+        }));
     })
-    .method('concat', isTuple4, function (a, b) {
-        return a.concat(b, this.concat);
+    .method('arb', strictEquals(Tuple4), function() {
+        var env = this;
+        var t = env.fill(4)(function() {
+            return Number;
+        });
+        return Tuple4.of.apply(this, env.map(t, function(arg) {
+            return env.arb(arg, t.length);
+        }));
     })
-    .method('concat', isTuple5, function (a, b) {
+    .method('arb', strictEquals(Tuple5), function() {
+        var env = this;
+        var t = env.fill(5)(function() {
+            return Number;
+        });
+        return Tuple5.of.apply(this, env.map(t, function(arg) {
+            return env.arb(arg, t.length);
+        }));
+    })
+    .method('equal', isTuple, function(a, b) {
+        var env = this;
+        return env.fold(env.zip(env.map(a, identity), env.map(b, identity)), true, function(a, t) {
+            return a && env.equal(t[0], t[1]);
+        });
+    })
+    .method('fold', isTuple, function(a, b, c) {
+        var i;
+        for(i = 0; i < a.length; i++) {
+            b = c(b, a[i]);
+        }
+        return b;
+    })
+    .method('map', isTuple, function(a, b) {
+        var accum = [],
+            total = functionLength(a.constructor),
+            i;
+
+        for(i = 0; i < total; i++) {
+            accum[i] = b(a['_' + (i + 1)]);
+        }
+
+        return accum;
+    })
+    .method('concat', isTuple, function(a, b) {
         return a.concat(b, this.concat);
     });
 

@@ -75,3 +75,33 @@ exports.tuple5AppendTest = λ.checkTaggedConcat(
         return tuple['_' + (index + 1)];
     }
 );
+
+//a.concat(b).concat(c) is equivalent to a.concat(b.concat(c))
+
+exports.tuple2ConcatTest = λ.check(
+    function(a, b, c) {
+        return λ.equal(λ.concat(λ.concat(a, b), c), λ.concat(a, λ.concat(b, c)));
+    },
+    [λ.Tuple2, λ.Tuple2, λ.Tuple2]
+);
+
+exports.tuple3ConcatTest = λ.check(
+    function(a, b, c) {
+        return λ.equal(λ.concat(λ.concat(a, b), c), λ.concat(a, λ.concat(b, c)));
+    },
+    [λ.Tuple3, λ.Tuple3, λ.Tuple3]
+);
+
+exports.tuple4ConcatTest = λ.check(
+    function(a, b, c) {
+        return λ.equal(λ.concat(λ.concat(a, b), c), λ.concat(a, λ.concat(b, c)));
+    },
+    [λ.Tuple4, λ.Tuple4, λ.Tuple4]
+);
+
+exports.tuple5ConcatTest = λ.check(
+    function(a, b, c) {
+        return λ.equal(λ.concat(λ.concat(a, b), c), λ.concat(a, λ.concat(b, c)));
+    },
+    [λ.Tuple5, λ.Tuple5, λ.Tuple5]
+);

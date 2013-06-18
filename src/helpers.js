@@ -452,6 +452,21 @@ var add = curry(function(a, b) {
 var strictEquals = curry(function(a, b) {
     return a === b;
 });
+/**
+   ## fill(s)(t)
+
+   Curried function for filling array.
+**/
+var fill = curry(function(s, t) {
+    var accum = [],
+        i;
+
+    for(i = 0; i < s; i++) {
+        accum[i] = t(i);
+    }
+
+    return accum;
+});
 
 /**
    ## liftA2(f, a, b)
@@ -524,6 +539,7 @@ bilby = bilby
     .property('or', or)
     .property('and', and)
     .property('add', add)
+    .property('fill', fill)
     .property('strictEquals', strictEquals)
     .property('liftA2', liftA2)
     .property('sequence', sequence);

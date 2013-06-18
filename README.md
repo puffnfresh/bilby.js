@@ -353,6 +353,10 @@ Curried function for `+`.
     
 Curried function for `===`.
 
+## fill(s)(t)
+    
+Curried function for filling array.
+
 ## liftA2(f, a, b)
     
 Lifts a curried, binary function `f` into the applicative passes
@@ -589,6 +593,42 @@ Pure wrapper around a side-effecting `f` function.
     
 Returns `true` iff `a` is an `io`.
 
+## of(x)
+    
+Constructor `of` Monad creating `Tuple2`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple3`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple4`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple5`.
+
+## isTuple(a)
+    
+Returns `true` if `a` is `Tuple`.
+
+## isTuple2(a)
+    
+Returns `true` if `a` is `Tuple2`.
+
+## isTuple4(a)
+    
+Returns `true` if `a` is `Tuple3`.
+
+## isTuple4(a)
+    
+Returns `true` if `a` is `Tuple4`.
+
+## isTuple5(a)
+    
+Returns `true` if `a` is `Tuple5`.
+
 # QuickCheck
     
 QuickCheck is a form of *automated specification testing*. Instead
@@ -641,39 +681,3 @@ property a success:
     var _ = bilby.property('goal', 1000);
     
 Default is `100`.
-
-## of(x)
-    
-Constructor `of` Monad creating `Tuple2`.
-
-## of(x)
-    
-Constructor `of` Monad creating `Tuple3`.
-
-## of(x)
-    
-Constructor `of` Monad creating `Tuple4`.
-
-## of(x)
-    
-Constructor `of` Monad creating `Tuple5`.
-
-## isTuple(a)
-    
-Returns `true` if `a` is `Tuple`.
-
-## isTuple2(a)
-    
-Returns `true` if `a` is `Tuple2`.
-
-## isTuple4(a)
-    
-Returns `true` if `a` is `Tuple3`.
-
-## isTuple4(a)
-    
-Returns `true` if `a` is `Tuple4`.
-
-## isTuple5(a)
-    
-Returns `true` if `a` is `Tuple5`.
