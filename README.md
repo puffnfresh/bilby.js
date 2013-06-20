@@ -593,17 +593,52 @@ Pure wrapper around a side-effecting `f` function.
     
 Returns `true` iff `a` is an `io`.
 
+# Tuples
+
+Tuples are another way of storing multiple values in a single value. 
+They have a fixed number of elements (immutable), and so you can't cons to a tuple.
+Elements of a tuple do not need to be all of the same type
+    
+Example usage:
+    
+     bilby.Tuple2(1, 2);
+     bilby.Tuple3(1, 2, 3);
+     bilby.Tuple4(1, 2, 3, 4);
+     bilby.Tuple5(1, 2, 3, 4, 5);
+
+* arb() - TODO
+* fold() - TODO
+* map() - TODO
+* equal() - TODO
+
+## Tuple2
+    
+* flip() - TODO
+* concat() - Semigroup (value must also be a Semigroup)
+
 ## of(x)
     
 Constructor `of` Monad creating `Tuple2`.
+
+## Tuple3
+    
+* concat() - Semigroup (value must also be a Semigroup)
 
 ## of(x)
     
 Constructor `of` Monad creating `Tuple3`.
 
+## Tuple4
+    
+* concat() - Semigroup (value must also be a Semigroup)
+
 ## of(x)
     
 Constructor `of` Monad creating `Tuple4`.
+
+## Tuple5
+    
+* concat() - Semigroup (value must also be a Semigroup)
 
 ## of(x)
     

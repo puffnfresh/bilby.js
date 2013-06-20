@@ -1,5 +1,9 @@
 /**
     # Tuples
+    
+    Tuples are another way of storing multiple values in a single value. 
+    They have a fixed number of elements (immutable), and so you can't cons to a tuple.
+    Elements of a tuple do not need to be all of the same type
 
     Example usage:
 
@@ -7,8 +11,13 @@
          bilby.Tuple3(1, 2, 3);
          bilby.Tuple4(1, 2, 3, 4);
          bilby.Tuple5(1, 2, 3, 4, 5);
+    
+    * arb() - TODO
+    * fold() - TODO
+    * map() - TODO
+    * equal() - TODO
 
-*/
+**/
 var Tuple2 = tagged('Tuple2', ['_1', '_2']),
     Tuple3 = tagged('Tuple3', ['_1', '_2', '_3']),
     Tuple4 = tagged('Tuple4', ['_1', '_2', '_3', '_4']),
@@ -17,9 +26,9 @@ var Tuple2 = tagged('Tuple2', ['_1', '_2']),
 /**
     ## Tuple2
 
-    * flip() -
+    * flip() - TODO
     * concat() - Semigroup (value must also be a Semigroup)
-*/
+**/
 Tuple2.prototype.flip = function() {
     return Tuple2(this._2, this._1);
 };
@@ -44,7 +53,7 @@ Tuple2.of = function(a, b) {
     ## Tuple3
 
     * concat() - Semigroup (value must also be a Semigroup)
-*/
+**/
 Tuple3.prototype.concat = function(b) {
     return Tuple3(
         bilby.concat(this._1, b._1),
@@ -67,7 +76,7 @@ Tuple3.of = function(a, b, c) {
     ## Tuple4
 
     * concat() - Semigroup (value must also be a Semigroup)
-*/
+**/
 Tuple4.prototype.concat = function(b) {
     return Tuple4(
         bilby.concat(this._1, b._1),
@@ -91,7 +100,7 @@ Tuple4.of = function(a, b, c, d) {
     ## Tuple5
 
     * concat() - Semigroup (value must also be a Semigroup)
-*/
+**/
 Tuple5.prototype.concat = function(b) {
     return Tuple5(
         bilby.concat(this._1, b._1),
