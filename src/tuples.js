@@ -1,8 +1,9 @@
 /**
     # Tuples
-    
-    Tuples are another way of storing multiple values in a single value. 
-    They have a fixed number of elements (immutable), and so you can't cons to a tuple.
+
+    Tuples are another way of storing multiple values in a single value.
+    They have a fixed number of elements (immutable), and so you can't
+    cons to a tuple.
     Elements of a tuple do not need to be all of the same type
 
     Example usage:
@@ -11,7 +12,7 @@
          bilby.Tuple3(1, 2, 3);
          bilby.Tuple4(1, 2, 3, 4);
          bilby.Tuple5(1, 2, 3, 4, 5);
-    
+
     * arb() - TODO
     * fold() - TODO
     * map() - TODO
