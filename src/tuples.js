@@ -163,7 +163,7 @@ bilby = bilby
     .method('arb', strictEquals(Tuple2), function() {
         var env = this;
         var t = env.fill(2)(function() {
-            return Number;
+            return String;
         });
         return Tuple2.of.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
@@ -172,7 +172,7 @@ bilby = bilby
     .method('arb', strictEquals(Tuple3), function() {
         var env = this;
         var t = env.fill(3)(function() {
-            return Number;
+            return String;
         });
         return Tuple3.of.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
@@ -181,7 +181,7 @@ bilby = bilby
     .method('arb', strictEquals(Tuple4), function() {
         var env = this;
         var t = env.fill(4)(function() {
-            return Number;
+            return String;
         });
         return Tuple4.of.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
@@ -190,7 +190,7 @@ bilby = bilby
     .method('arb', strictEquals(Tuple5), function() {
         var env = this;
         var t = env.fill(5)(function() {
-            return Number;
+            return String;
         });
         return Tuple5.of.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
