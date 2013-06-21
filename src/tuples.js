@@ -31,11 +31,11 @@ var Tuple2 = tagged('Tuple2', ['_1', '_2']),
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple2.prototype.flip = function() {
-    return Tuple2(this._2, this._1);
+    return Tuple2.of(this._2, this._1);
 };
 
 Tuple2.prototype.concat = function(b) {
-    return Tuple2(
+    return Tuple2.of(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2)
     );
@@ -56,7 +56,7 @@ Tuple2.of = function(a, b) {
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple3.prototype.concat = function(b) {
-    return Tuple3(
+    return Tuple3.of(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2),
         bilby.concat(this._3, b._3)
@@ -79,7 +79,7 @@ Tuple3.of = function(a, b, c) {
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple4.prototype.concat = function(b) {
-    return Tuple4(
+    return Tuple4.of(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2),
         bilby.concat(this._3, b._3),
@@ -103,7 +103,7 @@ Tuple4.of = function(a, b, c, d) {
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple5.prototype.concat = function(b) {
-    return Tuple5(
+    return Tuple5.of(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2),
         bilby.concat(this._3, b._3),
