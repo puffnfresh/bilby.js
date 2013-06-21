@@ -162,7 +162,7 @@ bilby = bilby
 
     .method('shrink', isBoolean, function() {
         return function(b) {
-            return b ? [False] : [];
+            return b ? [false] : [];
         };
     })
     .method('shrink', isNumber, function(n) {
