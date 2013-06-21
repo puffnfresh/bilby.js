@@ -207,5 +207,10 @@ bilby = bilby
         }
 
         return accum;
+    })
+
+    .method('toArray', isArray, identity)
+    .method('toArray', strictEquals(AnyVal), function(x) {
+        return [x];
     });
 
