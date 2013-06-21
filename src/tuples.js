@@ -208,9 +208,20 @@ bilby = bilby
     })
     .method('equal', isTuple, function(a, b) {
         var env = this;
-        return env.fold(env.zip(env.map(a, identity), env.map(b, identity)), true, function(a, t) {
+        return env.fold(env.zip(env.toArray(a), env.toArray(b)), true, function(a, t) {
             return a && env.equal(t[0], t[1]);
         });
+    })
+    .method('toArray', isTuple, function(a) {
+        var accum = [],
+            total = functionLength(a.constructor),
+            i;
+
+        for(i = 0; i < total; i++) {
+            accum[i] = a['_' + (i + 1)];
+        }
+
+        return accum;
     })
     .method('fold', isTuple, function(a, b, c) {
         var i;
@@ -228,7 +239,7 @@ bilby = bilby
             accum[i] = b(a['_' + (i + 1)]);
         }
 
-        return accum;
+        return a.of.apply(this, accum);
     })
     .method('concat', isTuple, function(a, b) {
         return a.concat(b, this.concat);
