@@ -82,4 +82,11 @@ Identity.IdentityT = function(M) {
 
 bilby = bilby
     .property('Identity', Identity)
-    .property('isIdentity', isIdentity);
+    .property('isIdentity', isIdentity)
+    .property('IdentityT', Identity.IdentityT)
+    .method('map', isIdentity, function(a, b) {
+        return a.map(b);
+    })
+    .method('ap', isIdentity, function(a, b) {
+        return a.ap(b);
+    });

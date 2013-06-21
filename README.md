@@ -424,6 +424,28 @@ The beginning of the continuation to call. Will repeatedly evaluate
     
 Returns `true` if `a` is `Id`.
 
+# Identity
+    
+The Identity monad is a monad that does not embody any computational
+strategy. It simply applies the bound function to its input without
+any modification.
+    
+* chain(f) - TODO
+* map(f) - TODO
+* ap(a) - TODO
+
+## isIdentity(a)
+    
+Returns `true` if `a` is `Identity`.
+
+## Identity Transformer
+    
+The trivial monad transformer, which maps a monad to an equivalent monad.
+    
+* chain(f) - TODO
+* map(f) - TODO
+* ap(a) - TODO
+
 # Option
     
     Option a = Some a + None
