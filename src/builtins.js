@@ -139,6 +139,9 @@ bilby = bilby
     .method('arb', strictEquals(String), function(a, s) {
         return this.arb(arrayOf(Char), s - 1).join('');
     })
+    .method('arb', strictEquals(Function), function(a, s) {
+        return function(){};
+    })
 
     .method('empty', strictEquals(AnyVal), function(a, s) {
         var types = [Boolean, Number, String];

@@ -701,6 +701,47 @@ Returns `true` if `a` is `Tuple4`.
     
 Returns `true` if `a` is `Tuple5`.
 
+## `Promise(fork)`
+    
+Promise is a constructor which takes a `fork` function. The `fork`
+function takes two arguments:
+    
+    fork(resolve, reject)
+    
+Both `resolve` and `reject` are side-effecting callbacks.
+    
+### `fork(resolve, reject)`
+    
+The `resolve` callback gets called on a "successful" value. The
+`reject` callback gets called on a "failure" value.
+
+### `Promise.of(x)`
+    
+Creates a Promise that contains a successful value.
+
+### `Promise.error(x)`
+    
+Creates a Promise that contains a failure value.
+
+### `chain(f)`
+    
+Returns a new promise that evaluates `f` when the current promise
+is successfully fulfilled. `f` must return a new promise.
+
+### `reject(f)`
+    
+Returns a new promise that evaluates `f` when the current promise
+fails. `f` must return a new promise.
+
+### `map(f)`
+    
+Returns a new promise that evaluates `f` on a value and passes it
+through to the resolve function.
+
+## isPromise(a)
+    
+Returns `true` if `a` is `Promise`.
+
 # QuickCheck
     
 QuickCheck is a form of *automated specification testing*. Instead
