@@ -140,6 +140,26 @@ bilby = bilby
         return this.arb(arrayOf(Char), s - 1).join('');
     })
 
+    .method('empty', strictEquals(AnyVal), function(a, s) {
+        var types = [Boolean, Number, String];
+        return this.empty(this.oneOf(types), s - 1);
+    })
+    .method('empty', isArray, function(a, s) {
+        return [];
+    })
+    .method('empty', isObjectLike, function(a, s) {
+        return {};
+    })
+    .method('empty', isBoolean, function(a, s) {
+        return false;
+    })
+    .method('empty', isNumber, function(a, s) {
+        return 0;
+    })
+    .method('empty', isString, function(a, s) {
+        return '';
+    })
+
     .method('shrink', isBoolean, function() {
         return function(b) {
             return b ? [False] : [];

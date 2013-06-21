@@ -21,7 +21,7 @@ Id.prototype.concat = function(b) {
 
 // Monoid (value must also be a Monoid)
 Id.prototype.empty = function() {
-    return Id.of(this.value.empty ? this.value.empty() : this.value.constructor.empty());
+    return Id.of(bilby.empty(this.value));
 };
 
 // Functor
@@ -63,4 +63,16 @@ bilby = bilby
    })
    .method('chain', isId, function(a, b) {
       return a.chain(b);
+   })
+   .method('equal', isId, function(a, b) {
+      return this.equal(a.value, b);
+   })
+   .method('arb', strictEquals(Id), function() {
+        var env = this;
+        var t = env.fill(1)(function() {
+            return AnyVal;
+        });
+        return Id.of.apply(this, env.map(t, function(arg) {
+            return env.arb(arg, t.length);
+        }));
    });

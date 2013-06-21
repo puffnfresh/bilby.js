@@ -32,7 +32,7 @@ exports.tuple5Test = λ.checkTaggedArgs(
     }
 );
 
-exports.tuple2AppendTest = λ.checkTaggedConcat(
+exports.tuple2ConcatTest = λ.checkTaggedConcat(
     λ.Tuple2,
     [String, String],
     function (a, b) {
@@ -43,7 +43,7 @@ exports.tuple2AppendTest = λ.checkTaggedConcat(
     }
 );
 
-exports.tuple3AppendTest = λ.checkTaggedConcat(
+exports.tuple3ConcatTest = λ.checkTaggedConcat(
     λ.Tuple3,
     [String, String, String],
     function (a, b) {
@@ -54,7 +54,7 @@ exports.tuple3AppendTest = λ.checkTaggedConcat(
     }
 );
 
-exports.tuple4AppendTest = λ.checkTaggedConcat(
+exports.tuple4ConcatTest = λ.checkTaggedConcat(
     λ.Tuple4,
     [String, String, String, String],
     function (a, b) {
@@ -65,7 +65,7 @@ exports.tuple4AppendTest = λ.checkTaggedConcat(
     }
 );
 
-exports.tuple5AppendTest = λ.checkTaggedConcat(
+exports.tuple5ConcatTest = λ.checkTaggedConcat(
     λ.Tuple5,
     [String, String, String, String, String],
     function (a, b) {
