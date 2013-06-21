@@ -15,8 +15,10 @@ Some features include:
 
 * Immutable multimethods for ad-hoc polymorphism
 * Functional data structures
-* Operator overloading for functional syntax
 * Automated specification testing (ScalaCheck, QuickCheck)
+* Fantasy Land compatible
+
+![](https://raw.github.com/puffnfresh/fantasy-land/master/logo.png)
 
 # Usage
 
