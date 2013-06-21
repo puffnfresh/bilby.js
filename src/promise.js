@@ -91,4 +91,7 @@ var isPromise = isInstanceOf(Promise);
 
 bilby = bilby
     .property('Promise', Promise)
-    .property('isPromise', isPromise);
+    .property('isPromise', isPromise)
+    .method('map', isPromise, function(a, b) {
+        return a.map(b);
+    });
