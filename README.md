@@ -489,9 +489,17 @@ Represents a tagged disjunction between two sets of values; `a` or
     
 Constructor to represent the left case.
 
+## of(x)
+    
+Constructor `of` Monad creating `Either.left`.
+
 ## right(x)
     
 Constructor to represent the (biased) right case.
+
+## of(x)
+    
+Constructor `of` Monad creating `Either.right`.
 
 ## isEither(a)
     
@@ -556,6 +564,22 @@ Represents a failure.
     
 `errors` **must** be a semigroup (i.e. have an `concat`
 implementation in the environment).
+
+## success(x)
+    
+Constructor to represent the existance of a value, `x`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Option.success` with value of `x`.
+
+## failure(x)
+    
+Constructor to represent the existance of a value, `x`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Option.failure` with value of `x`.
 
 ## isAttempt(a)
     

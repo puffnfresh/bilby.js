@@ -66,7 +66,7 @@ var Attempt = taggedSum({
 });
 
 Attempt.success.prototype.map = function(f) {
-    return Attempt.success(f(this.value));
+    return Attempt.success.of(f(this.value));
 };
 Attempt.success.prototype.ap = function(v) {
     return v.map(this.value);
@@ -82,9 +82,43 @@ Attempt.failure.prototype.ap = function(b, concat) {
             return a;
         },
         failure: function(errors) {
-            return Attempt.failure(concat(a.errors, errors));
+            return Attempt.failure.of(concat(a.errors, errors));
         }
     });
+};
+
+/**
+   ## success(x)
+
+   Constructor to represent the existance of a value, `x`.
+**/
+Attempt.success.prototype.isSuccess = true;
+Attempt.success.prototype.isFailure = false;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.success` with value of `x`.
+**/
+Attempt.success.of = function(x) {
+    return Attempt.success(x);
+};
+
+/**
+   ## failure(x)
+
+   Constructor to represent the existance of a value, `x`.
+**/
+Attempt.failure.prototype.isSuccess = false;
+Attempt.failure.prototype.isFailure = true;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.failure` with value of `x`.
+**/
+Attempt.failure.of = function(x) {
+    return Attempt.failure(x);
 };
 
 /**
@@ -97,7 +131,7 @@ var isAttempt = isInstanceOf(Attempt);
 bilby = bilby
     .property('success', Attempt.success)
     .property('failure', Attempt.failure)
-
+    .property('isAttempt', isAttempt)
     .method('map', isAttempt, function(v, f) {
         return v.map(f);
     })

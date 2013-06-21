@@ -71,7 +71,7 @@ Option.prototype.flatMap = function(f) {
 Option.prototype.map = function(f) {
     return this.fold(
         function(x) {
-            return Option.some(f(x));
+            return Option.some.of(f(x));
         },
         function() {
             return this;

@@ -32,20 +32,20 @@ Either.prototype.fold = function(a, b) {
 Either.prototype.swap = function() {
     return this.fold(
         function(x) {
-            return Either.right(x);
+            return Either.right.of(x);
         },
         function(x) {
-            return Either.left(x);
+            return Either.left.of(x);
         }
     );
 };
 Either.prototype.toOption = function() {
     return this.fold(
         function() {
-            return Option.none;
+            return Option.none.of();
         },
         function(x) {
-            return Option.some(x);
+            return Option.some.of(x);
         }
     );
 };
@@ -75,7 +75,7 @@ Either.prototype.map = function(f) {
             return this;
         },
         function(x) {
-            return Either.right(f(x));
+            return Either.right.of(f(x));
         }
     );
 };
@@ -115,12 +115,30 @@ Either.left.prototype.isLeft = true;
 Either.left.prototype.isRight = false;
 
 /**
+   ## of(x)
+
+   Constructor `of` Monad creating `Either.left`.
+**/
+Either.left.of = function(x) {
+    return Either.left(x);
+};
+
+/**
    ## right(x)
 
    Constructor to represent the (biased) right case.
 **/
 Either.right.prototype.isLeft = false;
 Either.right.prototype.isRight = true;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Either.right`.
+**/
+Either.right.of = function(x) {
+    return Either.right(x);
+};
 
 /**
    ## isEither(a)

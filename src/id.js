@@ -16,22 +16,22 @@ Id.of = function(a) {
 
 // Semigroup (value must also be a Semigroup)
 Id.prototype.concat = function(b) {
-    return new Id(this.value.concat(b.value));
+    return Id.of(this.value.concat(b.value));
 };
 
 // Monoid (value must also be a Monoid)
 Id.prototype.empty = function() {
-    return new Id(this.value.empty ? this.value.empty() : this.value.constructor.empty());
+    return Id.of(this.value.empty ? this.value.empty() : this.value.constructor.empty());
 };
 
 // Functor
 Id.prototype.map = function(f) {
-    return new Id(f(this.value));
+    return Id.of(f(this.value));
 };
 
 // Applicative
 Id.prototype.ap = function(b) {
-    return new Id(this.value(b.value));
+    return Id.of(this.value(b.value));
 };
 
 // Chain
