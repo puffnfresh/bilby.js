@@ -764,6 +764,18 @@ through to the resolve function.
     
 Returns `true` if `a` is `Promise`.
 
+## `State(run)`
+    
+* chain() - TODO
+* evalState() - TODO
+* exec() - TODO
+* map() - TODO
+* ap() - TODO
+
+## isState(a)
+    
+Returns `true` if `a` is `State`.
+
 # QuickCheck
     
 QuickCheck is a form of *automated specification testing*. Instead
