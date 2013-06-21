@@ -239,7 +239,8 @@ bilby = bilby
             accum[i] = b(a['_' + (i + 1)]);
         }
 
-        return a.of.apply(this, accum);
+        var ctr = a.of || a.constructor.of;
+        return ctr.apply(this, accum);
     })
     .method('concat', isTuple, function(a, b) {
         return a.concat(b, this.concat);

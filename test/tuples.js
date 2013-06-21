@@ -105,3 +105,37 @@ exports.tuple5ConcatTest = λ.check(
     },
     [λ.Tuple5, λ.Tuple5, λ.Tuple5]
 );
+
+// Map
+
+exports.tuple2MapTest = λ.check(
+    function(a) {
+        return λ.equal(λ.map(a, λ.identity), a);
+    },
+    [λ.Tuple2]
+);
+
+exports.tuple3MapTest = λ.check(
+    function(a) {
+        return λ.equal(λ.map(a, λ.identity), a);
+    },
+    [λ.Tuple3]
+);
+
+exports.tuple4MapTest = λ.check(
+    function(a) {
+        return λ.equal(λ.map(a, λ.identity), a);
+    },
+    [λ.Tuple4]
+);
+
+exports.tuple5MapTest = λ.check(
+    function(a) {
+        return λ.equal(λ.map(a, λ.identity), a);
+    },
+    [λ.Tuple5]
+);
+
+
+
+
