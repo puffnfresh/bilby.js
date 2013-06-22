@@ -2,6 +2,12 @@
 
 ![](http://brianmckenna.org/files/bilby.png)
 
+# Build status
+
+Development
+[![Build Status](https://travis-ci.org/SimonRichardson/bilby.js.png?branch=develop)](http://travis-ci.org/SimonRichardson/bilby.js)
+
+Main
 [![Build Status](https://secure.travis-ci.org/pufuwozu/bilby.js.png)](http://travis-ci.org/pufuwozu/bilby.js)
 
 # Description
@@ -473,7 +479,7 @@ Constructor `of` Monad creating `Option` with value of `x`.
 
 ## some(x)
     
-Constructor to represent the existance of a value, `x`.
+Constructor to represent the existence of a value, `x`.
 
 ## of(x)
     
@@ -777,6 +783,32 @@ Returns `true` if `a` is `Promise`.
 ## isState(a)
     
 Returns `true` if `a` is `State`.
+
+# List
+    
+* fold(a, b) - applies `a` to value if `cons` or defaults to `b`
+* map(f) - functor map
+
+## cons(a, b)
+    
+Constructor to represent the existence of a value in a list, `a`
+and a reference to another `b`.
+
+## of(x)
+    
+Constructor `of` Monad creating `List.some` with value of `a` and `b`.
+
+## nil
+    
+Represents an empty list (absence of a list).
+
+## of(x)
+    
+Constructor `of` Monad creating `List.nil`.
+
+## isList(a)
+    
+Returns `true` if `a` is a `cons` or `nil`.
 
 # QuickCheck
     
