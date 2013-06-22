@@ -113,7 +113,7 @@ Option.of = function(x) {
 /**
    ## some(x)
 
-   Constructor to represent the existance of a value, `x`.
+   Constructor to represent the existence of a value, `x`.
 **/
 Option.some.prototype.isSome = true;
 Option.some.prototype.isNone = false;
@@ -140,7 +140,7 @@ Option.none.isNone = true;
 
    Constructor `of` Monad creating `Option.none`.
 **/
-Option.none.of = function(a) {
+Option.none.of = function() {
     return Option.none;
 };
 
