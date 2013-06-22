@@ -72,4 +72,6 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', 'rig jshint nodeunit uglify emu');
+
+    grunt.registerTask('dist', ['rig', 'uglify', 'emu']);
 };
