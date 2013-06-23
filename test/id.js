@@ -21,7 +21,7 @@ exports.idConcatTest = λ.checkTaggedConcat(
 
 exports.idEmptyTest = λ.check(
     function(a) {
-        return λ.equal(λ.Id(a).empty(), λ.empty(a));
+        return λ.equal(λ.Id(a).empty(), λ.Id(a).empty());
     },
     [λ.AnyVal]
 );

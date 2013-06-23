@@ -65,7 +65,7 @@ bilby = bilby
       return a.chain(b);
    })
    .method('equal', isId, function(a, b) {
-      return this.equal(a.value, b);
+      return this.equal(a.value, b.value);
    })
    .method('arb', strictEquals(Id), function() {
         var env = this;

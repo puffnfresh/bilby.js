@@ -33,6 +33,88 @@ List.prototype.map = function(f) {
     );
 };
 
+List.prototype.flatMap = function(f) {
+    return this.fold(
+      function(a, b) {
+          return b.prependAll(f(a));
+      },
+      function() {
+          return this;
+      }
+    ).reverse();
+};
+
+List.prototype.prepend = function(a) {
+    return List.cons.of(a, this);
+};
+
+List.prototype.prependAll = function(a) {
+    var accum = this;
+    while(a.isNonEmpty) {
+        accum = List.cons.of(a.car, accum);
+        a = a.cdr;
+    }
+    return accum;
+};
+
+List.prototype.reverse = function() {
+    // Not sure this is the most optimized way of doing this.
+    function recursive(p, accum) {
+        return p.cata({
+            cons: function(a, b) {
+                return recursive(b, List.cons.of(a, accum));
+            },
+            nil: function() {
+                return accum;
+            }
+        });
+    }
+    return recursive(this, List.nil);
+};
+
+List.prototype.exists = function(f) {
+    var p = this;
+    while(p.isNonEmpty) {
+        if(f(p.car)) {
+            return true;
+        }
+        p = p.cdr;
+    }
+    return false;
+};
+
+List.prototype.size = function() {
+    // We can do this because items are immutable.
+    // Also this will coerce undefined to a number.
+    if (this._size >= 0) {
+        return this._size;
+    }
+
+    var s = 0;
+    var p = this;
+    while(p.isNonEmpty) {
+        this._size++;
+        p = p.cdr;
+    }
+
+    this._size = s;
+    return s;
+};
+
+List.prototype.toArray = function() {
+    var accum = [];
+    var p = this;
+    while(p.isNonEmpty) {
+        accum.push(p.car);
+        p = p.cdr;
+    }
+    return accum;
+};
+
+List.prototype.toString = function() {
+    return 'List(' + this.toArray().join(', ') + ', nil)';
+};
+
 /**
    ## cons(a, b)
 
@@ -84,4 +166,16 @@ bilby = bilby
     })
     .method('map', isList, function(a, b) {
         return a.map(b);
+    })
+    .method('flatMap', isList, function(a, b) {
+        return a.flatMap(b);
+    })
+    .method('equal', isList, function(a, b) {
+        var env = this;
+        return env.fold(zip(env.toArray(a), env.toArray(b)), true, function(a, t) {
+            return a && env.equal(t[0], t[1]);
+        });
+    })
+    .method('toArray', isList, function(a) {
+        return a.toArray();
     });

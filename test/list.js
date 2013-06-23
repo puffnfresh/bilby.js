@@ -13,3 +13,12 @@ exports.listMapTest = λ.check(
     },
     [λ.AnyVal]
 );
+
+exports.listFlatMapTest = λ.check(
+    function(a) {
+        return λ.equal(λ.cons(2, λ.cons(1, λ.nil)).flatMap(function(a) {
+            return λ.cons(3, λ.cons(a, λ.nil));
+        }), λ.cons(3, λ.cons(2, λ.cons(3, λ.cons(1, λ.nil)))));
+    },
+    [λ.AnyVal]
+);
