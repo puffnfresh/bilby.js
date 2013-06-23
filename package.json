@@ -2,6 +2,9 @@
   "name": "bilby",
   "description": "Serious functional programming library for JavaScript",
   "author": "Brian McKenna <brian@brianmckenna.org> (http://brianmckenna.org/)",
+  "contributors": [
+    "Simon Richardson <stickupkid@gmail.com> (https://github.com/SimonRichardson)"
+  ],
   "homepage": "http://bilby.brianmckenna.org/",
   "license": "MIT",
   "repository": {
