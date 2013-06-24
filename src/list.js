@@ -9,6 +9,19 @@ var List = taggedSum({
     nil: []
 });
 
+List.range = function(a, b) {
+    var accum = List.nil,
+        total = b - a,
+        i;
+
+    var diff = b - a;
+    for (i = a; i < a + total; i++) {
+        accum = List.cons.of(i, accum);
+    }
+
+    return accum;
+};
+
 List.prototype.fold = function(f, g) {
     var accum = List.nil;
 
@@ -134,7 +147,7 @@ List.prototype.size = function() {
     var s = 0;
     var p = this;
     while(p.isNonEmpty) {
-        this._size++;
+        s++;
         p = p.cdr;
     }
 
@@ -202,6 +215,7 @@ bilby = bilby
     .property('cons', List.cons)
     .property('nil', List.nil)
     .property('isList', isList)
+    .property('range', List.range)
     .method('fold', isList, function(a, f, g) {
         return a.fold(f, g);
     })
