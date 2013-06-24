@@ -213,9 +213,12 @@ bilby = bilby
     })
     .method('equal', isList, function(a, b) {
         var env = this;
-        return env.fold(zip(env.toArray(a), env.toArray(b)), true, function(a, t) {
+        return env.fold(env.zip(a, b), true, function(a, t) {
             return a && env.equal(t[0], t[1]);
         });
+    })
+    .method('zip', isList, function(a, b) {
+        return zip(this.toArray(a), this.toArray(b));
     })
     .method('toArray', isList, function(a) {
         return a.toArray();

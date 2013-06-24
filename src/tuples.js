@@ -208,9 +208,12 @@ bilby = bilby
     })
     .method('equal', isTuple, function(a, b) {
         var env = this;
-        return env.fold(env.zip(env.toArray(a), env.toArray(b)), true, function(a, t) {
+        return env.fold(env.zip(a, b), true, function(a, t) {
             return a && env.equal(t[0], t[1]);
         });
+    })
+    .method('zip', isTuple, function(a, b) {
+        return zip(this.toArray(a), this.toArray(b));
     })
     .method('toArray', isTuple, function(a) {
         var accum = [],

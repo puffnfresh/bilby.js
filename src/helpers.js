@@ -536,7 +536,6 @@ bilby = bilby
     .property('tagged', tagged)
     .property('taggedSum', taggedSum)
     .property('error', error)
-    .property('zip', zip)
     .property('extend', extend)
     .property('singleton', singleton)
     .property('isTypeOf',  isTypeOf)

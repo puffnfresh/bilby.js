@@ -215,5 +215,8 @@ bilby = bilby
     .method('toArray', isArray, identity)
     .method('toArray', strictEquals(AnyVal), function(x) {
         return [x];
+    })
+    .method('zip', bilby.liftA2(or, isArray, isString), function(a, b) {
+        return zip(a, b);
     });
 
