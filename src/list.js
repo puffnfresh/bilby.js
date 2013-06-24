@@ -83,6 +83,19 @@ List.prototype.exists = function(f) {
     return false;
 };
 
+List.prototype.filter = function(f) {
+    var accum = List.nil;
+
+    var p = this;
+    while(p.isNonEmpty) {
+        if (f(p.car)) {
+            accum = List.cons.of(p.car, accum);
+        }
+        p = p.cdr;
+    }
+    return accum.reverse();
+};
+
 List.prototype.size = function() {
     // We can do this because items are immutable.
     // Also this will coerce undefined to a number.
