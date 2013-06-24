@@ -4,7 +4,7 @@
     <title>Validation with bilby.js</title>
     <meta charset="utf-8" />
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-    <script src="../bilby-min.js"></script>
+    <script src="../dist/bilby.min.js"></script>
     <script>
       function event(element, name, callback) {
           if(element.addEventListener) {
@@ -51,12 +51,7 @@
               var name = validName(document.getElementById('name').value),
                   age = validAge(document.getElementById('age').value),
                   postcode = validPostcode(document.getElementById('postcode').value),
-
-                  // Here is the main logic. It desugars into the following:
-                  // _.ap(_.ap(_.map(name, f), age), postcode);
-                  result = _.Do()(
-                      _.Do()(name < f) * age * postcode
-                  );
+                  result = _.ap(_.ap(_.map(name, f), age), postcode);
 
               result.cata({
                   success: function(value) {
