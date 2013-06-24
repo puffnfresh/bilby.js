@@ -44,7 +44,7 @@ State.prototype.evalState = function(s) {
     return this.run(s)._1;
 };
 
-State.prototype.exec = function(s) {
+State.prototype.execState = function(s) {
     return this.run(s)._2;
 };
 
@@ -113,7 +113,7 @@ State.StateT = function(M) {
         });
     };
 
-    StateT.prototype.exec = function(s) {
+    StateT.prototype.execState = function(s) {
         return this.run(s).chain(function(t) {
             return t._2;
         });
