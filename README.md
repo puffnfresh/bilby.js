@@ -309,6 +309,14 @@ Returns `true` iff `a` is a `String`.
     
 Returns `true` iff `a` is an `Array`.
 
+## isEven(a)
+    
+Returns `true` iff `a` is even.
+
+## isOdd(a)
+    
+Returns `true` iff `a` is odd.
+
 ## isInstanceOf(c)(o)
     
 Returns `true` iff `o` is an instance of `c`.

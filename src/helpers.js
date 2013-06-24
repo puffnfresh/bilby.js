@@ -359,6 +359,22 @@ function isArray(a) {
     return Object.prototype.toString.call(a) === "[object Array]";
 }
 /**
+   ## isEven(a)
+
+   Returns `true` iff `a` is even.
+**/
+function isEven(a) {
+    return (a & 1) === 0;
+}
+/**
+   ## isOdd(a)
+
+   Returns `true` iff `a` is odd.
+**/
+function isOdd(a) {
+    return !isEven(a);
+}
+/**
    ## isInstanceOf(c)(o)
 
    Returns `true` iff `o` is an instance of `c`.
@@ -529,6 +545,8 @@ bilby = bilby
     .property('isFunction', isFunction)
     .property('isNumber', isNumber)
     .property('isString', isString)
+    .property('isEven', isEven)
+    .property('isOdd', isOdd)
     .property('isInstanceOf', isInstanceOf)
     .property('AnyVal', AnyVal)
     .property('Char', Char)
