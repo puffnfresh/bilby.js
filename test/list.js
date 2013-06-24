@@ -31,3 +31,14 @@ exports.listFilterTest = λ.check(
     },
     [λ.AnyVal]
 );
+
+exports.listForeachTest = λ.check(
+    function(a, b, c) {
+        var accum = 0;
+        λ.cons(a, λ.cons(b, λ.cons(c, λ.nil))).foreach(function(a) {
+            accum += a;
+        });
+        return accum === (a + b + c);
+    },
+    [Number, Number, Number]
+);

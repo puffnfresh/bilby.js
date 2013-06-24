@@ -96,6 +96,18 @@ List.prototype.filter = function(f) {
     return accum.reverse();
 };
 
+List.prototype.foreach = function(f) {
+    return this.fold(
+        function(a, b) {
+            f(a);
+            return this;
+        },
+        function() {
+            return this;
+        }
+    );
+};
+
 List.prototype.size = function() {
     // We can do this because items are immutable.
     // Also this will coerce undefined to a number.
