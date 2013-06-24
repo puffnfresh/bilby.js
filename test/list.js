@@ -23,14 +23,13 @@ exports.listFlatMapTest = λ.check(
     [λ.AnyVal]
 );
 
-exports.listFilterTest = λ.check(
-    function(a) {
-        return λ.equal(λ.cons(4, λ.cons(3, λ.cons(2, λ.cons(1, λ.nil)))).filter(function(a) {
-            return (a & 1) === 0;
-        }), λ.cons(4, λ.cons(2, λ.nil)));
-    },
-    [λ.AnyVal]
-);
+exports.listFilterTest = function(test) {
+    var actual = λ.cons(4, λ.cons(3, λ.cons(2, λ.cons(1, λ.nil))));
+    var expected = λ.cons(4, λ.cons(2, λ.nil));
+
+    test.ok(λ.equal(actual.filter(λ.isEven), expected));
+    test.done();
+};
 
 exports.listForeachTest = λ.check(
     function(a, b, c) {
@@ -42,3 +41,11 @@ exports.listForeachTest = λ.check(
     },
     [Number, Number, Number]
 );
+
+exports.listPartitionTest = function(test) {
+    var actual = λ.cons(4, λ.cons(3, λ.cons(2, λ.cons(1, λ.nil))));
+    var expected = λ.Tuple2(λ.cons(4, λ.cons(2, λ.nil)), λ.cons(3, λ.cons(1, λ.nil)));
+
+    test.ok(λ.equal(actual.partition(λ.isEven), expected));
+    test.done();
+};

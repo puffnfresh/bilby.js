@@ -108,6 +108,22 @@ List.prototype.foreach = function(f) {
     );
 };
 
+List.prototype.partition = function(f) {
+    var left = List.nil;
+    var right = List.nil;
+
+    var p = this;
+    while(p.isNonEmpty) {
+        if (f(p.car)) {
+            left = List.cons.of(p.car, left);
+        } else {
+            right = List.cons.of(p.car, right);
+        }
+        p = p.cdr;
+    }
+    return Tuple2(left.reverse(), right.reverse());
+};
+
 List.prototype.size = function() {
     // We can do this because items are immutable.
     // Also this will coerce undefined to a number.
