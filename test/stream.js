@@ -15,10 +15,10 @@ exports.streamForeachTest = function(test) {
 exports.streamMapTest = function(test) {
     var s = λ.Stream.sequential([1, 2, 3, 4]).map(function(a) {
         return a * 2;
-    });
+    }).toArray();
 
     setTimeout(function() {
-        test.deepEqual(s.toArray(), [2, 4, 6, 8]);
+        test.deepEqual(s, [2, 4, 6, 8]);
         test.done();
     }, 50);
 };

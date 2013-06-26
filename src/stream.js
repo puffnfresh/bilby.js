@@ -3,9 +3,7 @@ var Stream = function(f) {
     // Have to work out how a stream can listen to another stream that's already been created.
     var env = this;
     env.subs = [];
-    env.values = List.nil.of();
     f(function(a) {
-        env.values = env.values.append(a);
         env.subs.forEach(function(s) {
             s(a);
         });
@@ -55,7 +53,11 @@ Stream.prototype.map = function(f) {
 };
 
 Stream.prototype.toArray = function() {
-    return this.values.toArray();
+    var accum = [];
+    this.foreach(function(a) {
+        accum.push(a);
+    });
+    return accum;
 };
 
 /**
