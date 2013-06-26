@@ -10,6 +10,9 @@ Development
 Main
 [![Build Status](https://secure.travis-ci.org/pufuwozu/bilby.js.png)](http://travis-ci.org/pufuwozu/bilby.js)
 
+Dependency
+[![Dependencies](https://david-dm.org/SimonRichardson/bilby.js.png)](https://david-dm.org/SimonRichardson/bilby.js)
+
 # Description
 
 bilby.js is a serious functional programming library. Serious,

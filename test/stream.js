@@ -1,10 +1,24 @@
 var λ = require('./lib/test');
 
-exports.streamTest = function(test) {
+exports.streamForeachTest = function(test) {
+    var result = [];
     var s = λ.Stream.sequential([1, 2, 3, 4]).foreach(function(a) {
-        console.log(a);
+        result.push(a);
     });
 
-    test.ok(true);
-    test.done();
+    setTimeout(function() {
+        test.deepEqual(result, [1, 2, 3, 4]);
+        test.done();
+    }, 50);
+};
+
+exports.streamMapTest = function(test) {
+    var s = λ.Stream.sequential([1, 2, 3, 4]).map(function(a) {
+        return a * 2;
+    });
+
+    setTimeout(function() {
+        test.deepEqual(s.toArray(), [2, 4, 6, 8]);
+        test.done();
+    }, 50);
 };
