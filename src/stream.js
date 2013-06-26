@@ -1,4 +1,4 @@
-var Stream = function(f) {
+var Stream = function(f, o) {
     // Hmm... this is very much mutable!
     // Have to work out how a stream can listen to another stream that's already been created.
     var env = this;
@@ -27,28 +27,22 @@ Stream.of = function(a, b) {
     });
 };
 
-Stream.prototype.subscribe = function(f) {
-    this.subs.push(f);
-};
-
 Stream.prototype.foreach = function(f) {
-    var m;
-    this.subscribe(function(a) {
-        f(a);
-        m(a);
-    });
+    var env = this;
     return new Stream(function(state) {
-        m = state;
+        env.subs.push(function(a) {
+            f(a);
+            state(a);
+        });
     });
 };
 
 Stream.prototype.map = function(f) {
-    var m;
-    this.subscribe(function(a) {
-        m(f(a));
-    });
+    var env = this;
     return new Stream(function(state) {
-        m = state;
+        env.subs.push(function(a) {
+            state(f(a));
+        });
     });
 };
 
