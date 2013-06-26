@@ -1,17 +1,61 @@
-var Stream = tagged('Stream', ['state']);
+var Stream = function(f) {
+    // Hmm... this is very much mutable!
+    // Have to work out how a stream can listen to another stream that's already been created.
+    var env = this;
+    env.subs = [];
+    env.values = List.nil.of();
+    f(function(a) {
+        env.values = env.values.append(a);
+        env.subs.forEach(function(s) {
+            s(a);
+        });
+    });
+};
 
 Stream.of = function(a, b) {
-    var result = [];
-    var unbinder = a(function() {
-        var bounce = b();
-        if (!bounce.isDone) {
-            result.push(bounce.thunk());
-        } else {
-            result.push(bounce.result);
-            unbinder();
-        }
+    var unbinder,
+        bounce;
+
+    return new Stream(function(state) {
+        unbinder = a(function() {
+            bounce = b();
+            if (!bounce.isDone) {
+                state(bounce.thunk());
+            } else {
+                state(bounce.result);
+                unbinder();
+            }
+        });
     });
-    return new Stream(1);
+};
+
+Stream.prototype.subscribe = function(f) {
+    this.subs.push(f);
+};
+
+Stream.prototype.foreach = function(f) {
+    var m;
+    this.subscribe(function(a) {
+        f(a);
+        m(a);
+    });
+    return new Stream(function(state) {
+        m = state;
+    });
+};
+
+Stream.prototype.map = function(f) {
+    var m;
+    this.subscribe(function(a) {
+        m(f(a));
+    });
+    return new Stream(function(state) {
+        m = state;
+    });
+};
+
+Stream.prototype.toArray = function() {
+    return this.values.toArray();
 };
 
 /**
@@ -22,16 +66,28 @@ Stream.of = function(a, b) {
         console.log(a);
       });
  */
-Stream.sequential = function(values) {
+Stream.sequential = function(values, delay) {
     var index = 0;
     return Stream.poll(function() {
         if (index >= values.length - 1) return done(values[index]);
         return cont(function() {
           return values[index++];
         });
-    }, 0);
+    }, delay || 0);
 };
 
+/**
+
+  ## poll
+
+      Stream.poll(function() {
+        return cont(function() {
+            return bilby.method('arb', Number);
+        })
+      }).foreach(function (a) {
+        console.log(a);
+      });
+ */
 Stream.poll = function(pulse, delay) {
     return Stream.of(function(handler) {
         var id = setInterval(handler, delay);

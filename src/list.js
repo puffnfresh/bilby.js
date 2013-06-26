@@ -57,6 +57,22 @@ List.prototype.flatMap = function(f) {
     ).reverse();
 };
 
+List.prototype.append = function(a) {
+    return this.appendAll(List.cons.of(a, List.nil.of()));
+};
+
+List.prototype.appendAll = function(a) {
+    var accum = a;
+
+    var p = this.reverse();
+    while(p.isNonEmpty) {
+        accum = List.cons.of(p.car, accum);
+        p = p.cdr;
+    }
+
+    return accum;
+};
+
 List.prototype.prepend = function(a) {
     return List.cons.of(a, this);
 };
