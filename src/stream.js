@@ -108,20 +108,43 @@ Stream.prototype.toArray = function() {
 
 /**
 
+  ## promise
+
+      Stream.promise(promise).foreach(function (a) {
+        console.log(a);
+      });
+**/
+Stream.promise = function(p) {
+    return new Stream(function(state) {
+        setTimeout(function() {
+            p.fork(
+                function(data) {
+                    state(Attempt.success(data));
+                },
+                function(error) {
+                    state(Attempt.failure(error));
+                }
+            );
+        }, 0);
+    });
+};
+
+/**
+
   ## sequential
 
       Stream.sequential([1, 2, 3, 4]).foreach(function (a) {
         console.log(a);
       });
- */
-Stream.sequential = function(values, delay) {
+**/
+Stream.sequential = function(v, d) {
     var index = 0;
     return Stream.poll(function() {
-        if (index >= values.length - 1) return done(values[index]);
+        if (index >= v.length - 1) return done(v[index]);
         return cont(function() {
-          return values[index++];
+          return v[index++];
         });
-    }, delay || 0);
+    }, d || 0);
 };
 
 /**
@@ -135,16 +158,16 @@ Stream.sequential = function(values, delay) {
       }, 0).foreach(function (a) {
         console.log(a);
       });
- */
-Stream.poll = function(pulse, delay) {
+**/
+Stream.poll = function(p, d) {
     var id;
 
     return Stream.of(function(handler) {
-        id = setInterval(handler, delay);
+        id = setInterval(handler, d);
         return function() {
             return clearInterval(id);
         };
-    }, pulse);
+    }, p);
 };
 
 /**

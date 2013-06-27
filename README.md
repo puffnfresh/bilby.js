@@ -828,6 +828,31 @@ Returns `true` if `a` is a `cons` or `nil`.
 * map() - TODO
 * zip() - TODO
 
+    
+## promise
+    
+    Stream.promise(promise).foreach(function (a) {
+      console.log(a);
+    });
+
+    
+## sequential
+    
+    Stream.sequential([1, 2, 3, 4]).foreach(function (a) {
+      console.log(a);
+    });
+
+    
+## poll
+    
+    Stream.poll(function() {
+      return cont(function() {
+          return bilby.method('arb', Number);
+      })
+    }, 0).foreach(function (a) {
+      console.log(a);
+    });
+
 ## isStream(a)
     
 Returns `true` if `a` is `Stream`.
