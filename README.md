@@ -821,6 +821,17 @@ Constructor `of` Monad creating `List.nil`.
     
 Returns `true` if `a` is a `cons` or `nil`.
 
+## `Stream(state)`
+    
+* foreach() - TODO
+* filter() - TODO
+* map() - TODO
+* zip() - TODO
+
+## isStream(a)
+    
+Returns `true` if `a` is `Stream`.
+
 # QuickCheck
     
 QuickCheck is a form of *automated specification testing*. Instead
