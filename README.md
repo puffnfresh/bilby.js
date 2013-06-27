@@ -797,6 +797,7 @@ Returns `true` if `a` is `State`.
 
 # List
     
+* concat(a) - TODO
 * fold(a, b) - applies `a` to value if `cons` or defaults to `b`
 * map(f) - functor map
 
@@ -823,10 +824,12 @@ Returns `true` if `a` is a `cons` or `nil`.
 
 ## `Stream(state)`
     
-* foreach() - TODO
-* filter() - TODO
-* map() - TODO
-* zip() - TODO
+* concat(b) - TODO
+* empty() - TODO
+* foreach(f) - TODO
+* filter(f) - TODO
+* map(f) - TODO
+* zip(s) - TODO
 
     
 ## promise

@@ -77,6 +77,9 @@ bilby = bilby
     .method('concat', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a + b;
     })
+    .method('concat', isFunction, function(a, b) {
+        return a().concat(b());
+    })
 
     .property('oneOf', function(a) {
         return a[Math.floor(this.randomRange(0, a.length))];

@@ -1,10 +1,12 @@
 /**
     ## `Stream(state)`
 
-    * foreach() - TODO
-    * filter() - TODO
-    * map() - TODO
-    * zip() - TODO
+    * concat(b) - TODO
+    * empty() - TODO
+    * foreach(f) - TODO
+    * filter(f) - TODO
+    * map(f) - TODO
+    * zip(s) - TODO
 **/
 function Stream(f) {
     var self = getInstance(this, Stream);
@@ -38,6 +40,34 @@ Stream.of = function(a, b) {
     });
 };
 
+Stream.prototype.chain = function(f) {
+    var env = this;
+    return new Stream(function(state) {
+        env.foreach(function(a) {
+            f(a).fold(
+                function(a) {
+                    state(a);
+                },
+                function(){
+                    // Do nothing.
+                }
+            );
+        });
+    });
+};
+
+Stream.prototype.concat = function(b) {
+    return this.chain(function(a) {
+        return Option.some(a.concat(b));
+    });
+};
+
+Stream.prototype.empty = function() {
+    return this.chain(function(a) {
+        return Option.some(bilby.empty(a));
+    });
+};
+
 Stream.prototype.foreach = function(f) {
     var env = this;
     return new Stream(function(state) {
@@ -50,35 +80,30 @@ Stream.prototype.foreach = function(f) {
 };
 
 Stream.prototype.filter = function(f) {
-    var env = this;
-    return new Stream(function(state) {
-        env.foreach(function(a) {
-            if (f(a)) {
-                state(a);
-            }
-        });
+    return this.chain(function(a) {
+        return f(a) ? Option.some(a) : Option.none;
     });
 };
 
 Stream.prototype.map = function(f) {
-    var env = this;
-    return new Stream(function(state) {
-        env.foreach(function(a) {
-            state(f(a));
-        });
+    return this.chain(function(a) {
+        return Option.some(f(a));
     });
 };
 
 Stream.prototype.zip = function(s) {
     var env = this;
-    var m,
+    var cur,
         left = List.nil,
         right = List.nil;
 
-    // This doesn't seem very functional.
     function dispatch() {
-        if (left.size() > 0 && right.size() > 0) {
-            m([left.car, right.car]);
+        if (and(left.isNonEmpty)(right.isNonEmpty)) {
+
+            cur(left.car)(right.car);
+
+            // This doesn't seem very functional.
+            // I'm sure we can use State.js
             left = left.cdr;
             right = right.cdr;
         }
@@ -94,7 +119,9 @@ Stream.prototype.zip = function(s) {
     });
 
     return new Stream(function(state) {
-        m = state;
+        cur = curry(function(a, b) {
+            state([a, b]);
+        });
     });
 };
 

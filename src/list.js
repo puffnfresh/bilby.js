@@ -1,6 +1,7 @@
 /**
     # List
 
+    * concat(a) - TODO
     * fold(a, b) - applies `a` to value if `cons` or defaults to `b`
     * map(f) - functor map
 **/
@@ -20,6 +21,10 @@ List.range = function(a, b) {
     }
 
     return accum;
+};
+
+List.prototype.concat = function(s) {
+    return this.appendAll(s);
 };
 
 List.prototype.fold = function(f, g) {
@@ -232,6 +237,9 @@ bilby = bilby
     .property('nil', List.nil)
     .property('isList', isList)
     .property('range', List.range)
+    .method('concat', isList, function(a, b) {
+        return a.concat(b);
+    })
     .method('fold', isList, function(a, f, g) {
         return a.fold(f, g);
     })
