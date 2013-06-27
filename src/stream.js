@@ -1,14 +1,17 @@
-var Stream = function(f, o) {
-    // Hmm... this is very much mutable!
-    // Have to work out how a stream can listen to another stream that's already been created.
-    var env = this;
-    env.subs = [];
+function Stream(f, o) {
+    var self = getInstance(this, Stream);
+    // Not sure I like this subs array hanging off the stream.
+    // Is there any alternatives?
+    self.subs = [];
+
     f(function(a) {
-        env.subs.forEach(function(s) {
+        self.subs.forEach(function(s) {
             s(a);
         });
     });
-};
+
+    return self;
+}
 
 Stream.of = function(a, b) {
     var unbinder,
