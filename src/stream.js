@@ -37,6 +37,17 @@ Stream.prototype.foreach = function(f) {
     });
 };
 
+Stream.prototype.filter = function(f) {
+    var env = this;
+    return new Stream(function(state) {
+        env.subs.push(function(a) {
+            if (f(a)) {
+                state(a);
+            }
+        });
+    });
+};
+
 Stream.prototype.map = function(f) {
     var env = this;
     return new Stream(function(state) {

@@ -12,13 +12,22 @@ exports.streamForeachTest = function(test) {
     }, 50);
 };
 
+exports.streamFilterTest = function(test) {
+    var a = λ.Stream.sequential([1, 2, 3, 4]).filter(λ.isEven).toArray();
+
+    setTimeout(function() {
+        test.deepEqual(a, [2, 4]);
+        test.done();
+    }, 50);
+};
+
 exports.streamMapTest = function(test) {
-    var s = λ.Stream.sequential([1, 2, 3, 4]).map(function(a) {
+    var a = λ.Stream.sequential([1, 2, 3, 4]).map(function(a) {
         return a * 2;
     }).toArray();
 
     setTimeout(function() {
-        test.deepEqual(s, [2, 4, 6, 8]);
+        test.deepEqual(a, [2, 4, 6, 8]);
         test.done();
     }, 50);
 };
