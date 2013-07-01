@@ -93,21 +93,23 @@ Stream.prototype.map = function(f) {
 
 Stream.prototype.zip = function(s) {
     var env = this;
-    var cur,
+    var dispatch,
         left = List.nil,
         right = List.nil;
 
-    function dispatch() {
-        if (and(left.isNonEmpty)(right.isNonEmpty)) {
+    var stream = new Stream(function(state) {
+        dispatch = function() {
+            if (and(left.isNonEmpty)(right.isNonEmpty)) {
 
-            cur(left.car)(right.car);
+                state([left.car, right.car]);
 
-            // This doesn't seem very functional.
-            // I'm sure we can use State.js
-            left = left.cdr;
-            right = right.cdr;
-        }
-    }
+                // This doesn't seem very functional.
+                // I'm sure we can use State.js
+                left = left.cdr;
+                right = right.cdr;
+            }
+        };
+    });
 
     this.foreach(function(a) {
         left = List.cons.of(a, left);
@@ -118,11 +120,7 @@ Stream.prototype.zip = function(s) {
         dispatch();
     });
 
-    return new Stream(function(state) {
-        cur = curry(function(a, b) {
-            state([a, b]);
-        });
-    });
+    return stream;
 };
 
 Stream.prototype.toArray = function() {
