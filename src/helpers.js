@@ -490,12 +490,11 @@ var fill = curry(function(s, t) {
    Create an array with a given range (length).
 **/
 function range(s) {
-    var accum = [],
-        i;
-    for(i = 0; i < s; i++) {
-        accum[i] = i;
-    }
-    return accum;
+    var f = function(a, i) {
+        if (i >= s) return a;
+        return f((a[i] = i++, a), i);
+    };
+    return f([], 0);
 }
 
 /**
