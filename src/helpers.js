@@ -474,15 +474,21 @@ var strictEquals = curry(function(a, b) {
    Curried function for filling array.
 **/
 var fill = curry(function(s, t) {
+    return this.map(range(s), t);
+});
+/**
+   ## range(a)
+
+   Create an array with a given range (length).
+**/
+function range(s) {
     var accum = [],
         i;
-
     for(i = 0; i < s; i++) {
-        accum[i] = t(i);
+        accum[i] = i;
     }
-
     return accum;
-});
+}
 
 /**
    ## liftA2(f, a, b)

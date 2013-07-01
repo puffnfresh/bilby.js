@@ -376,6 +376,10 @@ Curried function for `===`.
     
 Curried function for filling array.
 
+## range(a)
+    
+Create an array with a given range (length).
+
 ## liftA2(f, a, b)
     
 Lifts a curried, binary function `f` into the applicative passes
