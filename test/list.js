@@ -46,6 +46,13 @@ exports.listPrependAllTest = λ.check(
     [λ.AnyVal, λ.AnyVal]
 );
 
+exports.listAppendAllTest = λ.check(
+    function(a, b) {
+        return λ.equal(λ.nil.appendAll(λ.cons(a, λ.cons(b, λ.nil))), λ.cons(a, λ.cons(b, λ.nil)));
+    },
+    [λ.AnyVal, λ.AnyVal]
+);
+
 exports.listForeachTest = λ.check(
     function(a, b, c) {
         var accum = 0;

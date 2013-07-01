@@ -27,26 +27,21 @@ List.prototype.concat = function(s) {
     return this.appendAll(s);
 };
 
-List.prototype.fold = function(f, g) {
-    var accum = List.nil;
+List.prototype.fold = function(f) {
+    if (this.isEmpty) return this;
 
-    var p = this;
-    while(p.isNonEmpty) {
-        // Not sure is we should create list.cons here or in map
-        accum = f(p.car, accum);
-        p = p.cdr;
-    }
+    var rec = function(a, b) {
+        if (a.isEmpty) return b;
 
-    return accum;
+        return rec(a.cdr, f(a.car, b));
+    };
+    return rec(this, List.nil);
 };
 
 List.prototype.map = function(f) {
     return this.fold(
         function(a, b) {
             return List.cons.of(f(a), b);
-        },
-        function() {
-            return this;
         }
     );
 };
@@ -55,9 +50,6 @@ List.prototype.flatMap = function(f) {
     return this.fold(
       function(a, b) {
           return b.prependAll(f(a));
-      },
-      function() {
-          return this;
       }
     ).reverse();
 };
@@ -67,15 +59,14 @@ List.prototype.append = function(a) {
 };
 
 List.prototype.appendAll = function(a) {
-    var accum = a;
+    if (this.isEmpty) return this;
 
-    var p = this.reverse();
-    while(p.isNonEmpty) {
-        accum = List.cons.of(p.car, accum);
-        p = p.cdr;
-    }
+    var rec = function(a, b) {
+        if (a.isEmpty) return b;
 
-    return accum;
+        return rec(a.cdr, List.cons.of(a.car, b));
+    };
+    return rec(this.reverse(), a);
 };
 
 List.prototype.prepend = function(a) {
@@ -83,51 +74,54 @@ List.prototype.prepend = function(a) {
 };
 
 List.prototype.prependAll = function(a) {
-    var accum = this;
-    while(a.isNonEmpty) {
-        accum = List.cons.of(a.car, accum);
-        a = a.cdr;
-    }
-    return accum;
+    if (a.isEmpty) return this;
+
+    var rec = function(a, b) {
+        if (b.isEmpty) return a;
+
+        return rec(List.cons.of(b.car, a), b.cdr);
+    };
+    return rec(this, a);
 };
 
 List.prototype.reverse = function() {
-    // Not sure this is the most optimized way of doing this.
-    function recursive(p, accum) {
+    var rec = function(p, accum) {
         return p.cata({
             cons: function(a, b) {
-                return recursive(b, List.cons.of(a, accum));
+                return rec(b, List.cons.of(a, accum));
             },
             nil: function() {
                 return accum;
             }
         });
-    }
-    return recursive(this, List.nil);
+    };
+    return rec(this, List.nil);
 };
 
 List.prototype.exists = function(f) {
-    var p = this;
-    while(p.isNonEmpty) {
-        if(f(p.car)) {
-            return true;
-        }
-        p = p.cdr;
-    }
-    return false;
+    if (this.isEmpty) return false;
+
+    var rec = function(a) {
+        if (a.isEmpty) return false;
+        if (f(a.car)) return true;
+
+        return rec(a.cdr);
+    };
+    return rec(this);
 };
 
 List.prototype.filter = function(f) {
-    var accum = List.nil;
+    if (this.isEmpty) return this;
 
-    var p = this;
-    while(p.isNonEmpty) {
-        if (f(p.car)) {
-            accum = List.cons.of(p.car, accum);
-        }
-        p = p.cdr;
-    }
-    return accum.reverse();
+    var rec = function(a, b) {
+        if (a.isEmpty) return b;
+
+        var cur = curry(rec)(a.cdr);
+        if (f(a.car)) return cur(List.cons.of(a.car, b));
+
+        return cur(b);
+    };
+    return rec(this, List.nil).reverse();
 };
 
 List.prototype.foreach = function(f) {
@@ -143,47 +137,41 @@ List.prototype.foreach = function(f) {
 };
 
 List.prototype.partition = function(f) {
-    var left = List.nil;
-    var right = List.nil;
+    if (this.isEmpty) return Tuple2(this, this);
 
-    var p = this;
-    while(p.isNonEmpty) {
-        if (f(p.car)) {
-            left = List.cons.of(p.car, left);
-        } else {
-            right = List.cons.of(p.car, right);
-        }
-        p = p.cdr;
-    }
-    return Tuple2(left.reverse(), right.reverse());
+    var rec = function(a, l, r) {
+        if (a.isEmpty) return Tuple2(l.reverse(), r.reverse());
+
+        var h = a.car;
+        var cur = curry(List.cons.of)(h);
+
+        if (f(h)) return rec(a.cdr, cur(l), r);
+        else return rec(a.cdr, l, cur(r));
+    };
+    return rec(this, List.nil, List.nil);
 };
 
 List.prototype.size = function() {
-    // We can do this because items are immutable.
-    // Also this will coerce undefined to a number.
-    if (this._size >= 0) {
-        return this._size;
-    }
+    if (this.isEmpty) return 0;
 
-    var s = 0;
-    var p = this;
-    while(p.isNonEmpty) {
-        s++;
-        p = p.cdr;
-    }
+    var rec = function(a) {
+        if (a.isEmpty) return 0;
 
-    this._size = s;
-    return s;
+        return 1 + rec(a.cdr);
+    };
+    return rec(this);
 };
 
 List.prototype.toArray = function() {
-    var accum = [];
-    var p = this;
-    while(p.isNonEmpty) {
-        accum.push(p.car);
-        p = p.cdr;
-    }
-    return accum;
+    if (this.isEmpty) return [];
+
+    var rec = function(a, b) {
+        if (a.isEmpty) return a;
+
+        b.push(a.car);
+        return rec(a.cdr, b);
+    };
+    return rec(this, []);
 };
 
 List.prototype.toString = function() {
