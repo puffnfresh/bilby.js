@@ -469,6 +469,14 @@ var strictEquals = curry(function(a, b) {
     return a === b;
 });
 /**
+    ## not(a)
+
+    Returns `true` iff `a` is not a valid value.
+**/
+function not(a) {
+    return !a;
+}
+/**
    ## fill(s)(t)
 
    Curried function for filling array.
@@ -562,7 +570,9 @@ bilby = bilby
     .property('or', or)
     .property('and', and)
     .property('add', add)
+    .property('not', not)
     .property('fill', fill)
+    .property('range', range)
     .property('strictEquals', strictEquals)
     .property('liftA2', liftA2)
     .property('sequence', sequence);

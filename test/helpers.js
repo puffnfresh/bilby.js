@@ -58,3 +58,8 @@ exports.fillTest = function(test) {
     );
     test.done();
 };
+
+exports.notTest = function(test) {
+    test.ok(!λ.not(true));
+    test.done();
+};

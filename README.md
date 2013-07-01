@@ -372,6 +372,10 @@ Curried function for `+`.
     
 Curried function for `===`.
 
+## not(a)
+    
+Returns `true` iff `a` is not a valid value.
+
 ## fill(s)(t)
     
 Curried function for filling array.
