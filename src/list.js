@@ -11,16 +11,12 @@ var List = taggedSum({
 });
 
 List.range = function(a, b) {
-    var accum = List.nil,
-        total = b - a,
-        i;
-
-    var diff = b - a;
-    for (i = a; i < a + total; i++) {
-        accum = List.cons.of(i, accum);
-    }
-
-    return accum;
+    var total = b - a;
+    var rec = function(x, y) {
+        if (y - a >= total) return x;
+        return rec(List.cons.of(y, x), ++y);
+    };
+    return rec(List.nil, a);
 };
 
 List.prototype.concat = function(s) {
@@ -224,7 +220,7 @@ bilby = bilby
     .property('cons', List.cons)
     .property('nil', List.nil)
     .property('isList', isList)
-    .property('range', List.range)
+    .property('listRange', List.range)
     .method('concat', isList, function(a, b) {
         return a.concat(b);
     })

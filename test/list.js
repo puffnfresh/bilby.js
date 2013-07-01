@@ -75,7 +75,7 @@ exports.listPartitionTest = function(test) {
 exports.listSizeTest = function(test) {
     var a = λ.randomRange(0, 50) | 0,
         b = λ.randomRange(51, 100) | 0,
-        actual = λ.range(a, b);
+        actual = λ.listRange(a, b);
 
     test.equal(actual.size(), b - a);
     test.done();

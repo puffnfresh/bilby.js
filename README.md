@@ -380,7 +380,7 @@ Returns `true` iff `a` is not a valid value.
     
 Curried function for filling array.
 
-## range(a)
+## range(a, b)
     
 Create an array with a given range (length).
 

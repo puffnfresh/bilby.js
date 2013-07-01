@@ -482,19 +482,22 @@ function not(a) {
    Curried function for filling array.
 **/
 var fill = curry(function(s, t) {
-    return this.map(range(s), t);
+    return this.map(range(0, s), t);
 });
 /**
-   ## range(a)
+   ## range(a, b)
 
    Create an array with a given range (length).
 **/
-function range(s) {
-    var f = function(a, i) {
-        if (i >= s) return a;
-        return f((a[i] = i++, a), i);
+function range(a, b) {
+    var total = b - a;
+    var rec = function(x, y) {
+        if (y - a >= total) return x;
+
+        x[y] = y++;
+        return rec(x, y);
     };
-    return f([], 0);
+    return rec([], a);
 }
 
 /**
