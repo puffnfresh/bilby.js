@@ -10,14 +10,14 @@
 **/
 function Stream(f) {
     var self = getInstance(this, Stream);
-    // Not sure I like this subs array hanging off the stream.
-    // Is there any alternatives?
-    self.subs = [];
+
+    var resolver;
+    self.promise = new Promise(function(resolve, reject) {
+        resolver = resolve;
+    });
 
     f(function(a) {
-        self.subs.forEach(function(s) {
-            s(a);
-        });
+        resolver(a);
     });
 
     return self;
@@ -48,9 +48,7 @@ Stream.prototype.chain = function(f) {
                 function(a) {
                     state(a);
                 },
-                function(){
-                    // Do nothing.
-                }
+                function(){}
             );
         });
     });
@@ -71,11 +69,10 @@ Stream.prototype.empty = function() {
 Stream.prototype.foreach = function(f) {
     var env = this;
     return new Stream(function(state) {
-        // I only subs for foreach, can I lift this out?
-        env.subs.push(function(a) {
-            f(a);
-            state(a);
-        });
+        env.promise.fork(
+            f,
+            function(error) {}
+        );
     });
 };
 
@@ -93,31 +90,24 @@ Stream.prototype.map = function(f) {
 
 Stream.prototype.zip = function(s) {
     var env = this;
-    var dispatch,
-        left = List.nil,
-        right = List.nil;
+
+    var resolver,
+        left = [],
+        right = [];
 
     var stream = new Stream(function(state) {
-        dispatch = function() {
-            if (and(left.isNonEmpty)(right.isNonEmpty)) {
-
-                state([left.car, right.car]);
-
-                // This doesn't seem very functional.
-                // I'm sure we can use State.js
-                left = left.cdr;
-                right = right.cdr;
-            }
-        };
+        resolver = state;
     });
 
     this.foreach(function(a) {
-        left = List.cons.of(a, left);
-        dispatch();
+        if (right.length)
+            resolver([a, right.shift()]);
+        else left.push(a);
     });
     s.foreach(function(a) {
-        right = List.cons.of(a, right);
-        dispatch();
+        if (left.length)
+            resolver([left.shift(), a]);
+        else right.push(a);
     });
 
     return stream;
