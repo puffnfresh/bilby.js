@@ -17,7 +17,7 @@ function Stream(f) {
     });
 
     f(function(a) {
-        resolver(a);
+        if (resolver) resolver(a);
     });
 
     return self;
@@ -70,7 +70,10 @@ Stream.prototype.foreach = function(f) {
     var env = this;
     return new Stream(function(state) {
         env.promise.fork(
-            f,
+            function(data) {
+                f(data);
+                state(data);
+            },
             function(error) {}
         );
     });
