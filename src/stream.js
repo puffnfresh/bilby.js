@@ -29,7 +29,7 @@ Stream.of = function(a, b) {
 
     return new Stream(function(state) {
         unbinder = a(function() {
-            bounce = b();
+            bounce = b.apply(null, [].slice.call(arguments));
             if (!bounce.isDone) {
                 state(bounce.thunk());
             } else {
