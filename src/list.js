@@ -10,14 +10,16 @@ var List = taggedSum({
     nil: []
 });
 
-List.range = function(a, b) {
+List.range = curry(function(a, b) {
     var total = b - a;
     var rec = function(x, y) {
-        if (y - a >= total) return x;
-        return rec(List.cons.of(y, x), ++y);
+        if (y - a >= total) return done(x);
+        return cont(function() {
+            return rec(List.cons.of(y, x), ++y);
+        });
     };
-    return rec(List.nil, a);
-};
+    return trampoline(rec(List.nil, a));
+});
 
 List.prototype.concat = function(s) {
     return this.appendAll(s);
@@ -27,11 +29,13 @@ List.prototype.fold = function(f) {
     if (this.isEmpty) return this;
 
     var rec = function(a, b) {
-        if (a.isEmpty) return b;
+        if (a.isEmpty) return done(b);
 
-        return rec(a.cdr, f(a.car, b));
+        return cont(function() {
+            return rec(a.cdr, f(a.car, b));
+        });
     };
-    return rec(this, List.nil);
+    return trampoline(rec(this.reverse(), List.nil));
 };
 
 List.prototype.map = function(f) {
@@ -45,9 +49,9 @@ List.prototype.map = function(f) {
 List.prototype.flatMap = function(f) {
     return this.fold(
       function(a, b) {
-          return b.prependAll(f(a));
+          return b.prependAll(f(a).reverse());
       }
-    ).reverse();
+    );
 };
 
 List.prototype.append = function(a) {
@@ -58,11 +62,13 @@ List.prototype.appendAll = function(a) {
     if (this.isEmpty) return this;
 
     var rec = function(a, b) {
-        if (a.isEmpty) return b;
+        if (a.isEmpty) return done(b);
 
-        return rec(a.cdr, List.cons.of(a.car, b));
+        return cont(function() {
+            return rec(a.cdr, List.cons.of(a.car, b));
+        });
     };
-    return rec(this.reverse(), a);
+    return trampoline(rec(this.reverse(), a));
 };
 
 List.prototype.prepend = function(a) {
@@ -73,51 +79,61 @@ List.prototype.prependAll = function(a) {
     if (a.isEmpty) return this;
 
     var rec = function(a, b) {
-        if (b.isEmpty) return a;
+        if (b.isEmpty) return done(a);
 
-        return rec(List.cons.of(b.car, a), b.cdr);
+        return cont(function() {
+            return rec(List.cons.of(b.car, a), b.cdr);
+        });
     };
-    return rec(this, a);
+    return trampoline(rec(this, a));
 };
 
 List.prototype.reverse = function() {
     var rec = function(p, accum) {
         return p.cata({
             cons: function(a, b) {
-                return rec(b, List.cons.of(a, accum));
+                return cont(function() {
+                    return rec(p.cdr, List.cons.of(a, accum));
+                });
             },
             nil: function() {
-                return accum;
+                return done(accum);
             }
         });
     };
-    return rec(this, List.nil);
+    return trampoline(rec(this, List.nil));
 };
 
 List.prototype.exists = function(f) {
     if (this.isEmpty) return false;
 
     var rec = function(a) {
-        if (a.isEmpty) return false;
-        if (f(a.car)) return true;
+        if (a.isEmpty) return done(false);
+        if (f(a.car)) return done(true);
 
-        return rec(a.cdr);
+        return cont(function() {
+            return rec(a.cdr);
+        });
     };
-    return rec(this);
+    return trampoline(rec(this));
 };
 
 List.prototype.filter = function(f) {
     if (this.isEmpty) return this;
 
     var rec = function(a, b) {
-        if (a.isEmpty) return b;
+        if (a.isEmpty) return done(b);
 
-        var cur = curry(rec)(a.cdr);
-        if (f(a.car)) return cur(List.cons.of(a.car, b));
-
-        return cur(b);
+        return cont(function() {
+            var c = curry(rec)(a.cdr);
+            if (f(a.car)) {
+                return c(List.cons.of(a.car, b));
+            } else {
+                return c(b);
+            }
+        });
     };
-    return rec(this, List.nil).reverse();
+    return trampoline(rec(this, List.nil)).reverse();
 };
 
 List.prototype.foreach = function(f) {
@@ -136,38 +152,46 @@ List.prototype.partition = function(f) {
     if (this.isEmpty) return Tuple2(this, this);
 
     var rec = function(a, l, r) {
-        if (a.isEmpty) return Tuple2(l.reverse(), r.reverse());
+        if (a.isEmpty) return done(Tuple2(l.reverse(), r.reverse()));
 
-        var h = a.car;
-        var cur = curry(List.cons.of)(h);
-
-        if (f(h)) return rec(a.cdr, cur(l), r);
-        else return rec(a.cdr, l, cur(r));
+        return cont(function() {
+            var h = a.car;
+            var cur = curry(List.cons.of)(h);
+            if (f(h)) {
+                return rec(a.cdr, cur(l), r);
+            } else {
+                return rec(a.cdr, l, cur(r));
+            }
+        });
     };
-    return rec(this, List.nil, List.nil);
+    return trampoline(rec(this, List.nil, List.nil));
 };
 
 List.prototype.size = function() {
     if (this.isEmpty) return 0;
 
-    var rec = function(a) {
-        if (a.isEmpty) return 0;
+    var rec = function(a, b) {
+        if (a.isEmpty) return done(b);
 
-        return 1 + rec(a.cdr);
+        return cont(function() {
+            return rec(a.cdr, ++b);
+        });
     };
-    return rec(this);
+    return trampoline(rec(this, 0));
 };
 
 List.prototype.toArray = function() {
     if (this.isEmpty) return [];
 
     var rec = function(a, b) {
-        if (a.isEmpty) return a;
+        if (a.isEmpty) return done(b);
 
         b.push(a.car);
-        return rec(a.cdr, b);
+        return cont(function() {
+            return rec(a.cdr, b);
+        });
     };
-    return rec(this, []);
+    return trampoline(rec(this, []));
 };
 
 List.prototype.toString = function() {
