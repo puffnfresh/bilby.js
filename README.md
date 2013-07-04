@@ -5,7 +5,7 @@
 # Build status
 
 Development
-[![Build Status](https://travis-ci.org/SimonRichardson/bilby.js.png?branch=develop)](http://travis-ci.org/SimonRichardson/bilby.js)
+[![Build Status](https://travis-ci.org/SimonRichardson/bilby.js.png?branch=master)](http://travis-ci.org/SimonRichardson/bilby.js)
 
 Main
 [![Build Status](https://secure.travis-ci.org/pufuwozu/bilby.js.png)](http://travis-ci.org/pufuwozu/bilby.js)
