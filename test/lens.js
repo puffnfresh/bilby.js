@@ -1,4 +1,4 @@
-var λ = require('../bilby');
+var λ = require('../dist/bilby'),
     addressLens = λ.objectLens('address'),
     streetLens = λ.objectLens('street'),
     stateLens = λ.objectLens('state'),

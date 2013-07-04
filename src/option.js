@@ -16,15 +16,13 @@
    * flatMap(f) - monadic flatMap/bind
    * map(f) - functor map
    * ap(s) - applicative ap(ply)
-   * append(s, plus) - semigroup append
+   * concat(s, plus) - semigroup concat
 **/
 
 var Option = taggedSum({
     some: ['x'],
     none: []
 });
-
-Do.setValueOf(Option.prototype);
 
 Option.prototype.fold = function(f, g) {
     return this.cata({
@@ -73,7 +71,7 @@ Option.prototype.flatMap = function(f) {
 Option.prototype.map = function(f) {
     return this.fold(
         function(x) {
-            return Option.some(f(x));
+            return Option.some.of(f(x));
         },
         function() {
             return this;
@@ -90,7 +88,7 @@ Option.prototype.ap = function(s) {
         }
     );
 };
-Option.prototype.append = function(s, plus) {
+Option.prototype.concat = function(s, plus) {
     return this.fold(
         function(x) {
             return s.map(function(y) {
@@ -104,12 +102,30 @@ Option.prototype.append = function(s, plus) {
 };
 
 /**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option` with value of `x`.
+**/
+Option.of = function(x) {
+    return Option.some(x);
+};
+
+/**
    ## some(x)
 
-   Constructor to represent the existance of a value, `x`.
+   Constructor to represent the existence of a value, `x`.
 **/
 Option.some.prototype.isSome = true;
 Option.some.prototype.isNone = false;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.some` with value of `x`.
+**/
+Option.some.of = function(x) {
+    return Option.some(x);
+};
 
 /**
    ## none
@@ -120,9 +136,18 @@ Option.none.isSome = false;
 Option.none.isNone = true;
 
 /**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.none`.
+**/
+Option.none.of = function() {
+    return Option.none;
+};
+
+/**
    ## isOption(a)
 
-   Returns `true` iff `a` is a `some` or `none`.
+   Returns `true` if `a` is a `some` or `none`.
 **/
 var isOption = isInstanceOf(Option);
 
@@ -142,6 +167,6 @@ bilby = bilby
     .method('ap', isOption, function(a, b) {
         return a.ap(b);
     })
-    .method('append', isOption, function(a, b) {
-        return a.append(b, this.append);
+    .method('concat', isOption, function(a, b) {
+        return a.concat(b, this.concat);
     });

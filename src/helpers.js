@@ -92,7 +92,7 @@ function curry(f) {
 
    Flips the order of arguments to `f`:
 
-       var append = bilby.curry(function(a, b) {
+       var concat = bilby.curry(function(a, b) {
                return a + b;
            }),
            prepend = flip(concat);
@@ -298,11 +298,11 @@ function singleton(k, v) {
 /**
    ## extend(a, b)
 
-   Right-biased key-value append of objects `a` and `b`:
+   Right-biased key-value concat of objects `a` and `b`:
 
        bilby.extend({a: 1, b: 2}, {b: true, c: false}) == {a: 1, b: true, c: false}
 **/
-// TODO: Make into an Object semigroup#append
+// TODO: Make into an Object semigroup#concat
 function extend(a, b) {
     var o = {},
         i;
@@ -357,6 +357,22 @@ var isString = isTypeOf('string');
 function isArray(a) {
     if(Array.isArray) return Array.isArray(a);
     return Object.prototype.toString.call(a) === "[object Array]";
+}
+/**
+   ## isEven(a)
+
+   Returns `true` iff `a` is even.
+**/
+function isEven(a) {
+    return (a & 1) === 0;
+}
+/**
+   ## isOdd(a)
+
+   Returns `true` iff `a` is odd.
+**/
+function isOdd(a) {
+    return !isEven(a);
 }
 /**
    ## isInstanceOf(c)(o)
@@ -452,6 +468,37 @@ var add = curry(function(a, b) {
 var strictEquals = curry(function(a, b) {
     return a === b;
 });
+/**
+    ## not(a)
+
+    Returns `true` iff `a` is not a valid value.
+**/
+function not(a) {
+    return !a;
+}
+/**
+   ## fill(s)(t)
+
+   Curried function for filling array.
+**/
+var fill = curry(function(s, t) {
+    return this.map(range(0, s), t);
+});
+/**
+   ## range(a, b)
+
+   Create an array with a given range (length).
+**/
+function range(a, b) {
+    var total = b - a;
+    var rec = function(x, y) {
+        if (y - a >= total) return x;
+
+        x[y] = y++;
+        return rec(x, y);
+    };
+    return rec([], a);
+}
 
 /**
    ## liftA2(f, a, b)
@@ -505,7 +552,6 @@ bilby = bilby
     .property('tagged', tagged)
     .property('taggedSum', taggedSum)
     .property('error', error)
-    .property('zip', zip)
     .property('extend', extend)
     .property('singleton', singleton)
     .property('isTypeOf',  isTypeOf)
@@ -514,6 +560,8 @@ bilby = bilby
     .property('isFunction', isFunction)
     .property('isNumber', isNumber)
     .property('isString', isString)
+    .property('isEven', isEven)
+    .property('isOdd', isOdd)
     .property('isInstanceOf', isInstanceOf)
     .property('AnyVal', AnyVal)
     .property('Char', Char)
@@ -524,6 +572,9 @@ bilby = bilby
     .property('or', or)
     .property('and', and)
     .property('add', add)
+    .property('not', not)
+    .property('fill', fill)
+    .property('range', range)
     .property('strictEquals', strictEquals)
     .property('liftA2', liftA2)
     .property('sequence', sequence);

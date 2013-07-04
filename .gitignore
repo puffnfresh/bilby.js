@@ -1,3 +1,6 @@
+.DS_Store
+docs
+coverage
 node_modules
 npm-debug.log
 bilby*.js

@@ -67,15 +67,18 @@ bilby = bilby
 
         return accum;
     })
-    .method('append', isArray, function(a, b) {
+    .method('concat', isArray, function(a, b) {
         return a.concat(b);
     })
     .method('pure', strictEquals(Array), function(m, a) {
         return [a];
     })
 
-    .method('append', bilby.liftA2(or, isNumber, isString), function(a, b) {
+    .method('concat', bilby.liftA2(or, isNumber, isString), function(a, b) {
         return a + b;
+    })
+    .method('concat', isFunction, function(a, b) {
+        return a().concat(b());
     })
 
     .property('oneOf', function(a) {
@@ -139,10 +142,33 @@ bilby = bilby
     .method('arb', strictEquals(String), function(a, s) {
         return this.arb(arrayOf(Char), s - 1).join('');
     })
+    .method('arb', strictEquals(Function), function(a, s) {
+        return function(){};
+    })
+
+    .method('empty', strictEquals(AnyVal), function(a, s) {
+        var types = [Boolean, Number, String];
+        return this.empty(this.oneOf(types), s - 1);
+    })
+    .method('empty', isArray, function(a, s) {
+        return [];
+    })
+    .method('empty', isObjectLike, function(a, s) {
+        return {};
+    })
+    .method('empty', isBoolean, function(a, s) {
+        return false;
+    })
+    .method('empty', isNumber, function(a, s) {
+        return 0;
+    })
+    .method('empty', isString, function(a, s) {
+        return '';
+    })
 
     .method('shrink', isBoolean, function() {
         return function(b) {
-            return b ? [False] : [];
+            return b ? [false] : [];
         };
     })
     .method('shrink', isNumber, function(n) {
@@ -187,7 +213,13 @@ bilby = bilby
         }
 
         return accum;
+    })
+
+    .method('toArray', isArray, identity)
+    .method('toArray', strictEquals(AnyVal), function(x) {
+        return [x];
+    })
+    .method('zip', bilby.liftA2(or, isArray, isString), function(a, b) {
+        return zip(a, b);
     });
 
-Do.setValueOf(Array.prototype);
-Do.setValueOf(Function.prototype);

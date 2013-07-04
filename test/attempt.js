@@ -5,25 +5,25 @@ var λ = require('./lib/test');
 exports.personExample = function(test) {
     function validAge(age) {
         var parsed = parseInt(age, 10);
-        return isNaN(parsed)
-            ? λ.failure(["Age is not a number"])
-            : parsed <= 0
-            ? λ.failure(["Age must be greater than 0"])
-            : parsed > 130
-            ? λ.failure(["Age must be less than 130"])
-            : λ.success(parsed);
+        return isNaN(parsed) ? 
+            λ.failure(["Age is not a number"]) :
+            parsed <= 0 ? 
+            λ.failure(["Age must be greater than 0"]) :
+            parsed > 130 ?
+            λ.failure(["Age must be less than 130"]) :
+            λ.success(parsed);
     }
 
     function validName(name) {
-        return name && name.match(/^[A-Z]/)
-            ? λ.success(name)
-            : λ.failure(["Name must begin with a capital letter"]);
+        return name && name.match(/^[A-Z]/) ?
+            λ.success(name) :
+            λ.failure(["Name must begin with a capital letter"]);
     }
 
     function validPostcode(postcode) {
-        return postcode.match(/^[0-9]{4}$/)
-            ? λ.success(postcode)
-            : λ.failure(["Postcode must be 4 digits"]);
+        return postcode.match(/^[0-9]{4}$/) ?
+            λ.success(postcode) :
+            λ.failure(["Postcode must be 4 digits"]);
     }
 
     var Person = λ.tagged('Person', ['age', 'name', 'postcode']),

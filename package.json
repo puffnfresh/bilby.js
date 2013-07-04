@@ -2,6 +2,9 @@
   "name": "bilby",
   "description": "Serious functional programming library for JavaScript",
   "author": "Brian McKenna <brian@brianmckenna.org> (http://brianmckenna.org/)",
+  "contributors": [
+    "Simon Richardson <stickupkid@gmail.com> (https://github.com/SimonRichardson)"
+  ],
   "homepage": "http://bilby.brianmckenna.org/",
   "license": "MIT",
   "repository": {
@@ -9,14 +12,17 @@
     "url": "git://github.com/pufuwozu/bilby.js.git"
   },
   "scripts": {
-    "prepublish": "./node_modules/grunt/bin/grunt",
-    "test": "./node_modules/grunt/bin/grunt lint rigger test"
+    "test": "grunt rig jshint nodeunit uglify emu"
   },
   "devDependencies": {
-    "grunt": "0.3.15",
-    "rigger": "0.3.19",
+    "grunt": "0.4.1",
+    "grunt-rigger": "0.5.0",
+    "grunt-contrib-jshint": "0.6.0",
+    "grunt-contrib-nodeunit": "0.2.0",
+    "grunt-contrib-uglify": "0.2.2",
+    "grunt-contrib-watch": "0.4.4",
     "emu": "0.0.2"
   },
   "main": "bilby.js",
-  "version": "0.0.2"
+  "version": "0.1.0"
 }

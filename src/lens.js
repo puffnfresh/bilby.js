@@ -83,7 +83,6 @@ bilby = bilby
     .method('map', isStore, function(a, b) {
         return a.map(b);
     })
-
     .property('lens', lens)
     .property('isLens', isLens)
     .property('objectLens', objectLens);

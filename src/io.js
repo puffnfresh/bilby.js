@@ -24,7 +24,6 @@ function io(f) {
             return g(f()).perform();
         });
     };
-    Do.setValueOf(self);
 
     return self;
 }

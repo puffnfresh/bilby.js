@@ -2,7 +2,13 @@
 
 ![](http://brianmckenna.org/files/bilby.png)
 
-[![Build Status](https://secure.travis-ci.org/pufuwozu/bilby.js.png)](http://travis-ci.org/pufuwozu/bilby.js)
+# Build status
+
+Main
+[![Build Status](https://secure.travis-ci.org/puffnfresh/bilby.js.png)](http://travis-ci.org/puffnfresh/bilby.js)
+
+Dependency
+[![Dependencies](https://david-dm.org/SimonRichardson/bilby.js.png)](https://david-dm.org/SimonRichardson/bilby.js)
 
 # Description
 
@@ -15,8 +21,10 @@ Some features include:
 
 * Immutable multimethods for ad-hoc polymorphism
 * Functional data structures
-* Operator overloading for functional syntax
 * Automated specification testing (ScalaCheck, QuickCheck)
+* Fantasy Land compatible
+
+![](https://raw.github.com/puffnfresh/fantasy-land/master/logo.png)
 
 # Usage
 
@@ -32,7 +40,7 @@ Browser:
 
 Download the code with git:
 
-    git clone https://github.com/pufuwozu/bilby.js.git
+    git clone https://github.com/puffnfresh/bilby.js.git
 
 Install the development dependencies with npm:
 
@@ -186,7 +194,7 @@ when enough arguments are filled:
     
 Flips the order of arguments to `f`:
     
-    var append = bilby.curry(function(a, b) {
+    var concat = bilby.curry(function(a, b) {
             return a + b;
         }),
         prepend = flip(concat);
@@ -273,7 +281,7 @@ mutation:
 
 ## extend(a, b)
     
-Right-biased key-value append of objects `a` and `b`:
+Right-biased key-value concat of objects `a` and `b`:
     
     bilby.extend({a: 1, b: 2}, {b: true, c: false}) == {a: 1, b: true, c: false}
 
@@ -300,6 +308,14 @@ Returns `true` iff `a` is a `String`.
 ## isArray(a)
     
 Returns `true` iff `a` is an `Array`.
+
+## isEven(a)
+    
+Returns `true` iff `a` is even.
+
+## isOdd(a)
+    
+Returns `true` iff `a` is odd.
 
 ## isInstanceOf(c)(o)
     
@@ -352,6 +368,18 @@ Curried function for `+`.
 ## strictEquals(a)(b)
     
 Curried function for `===`.
+
+## not(a)
+    
+Returns `true` iff `a` is not a valid value.
+
+## fill(s)(t)
+    
+Curried function for filling array.
+
+## range(a, b)
+    
+Create an array with a given range (length).
 
 ## liftA2(f, a, b)
     
@@ -408,75 +436,40 @@ in a `done` or a `cont`.
 The beginning of the continuation to call. Will repeatedly evaluate
 `cont` thunks until it gets to a `done` value.
 
-# Do (operator overloading)
+# Id
     
-Adds operator overloading for functional syntax:
-    
-  * `>=` - monad flatMap/bind:
-    
-        bilby.Do()(
-            bilby.some(1) >= function(x) {
-                return x < 0 ? bilby.none : bilby.some(x + 2);
-            }
-        ).getOrElse(0) == 3;
-    
-  * `>>` - kleisli:
-    
-        bilby.Do()(
-            function(x) {
-                return x < 0 ? bilby.none : bilby.some(x + 1);
-            } >> function(x) {
-                return x % 2 != 0 ? bilby.none : bilby.some(x + 1);
-            }
-        )(1).getOrElse(0) == 3;
-    
-  * `<` - functor map:
-    
-        bilby.Do()(
-            bilby.some(1) < add(2)
-        ).getOrElse(0) == 3;
-    
-  * `*` - applicative ap(ply):
-    
-        bilby.Do()(
-            bilby.some(add) * bilby.some(1) * bilby.some(2)
-        ).getOrElse(0) == 3;
-    
-  * `+` - semigroup append:
-    
-        bilby.Do()(
-            bilby.some(1) + bilby.some(2)
-        ).getOrElse(0) == 3;
+* concat(b) - semigroup concat
+* empty() - empty value
+* map(f) - functor map
+* ap(b) - applicative ap(ply)
+* chain(f) - chain value
+* arb() - arbitrary value
 
-## Do()(a)
+## isId(a)
     
-Creates a new syntax scope. The `a` expression is allowed multiple
-usages of a single operator per `Do` call:
-    
-* `>=` - flatMap
-* `>>` - kleisli
-* `<` - map
-* `*` - ap
-* `+` - append
-    
-The associated name will be called on the bilby environment with
-the operands. For example:
-    
-    bilby.Do()(bilby.some(1) + bilby.some(2))
-    
-Desugars into:
-    
-    bilby.append(bilby.some(1), bilby.some(2))
+Returns `true` if `a` is `Id`.
 
-## Do.setValueOf(proto)
+# Identity
     
-Used to mutate the `valueOf` property on `proto`. Necessary to do
-the `Do` block's operator overloading. Uses the object's existing
-`valueOf` if not in a `Do` block.
+The Identity monad is a monad that does not embody any computational
+strategy. It simply applies the bound function to its input without
+any modification.
     
-*Warning:* this mutates `proto`. May not be safe, even though it
-tries to default back to the normal behaviour when not in a `Do`
-block.
+* chain(f) - chain values
+* map(f) - functor map
+* ap(a) - applicative ap(ply)
+
+## isIdentity(a)
+    
+Returns `true` if `a` is `Identity`.
+
+## Identity Transformer
+    
+The trivial monad transformer, which maps a monad to an equivalent monad.
+    
+* chain(f) - chain values
+* map(f) - functor map
+* ap(a) - applicative ap(ply)
 
 # Option
     
@@ -495,19 +488,31 @@ absence.
 * flatMap(f) - monadic flatMap/bind
 * map(f) - functor map
 * ap(s) - applicative ap(ply)
-* append(s, plus) - semigroup append
+* concat(s, plus) - semigroup concat
+
+## of(x)
+    
+Constructor `of` Monad creating `Option` with value of `x`.
 
 ## some(x)
     
-Constructor to represent the existance of a value, `x`.
+Constructor to represent the existence of a value, `x`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Option.some` with value of `x`.
 
 ## none
     
 Represents the absence of a value.
 
+## of(x)
+    
+Constructor `of` Monad creating `Option.none`.
+
 ## isOption(a)
     
-Returns `true` iff `a` is a `some` or `none`.
+Returns `true` if `a` is a `some` or `none`.
 
 # Either
     
@@ -525,26 +530,34 @@ Represents a tagged disjunction between two sets of values; `a` or
 * flatMap(f) - monadic flatMap/bind
 * map(f) - functor map
 * ap(s) - applicative ap(ply)
-* append(s, plus) - semigroup append
+* concat(s, plus) - semigroup concat
 
 ## left(x)
     
 Constructor to represent the left case.
 
+## of(x)
+    
+Constructor `of` Monad creating `Either.left`.
+
 ## right(x)
     
 Constructor to represent the (biased) right case.
+
+## of(x)
+    
+Constructor `of` Monad creating `Either.right`.
 
 ## isEither(a)
     
 Returns `true` iff `a` is a `left` or a `right`.
 
-# Validation
+# Attempt
     
-    Validation e v = Failure e + Success v
+    Attempt e v = Failure e + Success v
     
-The Validation data type represents a "success" value or a
-semigroup of "failure" values. Validation has an applicative
+The Attempt data type represents a "success" value or a
+semigroup of "failure" values. Attempt has an applicative
 functor which collects failures' errors or creates a new success
 value.
     
@@ -586,7 +599,7 @@ If both values are invalid:
     ]);
     
 * map(f) - functor map
-* ap(b, append) - applicative ap(ply)
+* ap(b, concat) - applicative ap(ply)
     
 ## success(value)
     
@@ -596,10 +609,26 @@ Represents a successful `value`.
     
 Represents a failure.
     
-`errors` **must** be a semigroup (i.e. have an `append`
+`errors` **must** be a semigroup (i.e. have an `concat`
 implementation in the environment).
 
-## isValidation(a)
+## success(x)
+    
+Constructor to represent the existance of a value, `x`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Option.success` with value of `x`.
+
+## failure(x)
+    
+Constructor to represent the existance of a value, `x`.
+
+## of(x)
+    
+Constructor `of` Monad creating `Option.failure` with value of `x`.
+
+## isAttempt(a)
     
 Returns `true` iff `a` is a `success` or a `failure`.
 
@@ -646,6 +675,248 @@ Pure wrapper around a side-effecting `f` function.
 ## isIO(a)
     
 Returns `true` iff `a` is an `io`.
+
+# Tuples
+    
+Tuples are another way of storing multiple values in a single value.
+They have a fixed number of elements (immutable), and so you can't
+cons to a tuple.
+Elements of a tuple do not need to be all of the same type
+    
+Example usage:
+    
+     bilby.Tuple2(1, 2);
+     bilby.Tuple3(1, 2, 3);
+     bilby.Tuple4(1, 2, 3, 4);
+     bilby.Tuple5(1, 2, 3, 4, 5);
+    
+* arb() - arbitrary value
+* fold(f) - `f` applied to value
+* map() - functor map
+
+## Tuple2
+    
+* flip() - flip values
+* concat() - Semigroup (value must also be a Semigroup)
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple2`.
+
+## Tuple3
+    
+* concat() - Semigroup (value must also be a Semigroup)
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple3`.
+
+## Tuple4
+    
+* concat() - Semigroup (value must also be a Semigroup)
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple4`.
+
+## Tuple5
+    
+* concat() - Semigroup (value must also be a Semigroup)
+
+## of(x)
+    
+Constructor `of` Monad creating `Tuple5`.
+
+## isTuple(a)
+    
+Returns `true` if `a` is `Tuple`.
+
+## isTuple2(a)
+    
+Returns `true` if `a` is `Tuple2`.
+
+## isTuple4(a)
+    
+Returns `true` if `a` is `Tuple3`.
+
+## isTuple4(a)
+    
+Returns `true` if `a` is `Tuple4`.
+
+## isTuple5(a)
+    
+Returns `true` if `a` is `Tuple5`.
+
+## `Promise(fork)`
+    
+Promise is a constructor which takes a `fork` function. The `fork`
+function takes two arguments:
+    
+    fork(resolve, reject)
+    
+Both `resolve` and `reject` are side-effecting callbacks.
+    
+### `fork(resolve, reject)`
+    
+The `resolve` callback gets called on a "successful" value. The
+`reject` callback gets called on a "failure" value.
+
+### `Promise.of(x)`
+    
+Creates a Promise that contains a successful value.
+
+### `Promise.error(x)`
+    
+Creates a Promise that contains a failure value.
+
+### `chain(f)`
+    
+Returns a new promise that evaluates `f` when the current promise
+is successfully fulfilled. `f` must return a new promise.
+
+### `reject(f)`
+    
+Returns a new promise that evaluates `f` when the current promise
+fails. `f` must return a new promise.
+
+### `map(f)`
+    
+Returns a new promise that evaluates `f` on a value and passes it
+through to the resolve function.
+
+## isPromise(a)
+    
+Returns `true` if `a` is `Promise`.
+
+## `State(run)`
+    
+* chain() - TODO
+* evalState() - evaluate state
+* execState() - execute on state
+* map() - functor map
+* ap() - applicative ap(ply)
+
+## isState(a)
+    
+Returns `true` if `a` is `State`.
+
+# List
+    
+    List a = Cons a + Nil
+    
+The list type data type constructs objects which points to values. The `cons`
+constructor represents a value, the left is the head (`car`, the first element)
+and the right represents the tail (`cdr`, the second element). The `nil`
+constructor is defined as an empty list.
+    
+The following example creates a list of values 1 and 2, where the nil terminates
+the list:
+    
+    cons(1, cons(2, nil));
+    
+The following can also represent tree like structures (Binary Trees):
+    
+    cons(cons(1, cons(2, nil)), cons(3, cons(4, nil)));
+    
+         *
+        / \
+       *   *
+      / \ / \
+     1  2 3  4
+    
+* concat(a) - semigroup concat
+* fold(a, b) - applies `a` to value if `cons` or defaults to `b`
+* map(f) - functor map
+* fold(f) - applies f to values
+* flatMap(f) - monadic flatMap
+* append(a) - append
+* appendAll(a) - append values
+* prepend(a) - prepend value
+* prependAll(a) - prepend values
+* reverse() - reverse
+* exists() - test by predicate
+* filter() - filter by predicate
+* foreach() - iteration
+* partition() - partition by predicate
+* size() - size of the list
+
+## cons(a, b)
+    
+Constructor to represent the existence of a value in a list, `a`
+and a reference to another `b`.
+
+## of(x)
+    
+Constructor `of` Monad creating `List.some` with value of `a` and `b`.
+
+## nil
+    
+Represents an empty list (absence of a list).
+
+## of(x)
+    
+Constructor `of` Monad creating `List.nil`.
+
+## isList(a)
+    
+Returns `true` if `a` is a `cons` or `nil`.
+
+## `Stream(state)`
+    
+The Stream type represents a flow of data ever evolving values over time.
+    
+Here is an example of a continuous random numbers piped through to the console.
+    
+    Stream.poll(
+        function() {
+            return cont(function() {
+                return bilby.method('arb', Number);
+            })
+        },
+    0).foreach(
+        function (a) {
+            console.log(a);
+        }
+    );
+    
+* concat(b) - semigroup concat
+* chain(f) - chain streams
+* empty() - empty values sent over time
+* foreach(f) - iteration of async values
+* filter(f) - filter values
+* map(f) - functor map
+* reduce(v, f) - functor reduce
+* merge(s) - merge streams
+* zip(s) - zip streams
+
+    
+## promise
+    
+    Stream.promise(promise).foreach(function (a) {
+      console.log(a);
+    });
+
+    
+## sequential
+    
+    Stream.sequential([1, 2, 3, 4]).foreach(function (a) {
+      console.log(a);
+    });
+
+    
+## poll
+    
+    Stream.poll(function() {
+      return cont(function() {
+          return bilby.method('arb', Number);
+      })
+    }, 0).foreach(function (a) {
+      console.log(a);
+    });
+
+## isStream(a)
+    
+Returns `true` if `a` is `Stream`.
 
 # QuickCheck
     

@@ -1,10 +1,10 @@
 /**
-   # Validation
+   # Attempt
 
-       Validation e v = Failure e + Success v
+       Attempt e v = Failure e + Success v
 
-   The Validation data type represents a "success" value or a
-   semigroup of "failure" values. Validation has an applicative
+   The Attempt data type represents a "success" value or a
+   semigroup of "failure" values. Attempt has an applicative
    functor which collects failures' errors or creates a new success
    value.
 
@@ -46,7 +46,7 @@
        ]);
 
    * map(f) - functor map
-   * ap(b, append) - applicative ap(ply)
+   * ap(b, concat) - applicative ap(ply)
 
    ## success(value)
 
@@ -56,53 +56,85 @@
 
    Represents a failure.
 
-   `errors` **must** be a semigroup (i.e. have an `append`
+   `errors` **must** be a semigroup (i.e. have an `concat`
    implementation in the environment).
 **/
 
-var Validation = taggedSum({
+var Attempt = taggedSum({
     success: ['value'],
     failure: ['errors']
 });
 
-Validation.success.prototype.map = function(f) {
-    return Validation.success(f(this.value));
+Attempt.success.prototype.map = function(f) {
+    return Attempt.success.of(f(this.value));
 };
-Validation.success.prototype.ap = function(v) {
+Attempt.success.prototype.ap = function(v) {
     return v.map(this.value);
 };
-Do.setValueOf(Validation.success.prototype);
 
-Validation.failure.prototype.map = function() {
+Attempt.failure.prototype.map = function() {
     return this;
 };
-Validation.failure.prototype.ap = function(b, append) {
+Attempt.failure.prototype.ap = function(b, concat) {
     var a = this;
     return b.cata({
         success: function(value) {
             return a;
         },
         failure: function(errors) {
-            return Validation.failure(append(a.errors, errors));
+            return Attempt.failure.of(concat(a.errors, errors));
         }
     });
 };
-Do.setValueOf(Validation.failure.prototype);
 
 /**
-   ## isValidation(a)
+   ## success(x)
+
+   Constructor to represent the existance of a value, `x`.
+**/
+Attempt.success.prototype.isSuccess = true;
+Attempt.success.prototype.isFailure = false;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.success` with value of `x`.
+**/
+Attempt.success.of = function(x) {
+    return Attempt.success(x);
+};
+
+/**
+   ## failure(x)
+
+   Constructor to represent the existance of a value, `x`.
+**/
+Attempt.failure.prototype.isSuccess = false;
+Attempt.failure.prototype.isFailure = true;
+
+/**
+   ## of(x)
+
+   Constructor `of` Monad creating `Option.failure` with value of `x`.
+**/
+Attempt.failure.of = function(x) {
+    return Attempt.failure(x);
+};
+
+/**
+   ## isAttempt(a)
 
    Returns `true` iff `a` is a `success` or a `failure`.
 **/
-var isValidation = isInstanceOf(Validation);
+var isAttempt = isInstanceOf(Attempt);
 
 bilby = bilby
-    .property('success', Validation.success)
-    .property('failure', Validation.failure)
-
-    .method('map', isValidation, function(v, f) {
+    .property('success', Attempt.success)
+    .property('failure', Attempt.failure)
+    .property('isAttempt', isAttempt)
+    .method('map', isAttempt, function(v, f) {
         return v.map(f);
     })
-    .method('ap', isValidation, function(vf, v) {
-        return vf.ap(v, this.append);
+    .method('ap', isAttempt, function(vf, v) {
+        return vf.ap(v, this.concat);
     });
