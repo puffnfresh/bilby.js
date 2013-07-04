@@ -1,12 +1,31 @@
 /**
     ## `Stream(state)`
 
-    * concat(b) - TODO
-    * empty() - TODO
-    * foreach(f) - TODO
-    * filter(f) - TODO
-    * map(f) - TODO
-    * zip(s) - TODO
+    The Stream type represents a flow of data ever evolving values over time.
+
+    Here is an example of a continuous random numbers piped through to the console.
+
+        Stream.poll(
+            function() {
+                return cont(function() {
+                    return bilby.method('arb', Number);
+                })
+            },
+        0).foreach(
+            function (a) {
+                console.log(a);
+            }
+        );
+
+    * concat(b) - semigroup concat
+    * chain(f) - chain streams
+    * empty() - empty values sent over time
+    * foreach(f) - iteration of async values
+    * filter(f) - filter values
+    * map(f) - functor map
+    * reduce(v, f) - functor reduce
+    * merge(s) - merge streams
+    * zip(s) - zip streams
 **/
 function Stream(f) {
     var self = getInstance(this, Stream);

@@ -5,9 +5,9 @@
     strategy. It simply applies the bound function to its input without
     any modification.
 
-    * chain(f) - TODO
-    * map(f) - TODO
-    * ap(a) - TODO
+    * chain(f) - chain values
+    * map(f) - functor map
+    * ap(a) - applicative ap(ply)
 **/
 
 var Identity = tagged('Identity', ['x']);
@@ -43,9 +43,9 @@ var isIdentity = isInstanceOf(Identity);
 
     The trivial monad transformer, which maps a monad to an equivalent monad.
 
-    * chain(f) - TODO
-    * map(f) - TODO
-    * ap(a) - TODO
+    * chain(f) - chain values
+    * map(f) - functor map
+    * ap(a) - applicative ap(ply)
 **/
 
 // Transformer

@@ -1,11 +1,12 @@
 /**
   # Id
 
-  * concat(b) - TODO
-  * empty() - TODO
-  * map(f) - TODO
-  * ap(b) - TODO
-  * chain(f) - TODO
+  * concat(b) - semigroup concat
+  * empty() - empty value
+  * map(f) - functor map
+  * ap(b) - applicative ap(ply)
+  * chain(f) - chain value
+  * arb() - arbitrary value
 **/
 var Id = tagged('Id', ['value']);
 

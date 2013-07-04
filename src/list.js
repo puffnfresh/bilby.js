@@ -1,9 +1,43 @@
 /**
     # List
 
-    * concat(a) - TODO
+        List a = Cons a + Nil
+
+    The list type data type constructs objects which points to values. The `cons`
+    constructor represents a value, the left is the head (`car`, the first element)
+    and the right represents the tail (`cdr`, the second element). The `nil`
+    constructor is defined as an empty list.
+
+    The following example creates a list of values 1 and 2, where the nil terminates
+    the list:
+
+        cons(1, cons(2, nil));
+
+    The following can also represent tree like structures (Binary Trees):
+
+        cons(cons(1, cons(2, nil)), cons(3, cons(4, nil)));
+
+             *
+            / \
+           *   *
+          / \ / \
+         1  2 3  4
+
+    * concat(a) - semigroup concat
     * fold(a, b) - applies `a` to value if `cons` or defaults to `b`
     * map(f) - functor map
+    * fold(f) - applies f to values
+    * flatMap(f) - monadic flatMap
+    * append(a) - append
+    * appendAll(a) - append values
+    * prepend(a) - prepend value
+    * prependAll(a) - prepend values
+    * reverse() - reverse
+    * exists() - test by predicate
+    * filter() - filter by predicate
+    * foreach() - iteration
+    * partition() - partition by predicate
+    * size() - size of the list
 **/
 var List = taggedSum({
     cons: ['car', 'cdr'],
@@ -195,7 +229,7 @@ List.prototype.toArray = function() {
 };
 
 List.prototype.toString = function() {
-    return 'List(' + this.toArray().join(', ') + ', nil)';
+    return 'List(' + this.toArray().join(', ') + ')';
 };
 
 /**

@@ -2,10 +2,10 @@
     ## `State(run)`
 
     * chain() - TODO
-    * evalState() - TODO
-    * exec() - TODO
-    * map() - TODO
-    * ap() - TODO
+    * evalState() - evaluate state
+    * execState() - execute on state
+    * map() - functor map
+    * ap() - applicative ap(ply)
 **/
 var State = tagged('State', ['run']);
 

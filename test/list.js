@@ -122,7 +122,7 @@ exports.listRangeLargeTest = function(test) {
 
 exports.listStringTest = function(test) {
     var actual = λ.cons(4, λ.cons(3, λ.cons(2, λ.cons(1, λ.nil)))),
-        expected = 'List(4, 3, 2, 1, nil)';
+        expected = 'List(4, 3, 2, 1)';
 
     test.equal(actual.toString(), expected);
     test.done();

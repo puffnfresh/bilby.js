@@ -13,10 +13,9 @@
          bilby.Tuple4(1, 2, 3, 4);
          bilby.Tuple5(1, 2, 3, 4, 5);
 
-    * arb() - TODO
-    * fold() - TODO
-    * map() - TODO
-    * equal() - TODO
+    * arb() - arbitrary value
+    * fold(f) - `f` applied to value
+    * map() - functor map
 
 **/
 var Tuple2 = tagged('Tuple2', ['_1', '_2']),
@@ -27,7 +26,7 @@ var Tuple2 = tagged('Tuple2', ['_1', '_2']),
 /**
     ## Tuple2
 
-    * flip() - TODO
+    * flip() - flip values
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple2.prototype.flip = function() {
