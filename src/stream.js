@@ -91,16 +91,37 @@ Stream.prototype.map = function(f) {
     });
 };
 
+Stream.prototype.reduce = function(v, f) {
+    var a = v;
+    return this.chain(function(b) {
+        a = f(a, b);
+        return Option.some(a);
+    });
+};
+
+Stream.prototype.merge = function(s) {
+    var env = this;
+
+    var resolver,
+        stream = new Stream(function(state) {
+            resolver = state;
+        });
+
+    this.foreach(resolver);
+    s.foreach(resolver);
+
+    return stream;
+};
+
 Stream.prototype.zip = function(s) {
     var env = this;
 
     var resolver,
         left = [],
-        right = [];
-
-    var stream = new Stream(function(state) {
-        resolver = state;
-    });
+        right = [],
+        stream = new Stream(function(state) {
+            resolver = state;
+        });
 
     this.foreach(function(a) {
         if (right.length)
