@@ -71,7 +71,7 @@ module.exports = function (grunt) {
         fs.writeFileSync(this.target, emu.getComments(source));
     });
 
-    grunt.registerTask('default', 'rig jshint nodeunit uglify emu');
+    grunt.registerTask('default', ['rig', 'jshint', 'nodeunit', 'uglify', 'emu']);
 
     grunt.registerTask('dist', ['rig', 'uglify', 'emu']);
 };
