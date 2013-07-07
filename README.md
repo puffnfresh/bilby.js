@@ -729,16 +729,16 @@ Where `resolve` is a side-effecting callback.
     
 The `resolve` callback gets called when a value is resolved.
 
-### `Promise.of(x)`
+### of(x)
     
 Creates a Promise that contains a successful value.
 
-### `chain(f)`
+### chain(f)
     
 Returns a new promise that evaluates `f` when the current promise
 is successfully fulfilled. `f` must return a new promise.
 
-### `map(f)`
+### map(f)
     
 Returns a new promise that evaluates `f` on a value and passes it
 through to the resolve function.

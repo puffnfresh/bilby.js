@@ -15,7 +15,7 @@
 var Promise = tagged('Promise', ['fork']);
 
 /**
-    ### `Promise.of(x)`
+    ### of(x)
 
     Creates a Promise that contains a successful value.
 **/
@@ -26,7 +26,7 @@ Promise.of = function(x) {
 };
 
 /**
-    ### `chain(f)`
+    ### chain(f)
 
     Returns a new promise that evaluates `f` when the current promise
     is successfully fulfilled. `f` must return a new promise.
@@ -41,7 +41,7 @@ Promise.prototype.chain = function(f) {
 };
 
 /**
-    ### `map(f)`
+    ### map(f)
 
     Returns a new promise that evaluates `f` on a value and passes it
     through to the resolve function.
