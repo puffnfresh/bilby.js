@@ -371,7 +371,7 @@ Curried function for `===`.
 
 ## not(a)
     
-Returns `true` iff `a` is not a valid value.
+Returns `true` iff `a` is falsy.
 
 ## fill(s)(t)
     

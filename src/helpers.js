@@ -471,7 +471,7 @@ var strictEquals = curry(function(a, b) {
 /**
     ## not(a)
 
-    Returns `true` iff `a` is not a valid value.
+    Returns `true` iff `a` is falsy.
 **/
 function not(a) {
     return !a;
