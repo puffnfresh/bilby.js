@@ -167,11 +167,7 @@ Stream.prototype.toArray = function() {
 Stream.promise = function(p) {
     return new Stream(function(state) {
         setTimeout(function() {
-            p.fork(
-                function(data) {
-                    state(Attempt.success(data));
-                }
-            );
+            p.fork(state);
         }, 0);
     });
 };

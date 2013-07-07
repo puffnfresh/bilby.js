@@ -69,7 +69,7 @@ exports.streamPromiseTest = function(test) {
     var a = λ.Stream.promise(λ.Promise.of(41)).toArray();
 
     setTimeout(function() {
-        test.deepEqual(a, [λ.success(41)]);
+        test.deepEqual(a, [41]);
         test.done();
     }, 50);
 };
