@@ -218,3 +218,6 @@ bilby = bilby
     .method('zip', bilby.liftA2(or, isArray, isString), function(a, b) {
         return zip(a, b);
     });
+
+Do.setValueOf(Array.prototype);
+Do.setValueOf(Function.prototype);

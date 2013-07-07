@@ -35,6 +35,8 @@ function io(f) {
 **/
 var isIO = isInstanceOf(io);
 
+Do.setValueOf(io.prototype);
+
 bilby = bilby
     .property('io', io)
     .property('isIO', isIO)

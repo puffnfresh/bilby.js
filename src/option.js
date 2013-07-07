@@ -133,6 +133,8 @@ Option.none.isNone = true;
 **/
 var isOption = isInstanceOf(Option);
 
+Do.setValueOf(Option.prototype);
+
 bilby = bilby
     .property('some', Option.some)
     .property('none', Option.none)

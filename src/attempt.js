@@ -110,6 +110,8 @@ Attempt.failure.prototype.isFailure = true;
 **/
 var isAttempt = isInstanceOf(Attempt);
 
+Do.setValueOf(Attempt.prototype);
+
 bilby = bilby
     .property('success', Attempt.success)
     .property('failure', Attempt.failure)
