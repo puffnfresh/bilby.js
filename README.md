@@ -710,34 +710,24 @@ Returns `true` if `a` is `Tuple5`.
 ## `Promise(fork)`
     
 Promise is a constructor which takes a `fork` function. The `fork`
-function takes two arguments:
+function takes one argument:
     
-    fork(resolve, reject)
+    fork(resolve)
     
-Both `resolve` and `reject` are side-effecting callbacks.
+Where `resolve` is a side-effecting callback.
     
-### `fork(resolve, reject)`
+### `fork(resolve)`
     
-The `resolve` callback gets called on a "successful" value. The
-`reject` callback gets called on a "failure" value.
+The `resolve` callback gets called when a value is resolved.
 
 ### `Promise.of(x)`
     
 Creates a Promise that contains a successful value.
 
-### `Promise.error(x)`
-    
-Creates a Promise that contains a failure value.
-
 ### `chain(f)`
     
 Returns a new promise that evaluates `f` when the current promise
 is successfully fulfilled. `f` must return a new promise.
-
-### `reject(f)`
-    
-Returns a new promise that evaluates `f` when the current promise
-fails. `f` must return a new promise.
 
 ### `map(f)`
     

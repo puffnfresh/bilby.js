@@ -92,8 +92,7 @@ Stream.prototype.foreach = function(f) {
             function(data) {
                 f(data);
                 state(data);
-            },
-            function(error) {}
+            }
         );
     });
 };
@@ -178,9 +177,6 @@ Stream.promise = function(p) {
             p.fork(
                 function(data) {
                     state(Attempt.success(data));
-                },
-                function(error) {
-                    state(Attempt.failure(error));
                 }
             );
         }, 0);

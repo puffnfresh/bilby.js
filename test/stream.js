@@ -65,20 +65,11 @@ exports.streamZipDelayedWithMapTest = function(test) {
     }, 500);
 };
 
-exports.streamPromiseSuccessTest = function(test) {
+exports.streamPromiseTest = function(test) {
     var a = λ.Stream.promise(λ.Promise.of(41)).toArray();
 
     setTimeout(function() {
         test.deepEqual(a, [λ.success(41)]);
-        test.done();
-    }, 50);
-};
-
-exports.streamPromiseFailureTest = function(test) {
-    var a = λ.Stream.promise(λ.Promise.error(41)).toArray();
-
-    setTimeout(function() {
-        test.deepEqual(a, [λ.failure(41)]);
         test.done();
     }, 50);
 };
