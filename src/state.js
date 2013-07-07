@@ -1,5 +1,5 @@
 /**
-    ## `State(run)`
+    # State(run)
 
     * chain() - TODO
     * evalState() - evaluate state
@@ -134,10 +134,7 @@ State.StateT = function(M) {
     return StateT;
 };
 
-
-
 bilby = bilby
     .property('State', State)
     .property('isState', isState)
     .property('StateT', State.StateT);
-

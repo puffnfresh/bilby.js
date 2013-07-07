@@ -725,7 +725,7 @@ function takes one argument:
     
 Where `resolve` is a side-effecting callback.
     
-## `fork(resolve)`
+## fork(resolve)
     
 The `resolve` callback gets called when a value is resolved.
 
@@ -747,7 +747,7 @@ through to the resolve function.
     
 Returns `true` if `a` is `Promise`.
 
-## `State(run)`
+# State(run)
     
 * chain() - TODO
 * evalState() - evaluate state

@@ -8,7 +8,7 @@
 
     Where `resolve` is a side-effecting callback.
 
-    ## `fork(resolve)`
+    ## fork(resolve)
 
     The `resolve` callback gets called when a value is resolved.
 **/
