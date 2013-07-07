@@ -49,7 +49,7 @@ List.range = curry(function(a, b) {
     var rec = function(x, y) {
         if (y - a >= total) return done(x);
         return cont(function() {
-            return rec(List.cons.of(y, x), ++y);
+            return rec(List.cons(y, x), ++y);
         });
     };
     return trampoline(rec(List.nil, a));
@@ -75,7 +75,7 @@ List.prototype.fold = function(f) {
 List.prototype.map = function(f) {
     return this.fold(
         function(a, b) {
-            return List.cons.of(f(a), b);
+            return List.cons(f(a), b);
         }
     );
 };
@@ -89,7 +89,7 @@ List.prototype.flatMap = function(f) {
 };
 
 List.prototype.append = function(a) {
-    return this.appendAll(List.cons.of(a, List.nil.of()));
+    return this.appendAll(List.cons(a, List.nil));
 };
 
 List.prototype.appendAll = function(a) {
@@ -99,14 +99,14 @@ List.prototype.appendAll = function(a) {
         if (a.isEmpty) return done(b);
 
         return cont(function() {
-            return rec(a.cdr, List.cons.of(a.car, b));
+            return rec(a.cdr, List.cons(a.car, b));
         });
     };
     return trampoline(rec(this.reverse(), a));
 };
 
 List.prototype.prepend = function(a) {
-    return List.cons.of(a, this);
+    return List.cons(a, this);
 };
 
 List.prototype.prependAll = function(a) {
@@ -116,7 +116,7 @@ List.prototype.prependAll = function(a) {
         if (b.isEmpty) return done(a);
 
         return cont(function() {
-            return rec(List.cons.of(b.car, a), b.cdr);
+            return rec(List.cons(b.car, a), b.cdr);
         });
     };
     return trampoline(rec(this, a));
@@ -127,7 +127,7 @@ List.prototype.reverse = function() {
         return p.cata({
             cons: function(a, b) {
                 return cont(function() {
-                    return rec(p.cdr, List.cons.of(a, accum));
+                    return rec(p.cdr, List.cons(a, accum));
                 });
             },
             nil: function() {
@@ -161,7 +161,7 @@ List.prototype.filter = function(f) {
         return cont(function() {
             var c = curry(rec)(a.cdr);
             if (f(a.car)) {
-                return c(List.cons.of(a.car, b));
+                return c(List.cons(a.car, b));
             } else {
                 return c(b);
             }
@@ -190,7 +190,7 @@ List.prototype.partition = function(f) {
 
         return cont(function() {
             var h = a.car;
-            var cur = curry(List.cons.of)(h);
+            var cur = curry(List.cons)(h);
             if (f(h)) {
                 return rec(a.cdr, cur(l), r);
             } else {
@@ -242,30 +242,12 @@ List.cons.prototype.isEmpty = false;
 List.cons.prototype.isNonEmpty = true;
 
 /**
-   ## of(x)
-
-   Constructor `of` Monad creating `List.some` with value of `a` and `b`.
-**/
-List.cons.of = function(a, b) {
-    return List.cons(a, b);
-};
-
-/**
    ## nil
 
    Represents an empty list (absence of a list).
 **/
 List.nil.isEmpty = true;
 List.nil.isNonEmpty = false;
-
-/**
-   ## of(x)
-
-   Constructor `of` Monad creating `List.nil`.
-**/
-List.nil.of = function() {
-    return List.nil;
-};
 
 /**
    ## isList(a)

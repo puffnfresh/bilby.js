@@ -12,7 +12,7 @@ exports.listFoldTest = function(test) {
         expected = λ.cons(8, λ.cons(6, λ.cons(4, λ.cons(2, λ.nil))));
 
     test.ok(λ.equal(actual.fold(function(a, b) {
-        return λ.cons.of(a * 2, b);
+        return λ.cons(a * 2, b);
     }), expected));
     test.done();
 };

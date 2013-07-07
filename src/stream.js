@@ -42,7 +42,7 @@ function Stream(f) {
     return self;
 }
 
-Stream.of = function(a, b) {
+Stream.create = function(a, b) {
     var unbinder,
         bounce;
 
@@ -220,7 +220,7 @@ Stream.sequential = function(v, d) {
 Stream.poll = function(p, d) {
     var id;
 
-    return Stream.of(function(handler) {
+    return Stream.create(function(handler) {
         id = setInterval(handler, d);
         return function() {
             return clearInterval(id);

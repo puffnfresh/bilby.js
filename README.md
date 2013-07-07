@@ -498,17 +498,9 @@ Constructor `of` Monad creating `Option` with value of `x`.
     
 Constructor to represent the existence of a value, `x`.
 
-## of(x)
-    
-Constructor `of` Monad creating `Option.some` with value of `x`.
-
 ## none
     
 Represents the absence of a value.
-
-## of(x)
-    
-Constructor `of` Monad creating `Option.none`.
 
 ## isOption(a)
     
@@ -536,17 +528,9 @@ Represents a tagged disjunction between two sets of values; `a` or
     
 Constructor to represent the left case.
 
-## of(x)
-    
-Constructor `of` Monad creating `Either.left`.
-
 ## right(x)
     
 Constructor to represent the (biased) right case.
-
-## of(x)
-    
-Constructor `of` Monad creating `Either.right`.
 
 ## isEither(a)
     
@@ -616,17 +600,9 @@ implementation in the environment).
     
 Constructor to represent the existance of a value, `x`.
 
-## of(x)
-    
-Constructor `of` Monad creating `Option.success` with value of `x`.
-
 ## failure(x)
     
 Constructor to represent the existance of a value, `x`.
-
-## of(x)
-    
-Constructor `of` Monad creating `Option.failure` with value of `x`.
 
 ## isAttempt(a)
     
@@ -699,33 +675,17 @@ Example usage:
 * flip() - flip values
 * concat() - Semigroup (value must also be a Semigroup)
 
-## of(x)
-    
-Constructor `of` Monad creating `Tuple2`.
-
 ## Tuple3
     
 * concat() - Semigroup (value must also be a Semigroup)
-
-## of(x)
-    
-Constructor `of` Monad creating `Tuple3`.
 
 ## Tuple4
     
 * concat() - Semigroup (value must also be a Semigroup)
 
-## of(x)
-    
-Constructor `of` Monad creating `Tuple4`.
-
 ## Tuple5
     
 * concat() - Semigroup (value must also be a Semigroup)
-
-## of(x)
-    
-Constructor `of` Monad creating `Tuple5`.
 
 ## isTuple(a)
     
@@ -845,17 +805,9 @@ The following can also represent tree like structures (Binary Trees):
 Constructor to represent the existence of a value in a list, `a`
 and a reference to another `b`.
 
-## of(x)
-    
-Constructor `of` Monad creating `List.some` with value of `a` and `b`.
-
 ## nil
     
 Represents an empty list (absence of a list).
-
-## of(x)
-    
-Constructor `of` Monad creating `List.nil`.
 
 ## isList(a)
     

@@ -30,23 +30,14 @@ var Tuple2 = tagged('Tuple2', ['_1', '_2']),
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple2.prototype.flip = function() {
-    return Tuple2.of(this._2, this._1);
+    return Tuple2(this._2, this._1);
 };
 
 Tuple2.prototype.concat = function(b) {
-    return Tuple2.of(
+    return Tuple2(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2)
     );
-};
-
-/**
-   ## of(x)
-
-   Constructor `of` Monad creating `Tuple2`.
-**/
-Tuple2.of = function(a, b) {
-    return Tuple2(a, b);
 };
 
 /**
@@ -55,7 +46,7 @@ Tuple2.of = function(a, b) {
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple3.prototype.concat = function(b) {
-    return Tuple3.of(
+    return Tuple3(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2),
         bilby.concat(this._3, b._3)
@@ -64,21 +55,12 @@ Tuple3.prototype.concat = function(b) {
 
 
 /**
-   ## of(x)
-
-   Constructor `of` Monad creating `Tuple3`.
-**/
-Tuple3.of = function(a, b, c) {
-    return Tuple3(a, b, c);
-};
-
-/**
     ## Tuple4
 
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple4.prototype.concat = function(b) {
-    return Tuple4.of(
+    return Tuple4(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2),
         bilby.concat(this._3, b._3),
@@ -88,21 +70,12 @@ Tuple4.prototype.concat = function(b) {
 
 
 /**
-   ## of(x)
-
-   Constructor `of` Monad creating `Tuple4`.
-**/
-Tuple4.of = function(a, b, c, d) {
-    return Tuple4(a, b, c, d);
-};
-
-/**
     ## Tuple5
 
     * concat() - Semigroup (value must also be a Semigroup)
 **/
 Tuple5.prototype.concat = function(b) {
-    return Tuple5.of(
+    return Tuple5(
         bilby.concat(this._1, b._1),
         bilby.concat(this._2, b._2),
         bilby.concat(this._3, b._3),
@@ -111,15 +84,6 @@ Tuple5.prototype.concat = function(b) {
     );
 };
 
-
-/**
-   ## of(x)
-
-   Constructor `of` Monad creating `Tuple5`.
-**/
-Tuple5.of = function(a, b, c, d, e) {
-    return Tuple5(a, b, c, d, e);
-};
 
 /**
    ## isTuple(a)
@@ -174,7 +138,7 @@ bilby = bilby
         var t = env.fill(2)(function() {
             return String;
         });
-        return Tuple2.of.apply(this, env.map(t, function(arg) {
+        return Tuple2.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
         }));
     })
@@ -183,7 +147,7 @@ bilby = bilby
         var t = env.fill(3)(function() {
             return String;
         });
-        return Tuple3.of.apply(this, env.map(t, function(arg) {
+        return Tuple3.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
         }));
     })
@@ -192,7 +156,7 @@ bilby = bilby
         var t = env.fill(4)(function() {
             return String;
         });
-        return Tuple4.of.apply(this, env.map(t, function(arg) {
+        return Tuple4.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
         }));
     })
@@ -201,7 +165,7 @@ bilby = bilby
         var t = env.fill(5)(function() {
             return String;
         });
-        return Tuple5.of.apply(this, env.map(t, function(arg) {
+        return Tuple5.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
         }));
     })
@@ -241,10 +205,8 @@ bilby = bilby
             accum[i] = b(a['_' + (i + 1)]);
         }
 
-        var ctr = a.of || a.constructor.of;
-        return ctr.apply(this, accum);
+        return a.constructor.apply(this, accum);
     })
     .method('concat', isTuple, function(a, b) {
         return a.concat(b, this.concat);
     });
-

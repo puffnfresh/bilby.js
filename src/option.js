@@ -71,7 +71,7 @@ Option.prototype.flatMap = function(f) {
 Option.prototype.map = function(f) {
     return this.fold(
         function(x) {
-            return Option.some.of(f(x));
+            return Option.some(f(x));
         },
         function() {
             return this;
@@ -119,30 +119,12 @@ Option.some.prototype.isSome = true;
 Option.some.prototype.isNone = false;
 
 /**
-   ## of(x)
-
-   Constructor `of` Monad creating `Option.some` with value of `x`.
-**/
-Option.some.of = function(x) {
-    return Option.some(x);
-};
-
-/**
    ## none
 
    Represents the absence of a value.
 **/
 Option.none.isSome = false;
 Option.none.isNone = true;
-
-/**
-   ## of(x)
-
-   Constructor `of` Monad creating `Option.none`.
-**/
-Option.none.of = function() {
-    return Option.none;
-};
 
 /**
    ## isOption(a)
