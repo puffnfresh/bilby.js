@@ -63,18 +63,6 @@ exports.listAppendAllTest = λ.check(
     [λ.AnyVal, λ.AnyVal]
 );
 
-exports.listForeachTest = function(test) {
-    var a = 1, b = 2, c = 3;
-
-    var accum = 0;
-    λ.cons(a, λ.cons(b, λ.cons(c, λ.nil))).foreach(function(a) {
-        accum += a;
-    });
-
-    test.equal(accum, (a + b + c));
-    test.done();
-};
-
 exports.listPartitionTest = function(test) {
     var actual = λ.cons(4, λ.cons(3, λ.cons(2, λ.cons(1, λ.nil)))),
         expected = λ.Tuple2(λ.cons(4, λ.cons(2, λ.nil)), λ.cons(3, λ.cons(1, λ.nil)));

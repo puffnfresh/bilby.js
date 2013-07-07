@@ -11,7 +11,7 @@
                     return bilby.method('arb', Number);
                 })
             },
-        0).foreach(
+        0).forEach(
             function (a) {
                 console.log(a);
             }
@@ -20,7 +20,7 @@
     * concat(b) - semigroup concat
     * chain(f) - chain streams
     * empty() - empty values sent over time
-    * foreach(f) - iteration of async values
+    * forEach(f) - iteration of async values
     * filter(f) - filter values
     * map(f) - functor map
     * reduce(v, f) - functor reduce
@@ -62,7 +62,7 @@ Stream.create = function(a, b) {
 Stream.prototype.chain = function(f) {
     var env = this;
     return new Stream(function(state) {
-        env.foreach(function(a) {
+        env.forEach(function(a) {
             f(a).fold(
                 function(a) {
                     state(a);
@@ -85,7 +85,7 @@ Stream.prototype.empty = function() {
     });
 };
 
-Stream.prototype.foreach = function(f) {
+Stream.prototype.forEach = function(f) {
     var env = this;
     return new Stream(function(state) {
         env.promise.fork(
@@ -125,8 +125,8 @@ Stream.prototype.merge = function(s) {
             resolver = state;
         });
 
-    this.foreach(resolver);
-    s.foreach(resolver);
+    this.forEach(resolver);
+    s.forEach(resolver);
 
     return stream;
 };
@@ -141,12 +141,12 @@ Stream.prototype.zip = function(s) {
             resolver = state;
         });
 
-    this.foreach(function(a) {
+    this.forEach(function(a) {
         if (right.length)
             resolver([a, right.shift()]);
         else left.push(a);
     });
-    s.foreach(function(a) {
+    s.forEach(function(a) {
         if (left.length)
             resolver([left.shift(), a]);
         else right.push(a);
@@ -157,7 +157,7 @@ Stream.prototype.zip = function(s) {
 
 Stream.prototype.toArray = function() {
     var accum = [];
-    this.foreach(function(a) {
+    this.forEach(function(a) {
         accum.push(a);
     });
     return accum;
@@ -167,7 +167,7 @@ Stream.prototype.toArray = function() {
 
   ## promise
 
-      Stream.promise(promise).foreach(function (a) {
+      Stream.promise(promise).forEach(function (a) {
         console.log(a);
       });
 **/
@@ -187,7 +187,7 @@ Stream.promise = function(p) {
 
   ## sequential
 
-      Stream.sequential([1, 2, 3, 4]).foreach(function (a) {
+      Stream.sequential([1, 2, 3, 4]).forEach(function (a) {
         console.log(a);
       });
 **/
@@ -209,7 +209,7 @@ Stream.sequential = function(v, d) {
         return cont(function() {
             return bilby.method('arb', Number);
         })
-      }, 0).foreach(function (a) {
+      }, 0).forEach(function (a) {
         console.log(a);
       });
 **/

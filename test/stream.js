@@ -1,8 +1,8 @@
 var λ = require('./lib/test');
 
-exports.streamForeachTest = function(test) {
+exports.streamForEachTest = function(test) {
     var result = [];
-    var s = λ.Stream.sequential([1, 2, 3, 4]).foreach(function(a) {
+    var s = λ.Stream.sequential([1, 2, 3, 4]).forEach(function(a) {
         result.push(a);
     });
 

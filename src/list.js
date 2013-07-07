@@ -35,7 +35,6 @@
     * reverse() - reverse
     * exists() - test by predicate
     * filter() - filter by predicate
-    * foreach() - iteration
     * partition() - partition by predicate
     * size() - size of the list
 **/
@@ -168,18 +167,6 @@ List.prototype.filter = function(f) {
         });
     };
     return trampoline(rec(this, List.nil)).reverse();
-};
-
-List.prototype.foreach = function(f) {
-    return this.fold(
-        function(a, b) {
-            f(a);
-            return this;
-        },
-        function() {
-            return this;
-        }
-    );
 };
 
 List.prototype.partition = function(f) {

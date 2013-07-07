@@ -50,7 +50,7 @@
 
           on(document.getElementById('clicker-0'), 'click').map(function() {
               return 1;
-          }).reduce(0, sum).foreach(function(x) {
+          }).reduce(0, sum).forEach(function(x) {
               document.querySelector('#output-0 ul').appendChild(li(x));
           });
 
@@ -61,7 +61,7 @@
               return 2;
           });
 
-          a.merge(b).reduce(0, sum).foreach(function(x) {
+          a.merge(b).reduce(0, sum).forEach(function(x) {
               document.querySelector('#output-1 ul').appendChild(li(x));
           });
 
@@ -75,7 +75,7 @@
           // We should use Tuples here.
           c.zip(d).reduce([0, 0], function(a, b) {
               return [a[0] + b[0], a[1] + b[1]];
-          }).foreach(function(x) {
+          }).forEach(function(x) {
               document.querySelector('#output-2 ul').appendChild(li(x));
           });
       });

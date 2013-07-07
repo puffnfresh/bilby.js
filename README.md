@@ -786,7 +786,6 @@ The following can also represent tree like structures (Binary Trees):
 * reverse() - reverse
 * exists() - test by predicate
 * filter() - filter by predicate
-* foreach() - iteration
 * partition() - partition by predicate
 * size() - size of the list
 
@@ -815,7 +814,7 @@ Here is an example of a continuous random numbers piped through to the console.
                 return bilby.method('arb', Number);
             })
         },
-    0).foreach(
+    0).forEach(
         function (a) {
             console.log(a);
         }
@@ -824,7 +823,7 @@ Here is an example of a continuous random numbers piped through to the console.
 * concat(b) - semigroup concat
 * chain(f) - chain streams
 * empty() - empty values sent over time
-* foreach(f) - iteration of async values
+* forEach(f) - iteration of async values
 * filter(f) - filter values
 * map(f) - functor map
 * reduce(v, f) - functor reduce
@@ -834,14 +833,14 @@ Here is an example of a continuous random numbers piped through to the console.
     
 ## promise
     
-    Stream.promise(promise).foreach(function (a) {
+    Stream.promise(promise).forEach(function (a) {
       console.log(a);
     });
 
     
 ## sequential
     
-    Stream.sequential([1, 2, 3, 4]).foreach(function (a) {
+    Stream.sequential([1, 2, 3, 4]).forEach(function (a) {
       console.log(a);
     });
 
@@ -852,7 +851,7 @@ Here is an example of a continuous random numbers piped through to the console.
       return cont(function() {
           return bilby.method('arb', Number);
       })
-    }, 0).foreach(function (a) {
+    }, 0).forEach(function (a) {
       console.log(a);
     });
 
