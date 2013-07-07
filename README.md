@@ -331,7 +331,7 @@ Sentinal value for when a single character string is needed.
 
 ## arrayOf(type)
     
-Sentinal value for when an array of a particular type is needed:
+Sentinel value for when an array of a particular type is needed:
     
     arrayOf(Number)
 
@@ -439,7 +439,6 @@ The beginning of the continuation to call. Will repeatedly evaluate
 # Id
     
 * concat(b) - semigroup concat
-* empty() - empty value
 * map(f) - functor map
 * ap(b) - applicative ap(ply)
 * chain(f) - chain value
@@ -448,6 +447,16 @@ The beginning of the continuation to call. Will repeatedly evaluate
 ## isId(a)
     
 Returns `true` if `a` is `Id`.
+
+## idOf(type)
+    
+Sentinel value for when an Id of a particular type is needed:
+    
+    idOf(Number)
+
+## isIdOf(a)
+    
+Returns `true` iff `a` is an instance of `idOf`.
 
 # Identity
     
@@ -822,7 +831,6 @@ Here is an example of a continuous random numbers piped through to the console.
     
 * concat(b) - semigroup concat
 * chain(f) - chain streams
-* empty() - empty values sent over time
 * forEach(f) - iteration of async values
 * filter(f) - filter values
 * map(f) - functor map

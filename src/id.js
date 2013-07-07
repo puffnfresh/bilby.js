@@ -2,7 +2,6 @@
   # Id
 
   * concat(b) - semigroup concat
-  * empty() - empty value
   * map(f) - functor map
   * ap(b) - applicative ap(ply)
   * chain(f) - chain value
@@ -18,11 +17,6 @@ Id.of = function(a) {
 // Semigroup (value must also be a Semigroup)
 Id.prototype.concat = function(b) {
     return Id.of(this.value.concat(b.value));
-};
-
-// Monoid (value must also be a Monoid)
-Id.prototype.empty = function() {
-    return Id.of(bilby.empty(this.value));
 };
 
 // Functor
@@ -47,28 +41,49 @@ Id.prototype.chain = function(f) {
 **/
 var isId = isInstanceOf(Id);
 
+/**
+   ## idOf(type)
+
+   Sentinel value for when an Id of a particular type is needed:
+
+       idOf(Number)
+**/
+function idOf(type) {
+    var self = getInstance(this, idOf);
+    self.type = type;
+    return self;
+}
+
+/**
+   ## isIdOf(a)
+
+   Returns `true` iff `a` is an instance of `idOf`.
+**/
+var isIdOf = isInstanceOf(idOf);
+
 bilby = bilby
-   .property('Id', Id)
-   .property('isId', isId)
-   .method('concat', isId, function(a, b) {
-      return a.concat(b, this.concat);
-   })
-   .method('empty', isId, function(a) {
-      return a.empty();
-   })
-   .method('map', isId, function(a, b) {
-      return a.map(b);
-   })
-   .method('ap', isId, function(a, b) {
-      return a.ap(b);
-   })
-   .method('chain', isId, function(a, b) {
-      return a.chain(b);
-   })
-   .method('equal', isId, function(a, b) {
-      return this.equal(a.value, b.value);
-   })
-   .method('arb', strictEquals(Id), function() {
+    .property('Id', Id)
+    .property('idOf', idOf)
+    .property('isIdOf', isIdOf)
+    .method('concat', isId, function(a, b) {
+        return a.concat(b, this.concat);
+    })
+    .method('empty', isIdOf, function(i) {
+        return Id(this.empty(i.type));
+    })
+    .method('map', isId, function(a, b) {
+        return a.map(b);
+    })
+    .method('ap', isId, function(a, b) {
+        return a.ap(b);
+    })
+    .method('chain', isId, function(a, b) {
+        return a.chain(b);
+    })
+    .method('equal', isId, function(a, b) {
+        return this.equal(a.value, b.value);
+    })
+    .method('arb', strictEquals(Id), function() {
         var env = this;
         var t = env.fill(1)(function() {
             return AnyVal;
@@ -76,4 +91,4 @@ bilby = bilby
         return Id.of.apply(this, env.map(t, function(arg) {
             return env.arb(arg, t.length);
         }));
-   });
+    });

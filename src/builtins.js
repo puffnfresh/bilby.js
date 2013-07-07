@@ -146,23 +146,19 @@ bilby = bilby
         return function(){};
     })
 
-    .method('empty', strictEquals(AnyVal), function(a, s) {
-        var types = [Boolean, Number, String];
-        return this.empty(this.oneOf(types), s - 1);
-    })
-    .method('empty', isArray, function(a, s) {
+    .method('empty', strictEquals(Array), function(a, s) {
         return [];
     })
-    .method('empty', isObjectLike, function(a, s) {
+    .method('empty', strictEquals(Object), function(a, s) {
         return {};
     })
-    .method('empty', isBoolean, function(a, s) {
+    .method('empty', strictEquals(Boolean), function(a, s) {
         return false;
     })
-    .method('empty', isNumber, function(a, s) {
+    .method('empty', strictEquals(Number), function(a, s) {
         return 0;
     })
-    .method('empty', isString, function(a, s) {
+    .method('empty', strictEquals(String), function(a, s) {
         return '';
     })
 
@@ -222,4 +218,3 @@ bilby = bilby
     .method('zip', bilby.liftA2(or, isArray, isString), function(a, b) {
         return zip(a, b);
     });
-

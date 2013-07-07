@@ -398,7 +398,7 @@ var Char = {};
 /**
    ## arrayOf(type)
 
-   Sentinal value for when an array of a particular type is needed:
+   Sentinel value for when an array of a particular type is needed:
 
        arrayOf(Number)
 **/

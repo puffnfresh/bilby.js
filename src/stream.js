@@ -19,7 +19,6 @@
 
     * concat(b) - semigroup concat
     * chain(f) - chain streams
-    * empty() - empty values sent over time
     * forEach(f) - iteration of async values
     * filter(f) - filter values
     * map(f) - functor map
@@ -76,12 +75,6 @@ Stream.prototype.chain = function(f) {
 Stream.prototype.concat = function(b) {
     return this.chain(function(a) {
         return Option.some(a.concat(b));
-    });
-};
-
-Stream.prototype.empty = function() {
-    return this.chain(function(a) {
-        return Option.some(bilby.empty(a));
     });
 };
 

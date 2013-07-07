@@ -19,12 +19,13 @@ exports.idConcatTest = λ.checkTaggedConcat(
     }
 );
 
-exports.idEmptyTest = λ.check(
-    function(a) {
-        return λ.equal(λ.Id(a).empty(), λ.Id(a).empty());
-    },
-    [λ.AnyVal]
-);
+exports.idEmptyTest = function(test) {
+    test.deepEqual(
+        λ.empty(λ.idOf(Number)),
+        λ.empty(λ.idOf(Number))
+    );
+    test.done();
+};
 
 exports.idMapTest = λ.check(
     function(a) {
