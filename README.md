@@ -716,7 +716,7 @@ Returns `true` if `a` is `Tuple4`.
     
 Returns `true` if `a` is `Tuple5`.
 
-## `Promise(fork)`
+# Promise(fork)
     
 Promise is a constructor which takes a `fork` function. The `fork`
 function takes one argument:
@@ -725,20 +725,20 @@ function takes one argument:
     
 Where `resolve` is a side-effecting callback.
     
-### `fork(resolve)`
+## `fork(resolve)`
     
 The `resolve` callback gets called when a value is resolved.
 
-### of(x)
+## of(x)
     
 Creates a Promise that contains a successful value.
 
-### chain(f)
+## chain(f)
     
 Returns a new promise that evaluates `f` when the current promise
 is successfully fulfilled. `f` must return a new promise.
 
-### map(f)
+## map(f)
     
 Returns a new promise that evaluates `f` on a value and passes it
 through to the resolve function.
@@ -811,7 +811,7 @@ Represents an empty list (absence of a list).
     
 Returns `true` if `a` is a `cons` or `nil`.
 
-## `Stream(state)`
+# Stream(state)
     
 The Stream type represents a flow of data ever evolving values over time.
     

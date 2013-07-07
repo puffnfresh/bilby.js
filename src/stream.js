@@ -1,5 +1,5 @@
 /**
-    ## `Stream(state)`
+    # Stream(state)
 
     The Stream type represents a flow of data ever evolving values over time.
 
