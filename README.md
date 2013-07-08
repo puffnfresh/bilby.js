@@ -615,12 +615,12 @@ Constructor to represent the (biased) right case.
     
 Returns `true` iff `a` is a `left` or a `right`.
 
-# Attempt
+# Validation
     
-    Attempt e v = Failure e + Success v
+    Validation e v = Failure e + Success v
     
-The Attempt data type represents a "success" value or a
-semigroup of "failure" values. Attempt has an applicative
+The Validation data type represents a "success" value or a
+semigroup of "failure" values. Validation has an applicative
 functor which collects failures' errors or creates a new success
 value.
     
@@ -683,7 +683,7 @@ Constructor to represent the existance of a value, `x`.
     
 Constructor to represent the existance of a value, `x`.
 
-## isAttempt(a)
+## isValidation(a)
     
 Returns `true` iff `a` is a `success` or a `failure`.
 

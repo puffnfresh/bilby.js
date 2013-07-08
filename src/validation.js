@@ -1,10 +1,10 @@
 /**
-   # Attempt
+   # Validation
 
-       Attempt e v = Failure e + Success v
+       Validation e v = Failure e + Success v
 
-   The Attempt data type represents a "success" value or a
-   semigroup of "failure" values. Attempt has an applicative
+   The Validation data type represents a "success" value or a
+   semigroup of "failure" values. Validation has an applicative
    functor which collects failures' errors or creates a new success
    value.
 
@@ -60,29 +60,29 @@
    implementation in the environment).
 **/
 
-var Attempt = taggedSum({
+var Validation = taggedSum({
     success: ['value'],
     failure: ['errors']
 });
 
-Attempt.success.prototype.map = function(f) {
-    return Attempt.success(f(this.value));
+Validation.success.prototype.map = function(f) {
+    return Validation.success(f(this.value));
 };
-Attempt.success.prototype.ap = function(v) {
+Validation.success.prototype.ap = function(v) {
     return v.map(this.value);
 };
 
-Attempt.failure.prototype.map = function() {
+Validation.failure.prototype.map = function() {
     return this;
 };
-Attempt.failure.prototype.ap = function(b, concat) {
+Validation.failure.prototype.ap = function(b, concat) {
     var a = this;
     return b.cata({
         success: function(value) {
             return a;
         },
         failure: function(errors) {
-            return Attempt.failure(concat(a.errors, errors));
+            return Validation.failure(concat(a.errors, errors));
         }
     });
 };
@@ -92,33 +92,33 @@ Attempt.failure.prototype.ap = function(b, concat) {
 
    Constructor to represent the existance of a value, `x`.
 **/
-Attempt.success.prototype.isSuccess = true;
-Attempt.success.prototype.isFailure = false;
+Validation.success.prototype.isSuccess = true;
+Validation.success.prototype.isFailure = false;
 
 /**
    ## failure(x)
 
    Constructor to represent the existance of a value, `x`.
 **/
-Attempt.failure.prototype.isSuccess = false;
-Attempt.failure.prototype.isFailure = true;
+Validation.failure.prototype.isSuccess = false;
+Validation.failure.prototype.isFailure = true;
 
 /**
-   ## isAttempt(a)
+   ## isValidation(a)
 
    Returns `true` iff `a` is a `success` or a `failure`.
 **/
-var isAttempt = isInstanceOf(Attempt);
+var isValidation = isInstanceOf(Validation);
 
-Do.setValueOf(Attempt.prototype);
+Do.setValueOf(Validation.prototype);
 
 bilby = bilby
-    .property('success', Attempt.success)
-    .property('failure', Attempt.failure)
-    .property('isAttempt', isAttempt)
-    .method('map', isAttempt, function(v, f) {
+    .property('success', Validation.success)
+    .property('failure', Validation.failure)
+    .property('isValidation', isValidation)
+    .method('map', isValidation, function(v, f) {
         return v.map(f);
     })
-    .method('ap', isAttempt, function(vf, v) {
+    .method('ap', isValidation, function(vf, v) {
         return vf.ap(v, this.concat);
     });
