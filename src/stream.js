@@ -30,7 +30,7 @@ function Stream(f) {
     var self = getInstance(this, Stream);
 
     var resolver;
-    self.promise = new Promise(function(resolve, reject) {
+    self.promise = new Promise(function(resolve) {
         resolver = resolve;
     });
 
