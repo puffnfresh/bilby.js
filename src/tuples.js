@@ -14,8 +14,6 @@
          bilby.Tuple5(1, 2, 3, 4, 5);
 
     * arb() - arbitrary value
-    * fold(f) - `f` applied to value
-    * map() - functor map
 
 **/
 var Tuple2 = tagged('Tuple2', ['_1', '_2']),
@@ -28,6 +26,7 @@ var Tuple2 = tagged('Tuple2', ['_1', '_2']),
 
     * flip() - flip values
     * concat() - Semigroup (value must also be a Semigroup)
+    * map() - functor map
 **/
 Tuple2.prototype.flip = function() {
     return Tuple2(this._2, this._1);
@@ -40,10 +39,15 @@ Tuple2.prototype.concat = function(b) {
     );
 };
 
+Tuple2.prototype.map = function(f) {
+    return Tuple2(f(this._1), f(this._2));
+};
+
 /**
     ## Tuple3
 
     * concat() - Semigroup (value must also be a Semigroup)
+    * map() - functor map
 **/
 Tuple3.prototype.concat = function(b) {
     return Tuple3(
@@ -53,11 +57,16 @@ Tuple3.prototype.concat = function(b) {
     );
 };
 
+Tuple3.prototype.map = function(f) {
+    return Tuple3(f(this._1), f(this._2), f(this._3));
+};
+
 
 /**
     ## Tuple4
 
     * concat() - Semigroup (value must also be a Semigroup)
+    * map() - functor map
 **/
 Tuple4.prototype.concat = function(b) {
     return Tuple4(
@@ -68,11 +77,16 @@ Tuple4.prototype.concat = function(b) {
     );
 };
 
+Tuple4.prototype.map = function(f) {
+    return Tuple4(f(this._1), f(this._2), f(this._3), f(this._4));
+};
+
 
 /**
     ## Tuple5
 
     * concat() - Semigroup (value must also be a Semigroup)
+    * map() - functor map
 **/
 Tuple5.prototype.concat = function(b) {
     return Tuple5(
@@ -84,16 +98,9 @@ Tuple5.prototype.concat = function(b) {
     );
 };
 
-
-/**
-   ## isTuple(a)
-
-   Returns `true` if `a` is `Tuple`.
-**/
-var isTuple = curry(function(o) {
-    // TODO (Simon) : Could use lift.
-    return isTuple2(o) || isTuple3(o) || isTuple4(o) || isTuple5(o);
-});
+Tuple5.prototype.map = function(f) {
+    return Tuple5(f(this._1), f(this._2), f(this._3), f(this._4), f(this._5));
+};
 
 /**
    ## isTuple2(a)
@@ -128,11 +135,34 @@ bilby = bilby
     .property('Tuple3', Tuple3)
     .property('Tuple4', Tuple4)
     .property('Tuple5', Tuple5)
-    .property('isTuple', isTuple)
     .property('isTuple2', isTuple2)
     .property('isTuple3', isTuple3)
     .property('isTuple4', isTuple4)
     .property('isTuple5', isTuple5)
+    .method('concat', isTuple2, function(a, b) {
+        return a.concat(b, this.concat);
+    })
+    .method('concat', isTuple3, function(a, b) {
+        return a.concat(b, this.concat);
+    })
+    .method('concat', isTuple4, function(a, b) {
+        return a.concat(b, this.concat);
+    })
+    .method('concat', isTuple5, function(a, b) {
+        return a.concat(b, this.concat);
+    })
+    .method('map', isTuple2, function(a, b) {
+        return a.map(b);
+    })
+    .method('map', isTuple3, function(a, b) {
+        return a.map(b);
+    })
+    .method('map', isTuple4, function(a, b) {
+        return a.map(b);
+    })
+    .method('map', isTuple5, function(a, b) {
+        return a.map(b);
+    })
     .method('arb', strictEquals(Tuple2), function() {
         var env = this;
         var t = env.fill(2)(function() {
@@ -169,44 +199,37 @@ bilby = bilby
             return env.arb(arg, t.length);
         }));
     })
-    .method('equal', isTuple, function(a, b) {
-        var env = this;
-        return env.fold(env.zip(a, b), true, function(a, t) {
-            return a && env.equal(t[0], t[1]);
-        });
+    .method('equal', isTuple2, function(a, b) {
+        return  this.equal(a._1, b._1) &&
+                this.equal(a._2, b._2);
     })
-    .method('zip', isTuple, function(a, b) {
-        return zip(this.toArray(a), this.toArray(b));
+    .method('equal', isTuple3, function(a, b) {
+        return  this.equal(a._1, b._1) &&
+                this.equal(a._2, b._2) &&
+                this.equal(a._3, b._3);
     })
-    .method('toArray', isTuple, function(a) {
-        var accum = [],
-            total = functionLength(a.constructor),
-            i;
-
-        for(i = 0; i < total; i++) {
-            accum[i] = a['_' + (i + 1)];
-        }
-
-        return accum;
+    .method('equal', isTuple4, function(a, b) {
+        return  this.equal(a._1, b._1) &&
+                this.equal(a._2, b._2) &&
+                this.equal(a._3, b._3) &&
+                this.equal(a._4, b._4);
     })
-    .method('fold', isTuple, function(a, b, c) {
-        var i;
-        for(i = 0; i < a.length; i++) {
-            b = c(b, a[i]);
-        }
-        return b;
+    .method('equal', isTuple5, function(a, b) {
+        return  this.equal(a._1, b._1) &&
+                this.equal(a._2, b._2) &&
+                this.equal(a._3, b._3) &&
+                this.equal(a._4, b._4) &&
+                this.equal(a._5, b._5);
     })
-    .method('map', isTuple, function(a, b) {
-        var accum = [],
-            total = functionLength(a.constructor),
-            i;
-
-        for(i = 0; i < total; i++) {
-            accum[i] = b(a['_' + (i + 1)]);
-        }
-
-        return a.constructor.apply(this, accum);
+    .method('toArray', isTuple2, function(a) {
+        return [a._1, a._2];
     })
-    .method('concat', isTuple, function(a, b) {
-        return a.concat(b, this.concat);
+    .method('toArray', isTuple3, function(a) {
+        return [a._1, a._2, a._3];
+    })
+    .method('toArray', isTuple4, function(a) {
+        return [a._1, a._2, a._3, a._4];
+    })
+    .method('toArray', isTuple5, function(a) {
+        return [a._1, a._2, a._3, a._4, a._5];
     });

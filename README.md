@@ -724,29 +724,27 @@ Example usage:
      bilby.Tuple5(1, 2, 3, 4, 5);
     
 * arb() - arbitrary value
-* fold(f) - `f` applied to value
-* map() - functor map
 
 ## Tuple2
     
 * flip() - flip values
 * concat() - Semigroup (value must also be a Semigroup)
+* map() - functor map
 
 ## Tuple3
     
 * concat() - Semigroup (value must also be a Semigroup)
+* map() - functor map
 
 ## Tuple4
     
 * concat() - Semigroup (value must also be a Semigroup)
+* map() - functor map
 
 ## Tuple5
     
 * concat() - Semigroup (value must also be a Semigroup)
-
-## isTuple(a)
-    
-Returns `true` if `a` is `Tuple`.
+* map() - functor map
 
 ## isTuple2(a)
     

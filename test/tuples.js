@@ -136,6 +136,33 @@ exports.tuple5MapTest = λ.check(
     [λ.Tuple5]
 );
 
+//
 
+exports.tuple2ToArrayTest = λ.check(
+    function(a) {
+        return λ.equal(λ.toArray(a), [a._1, a._2]);
+    },
+    [λ.Tuple2]
+);
 
+exports.tuple3ToArrayTest = λ.check(
+    function(a) {
+        return λ.equal(λ.toArray(a), [a._1, a._2, a._3]);
+    },
+    [λ.Tuple3]
+);
+
+exports.tuple4ToArrayTest = λ.check(
+    function(a) {
+        return λ.equal(λ.toArray(a), [a._1, a._2, a._3, a._4]);
+    },
+    [λ.Tuple4]
+);
+
+exports.tuple5ToArrayTest = λ.check(
+    function(a) {
+        return λ.equal(λ.toArray(a), [a._1, a._2, a._3, a._4, a._5]);
+    },
+    [λ.Tuple5]
+);
 
