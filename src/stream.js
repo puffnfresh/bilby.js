@@ -22,7 +22,7 @@
     * forEach(f) - iteration of async values
     * filter(f) - filter values
     * map(f) - functor map
-    * reduce(v, f) - functor reduce
+    * fold(v, f) - functor fold
     * merge(s) - merge streams
     * zip(s) - zip streams
 **/
@@ -102,7 +102,7 @@ Stream.prototype.map = function(f) {
     });
 };
 
-Stream.prototype.reduce = function(v, f) {
+Stream.prototype.fold = function(v, f) {
     var a = v;
     return this.chain(function(b) {
         a = f(a, b);
@@ -224,6 +224,9 @@ bilby = bilby
   .property('Stream', Stream)
   .method('zip', isStream, function(b) {
       return a.zip(b);
+  })
+  .method('fold', isStream, function(a, b, c) {
+      return a.fold(b, c);
   })
   .method('map', isStream, function(a, b) {
       return a.map(b);

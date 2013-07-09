@@ -50,7 +50,7 @@
 
           on(document.getElementById('clicker-0'), 'click').map(function() {
               return 1;
-          }).reduce(0, sum).forEach(function(x) {
+          }).fold(0, sum).forEach(function(x) {
               document.querySelector('#output-0 ul').appendChild(li(x));
           });
 
@@ -61,7 +61,7 @@
               return 2;
           });
 
-          a.merge(b).reduce(0, sum).forEach(function(x) {
+          a.merge(b).fold(0, sum).forEach(function(x) {
               document.querySelector('#output-1 ul').appendChild(li(x));
           });
 
@@ -73,7 +73,7 @@
           });
 
           // We should use Tuples here.
-          c.zip(d).reduce([0, 0], function(a, b) {
+          c.zip(d).fold([0, 0], function(a, b) {
               return [a[0] + b[0], a[1] + b[1]];
           }).forEach(function(x) {
               document.querySelector('#output-2 ul').appendChild(li(x));
@@ -86,7 +86,7 @@
       <div class="row">
         <div class="span6 offset3">
           <h1>Streams Using <a href="http://bilby.brianmckenna.org/">bilby.js</a></h1>
-          <h3>Reduce</h3>
+          <h3>Fold</h3>
           <form action="#">
               <fieldset>
                   <button id="clicker-0">Click Me!</button>

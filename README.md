@@ -880,7 +880,7 @@ Here is an example of a continuous random numbers piped through to the console.
 * forEach(f) - iteration of async values
 * filter(f) - filter values
 * map(f) - functor map
-* reduce(v, f) - functor reduce
+* fold(v, f) - functor fold
 * merge(s) - merge streams
 * zip(s) - zip streams
 
