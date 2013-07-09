@@ -20,7 +20,7 @@
               f = _.curry(Person);
 
           function on(element, name) {
-              return _.Stream.of(
+              return _.Stream.create(
                   function(handler) {
                       event(element, name, handler);
                       return function() {};
