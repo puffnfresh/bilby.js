@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <title>State with bilby.js</title>
+    <meta charset="utf-8" />
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="../dist/bilby.min.js"></script>
+    <script>
+      function event(element, name, callback) {
+          if(element.addEventListener) {
+              element.addEventListener(name, callback, false);
+          } else {
+              element.attachEvent('on' + name, callback);
+          }
+      }
+
+      event(window, 'load', function() {
+          var _ = bilby,
+              initial = _.Tuple2(0, 1),
+
+              // State (Tuple2 Number Number) Number -> State (Tuple2 Number Number) Number
+              next = discard(
+                  _.State.modify(function(t) {
+                      return _.Tuple2(t._1 + 1, (t._1 + 1) * t._2);
+                  }),
+                  _.State.get.map(snd)
+              );
+
+          function on(element, name) {
+              return _.Stream.create(
+                  function(handler) {
+                      event(element, name, handler);
+                      return function() {};
+                  },
+                  function() {
+                      var args = [].slice.call(arguments);
+                      return _.cont(function() {
+                          return args;
+                      });
+                  }
+              );
+          }
+
+          function sum(a, b) {
+              return a + b;
+          }
+
+          // Tuple2 a b -> b
+          function snd(t) {
+              return t._2;
+          }
+
+          // (m a, m b) -> m b
+          function discard(a, b) {
+              return a.chain(function(_) {
+                  return b;
+              });
+          }
+
+          // Array (m a) -> m a
+          function sequence(actions) {
+              return _.fold(actions.slice(1), actions[0], function(a, b) {
+                  return discard(a, b);
+              })
+          }
+
+          // (Number, a) -> Array a
+          function replicate(n, x) {
+              return _.fill(n)(function() {
+                  return x;
+              });
+          }
+
+          // Number -> Number
+          function factorial(n) {
+              return sequence(replicate(n, next)).evalState(initial);
+          }
+
+          on(document.getElementById('clicker'), 'click').map(function() {
+              return 1;
+          }).fold(0, sum).forEach(function(x) {
+              document.getElementById('output').innerHTML = factorial(x);
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span6 offset3">
+          <h1>State Using <a href="http://bilby.brianmckenna.org/">bilby.js</a></h1>
+          <h3>State</h3>
+          <form action="#">
+              <fieldset>
+                  <button id="clicker">Click Me!</button>
+              </fieldset>
+          </form>
+          <div class="alert" id="output">
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
