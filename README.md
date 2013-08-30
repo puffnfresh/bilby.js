@@ -857,62 +857,6 @@ Represents an empty list (absence of a list).
     
 Returns `true` if `a` is a `cons` or `nil`.
 
-# Stream(state)
-    
-The Stream type represents a flow of data ever evolving values over time.
-    
-Here is an example of a continuous random numbers piped through to the console.
-    
-    Stream.poll(
-        function() {
-            return cont(function() {
-                return bilby.method('arb', Number);
-            })
-        },
-    0).forEach(
-        function (a) {
-            console.log(a);
-        }
-    );
-    
-* concat(b) - semigroup concat
-* chain(f) - chain streams
-* forEach(f) - iteration of async values
-* filter(f) - filter values
-* map(f) - functor map
-* fold(v, f) - functor fold
-* merge(s) - merge streams
-* zip(s) - zip streams
-
-    
-## promise
-    
-    Stream.promise(promise).forEach(function (a) {
-      console.log(a);
-    });
-
-    
-## sequential
-    
-    Stream.sequential([1, 2, 3, 4]).forEach(function (a) {
-      console.log(a);
-    });
-
-    
-## poll
-    
-    Stream.poll(function() {
-      return cont(function() {
-          return bilby.method('arb', Number);
-      })
-    }, 0).forEach(function (a) {
-      console.log(a);
-    });
-
-## isStream(a)
-    
-Returns `true` if `a` is `Stream`.
-
 # QuickCheck
     
 QuickCheck is a form of *automated specification testing*. Instead

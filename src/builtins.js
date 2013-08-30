@@ -81,6 +81,13 @@ bilby = bilby
         return a().concat(b());
     })
 
+    .method('map', isBoolean, curry(function(a, b) {
+        return b(a);
+    }))
+    .method('map', bilby.liftA2(or, isNumber, isString), curry(function(a, b) {
+        return b(a);
+    }))
+
     .property('oneOf', function(a) {
         return a[Math.floor(this.randomRange(0, a.length))];
     })
