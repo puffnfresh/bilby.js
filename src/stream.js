@@ -1,4 +1,4 @@
-/*
+/**
   ## Stream(fork)
 
   The Stream type represents a flow of data ever evolving values over time.
@@ -23,14 +23,14 @@
    * `take(n)` - Returns the n first elements of this stream.
    * `zip(a, b)` - Returns a stream formed from this stream and the specified stream that by associating each element of the former with the element at the same position in the latter.
    * `zipWithIndex(a)` -  Returns a stream form from this stream and a index of the value that is associated with each element index position.
-*/
+**/
 var Stream = tagged('Stream', ['fork']);
 
-/*
+/**
   ### of(x)
 
   Creates a stream that contains a successful value.
-*/
+**/
 Stream.of = function(a) {
     return Stream(
         function(next, done) {
@@ -42,21 +42,21 @@ Stream.of = function(a) {
     );
 };
 
-/*
+/**
   ### empty()
 
   Creates a Empty stream that contains no value.
-*/
+**/
 Stream.empty = function() {
     return Stream.of();
 };
 
-/*
+/**
   ### ap(b)
 
   Apply a function in the environment of the success of this stream
   Applicative ap(ply)
-*/
+**/
 Stream.prototype.ap = function(a) {
     return this.chain(
         function(f) {
@@ -65,12 +65,12 @@ Stream.prototype.ap = function(a) {
     );
 };
 
-/*
+/**
   ### chain(f)
 
   Returns a new stream that evaluates `f` when the current stream
   is successfully fulfilled. `f` must return a new stream.
-*/
+**/
 Stream.prototype.chain = function(f) {
     var env = this;
     return Stream(function(next, done) {
@@ -85,12 +85,12 @@ Stream.prototype.chain = function(f) {
     });
 };
 
-/*
+/**
   ### concat(s, f)
 
   Concatenate two streams associatively together.
   Semigroup concat
-*/
+**/
 Stream.prototype.concat = function(a) {
     var env = this;
     return Stream(function(next, done) {
@@ -103,11 +103,11 @@ Stream.prototype.concat = function(a) {
     });
 };
 
-/*
+/**
   ### drop(f)
 
   Returns the stream without its n first elements.
-*/
+**/
 Stream.prototype.drop = function(n) {
     var dropped = 0;
     return this.chain(
@@ -122,11 +122,11 @@ Stream.prototype.drop = function(n) {
     );
 };
 
-/*
+/**
   ### equal(a)
 
   Compare two stream values for equality
-*/
+**/
 Stream.prototype.equal = function(a) {
     return this.zip(a).fold(
         true,
@@ -136,11 +136,11 @@ Stream.prototype.equal = function(a) {
     );
 };
 
-/*
+/**
   ### extract(a)
 
   Extract the value from the stream.
-*/
+**/
 Stream.prototype.extract = function() {
     return this.fork(
         identity,
@@ -148,11 +148,11 @@ Stream.prototype.extract = function() {
     );
 };
 
-/*
+/**
   ### filter(f)
 
   Returns all the elements of this stream that satisfy the predicate p.
-*/
+**/
 Stream.prototype.filter = function(f) {
     var env = this;
     return Stream(function(next, done) {
@@ -167,11 +167,11 @@ Stream.prototype.filter = function(f) {
     });
 };
 
-/*
+/**
   ### fold(v, f)
 
   Combines the elements of this stream together using the binary function f
-*/
+**/
 Stream.prototype.fold = function(v, f) {
     var env = this;
     return Stream(
@@ -190,11 +190,11 @@ Stream.prototype.fold = function(v, f) {
     );
 };
 
-/*
+/**
   ### length()
 
   Returns the length of the stream
-*/
+**/
 Stream.prototype.length = function() {
     return this.map(
         constant(1)
@@ -206,12 +206,12 @@ Stream.prototype.length = function() {
     );
 };
 
-/*
+/**
   ### map(f)
 
   Returns the stream resulting from applying the given function f to each
   element of this stream.
-*/
+**/
 Stream.prototype.map = function(f) {
     return this.chain(
         function(a) {
@@ -220,11 +220,11 @@ Stream.prototype.map = function(f) {
     );
 };
 
-/*
+/**
   ### merge(a)
 
   Merge the values of two streams in to one stream
-*/
+**/
 Stream.prototype.merge = function(a) {
     var resolver;
 
@@ -242,11 +242,11 @@ Stream.prototype.merge = function(a) {
     );
 };
 
-/*
+/**
   ### pipe(a)
 
   Pipe a stream to a state or writer monad.
-*/
+**/
 Stream.prototype.pipe = function(o) {
     var env = this;
     return Stream(
@@ -261,12 +261,12 @@ Stream.prototype.pipe = function(o) {
     );
 };
 
-/*
+/**
   ### scan(a)
 
   Combines the elements of this stream together using the binary operator
   op, from Left to Right
-*/
+**/
 Stream.prototype.scan = function(a, f) {
     var env = this;
     return Stream(
@@ -281,11 +281,11 @@ Stream.prototype.scan = function(a, f) {
         });
 };
 
-/*
+/**
   ### take(v, f)
 
   Returns the n first elements of this stream.
-*/
+**/
 Stream.prototype.take = function(n) {
     var taken = 0;
     return this.chain(
@@ -295,14 +295,14 @@ Stream.prototype.take = function(n) {
     );
 };
 
-/*
+/**
   ### zip(b)
 
   Returns a stream formed from this stream and the specified stream that
   by associating each element of the former with the element at the same
   position in the latter.
 
-*/
+**/
 Stream.prototype.zip = function(a) {
     var env = this;
 
@@ -344,12 +344,12 @@ Stream.prototype.zip = function(a) {
     );
 };
 
-/*
+/**
   ### zipWithIndex()
 
   Returns a stream form from this stream and a index of the value that
   is associated with each element index position.
-*/
+**/
 Stream.prototype.zipWithIndex = function() {
     var index = 0;
     return this.map(
@@ -359,11 +359,11 @@ Stream.prototype.zipWithIndex = function() {
     );
 };
 
-/*
+/**
   ## fromArray(a)
 
   Returns a new stream which iterates over each element of the array.
-*/
+**/
 Stream.fromArray = function(a) {
     return Stream(
         function(next, done) {
@@ -373,31 +373,31 @@ Stream.fromArray = function(a) {
     );
 };
 
-/*
+/**
   ## isStream(a)
 
   Returns `true` if `a` is `Stream`.
-*/
+**/
 var isStream = isInstanceOf(Stream);
 
-/*
+/**
   ## streamOf(type)
 
   Sentinel value for when an stream of a particular type is needed:
 
        streamOf(Number)
-*/
+**/
 function streamOf(type) {
     var self = getInstance(this, streamOf);
     self.type = type;
     return self;
 }
 
-/*
+/**
   ## isStreamOf(a)
 
   Returns `true` if `a` is `streamOf`.
-*/
+**/
 var isStreamOf = isInstanceOf(streamOf);
 
 bilby = bilby
