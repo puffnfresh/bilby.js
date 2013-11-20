@@ -258,7 +258,7 @@ Creates a disjoint union of constructors, with a catamorphism.
             }
         });
     }
-    listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
+    listLength(List.Cons(1, List.Cons(2, List.Nil))) == 2;
 
 ## error(s)
     
