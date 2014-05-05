@@ -22,7 +22,7 @@ Some features include:
 * Immutable multimethods for ad-hoc polymorphism
 * Functional data structures
 * Automated specification testing (ScalaCheck, QuickCheck)
-* Fantasy Land compatible
+* Compatible with the [Fantasy Land](https://github.com/fantasyland/fantasy-land) spec for algebraic structures
 
 ![](https://raw.github.com/puffnfresh/fantasy-land/master/logo.png)
 
