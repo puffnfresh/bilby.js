@@ -24,6 +24,6 @@
     "grunt-cli": "0.1.9",
     "emu": "0.0.2"
   },
-  "main": "bilby.js",
+  "main": "dist/bilby.js",
   "version": "0.1.0"
 }
