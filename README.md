@@ -22,7 +22,7 @@ Some features include:
 * Immutable multimethods for ad-hoc polymorphism
 * Functional data structures
 * Automated specification testing (ScalaCheck, QuickCheck)
-* Compatible with the [Fantasy Land](https://github.com/fantasyland/fantasy-land) spec for algebraic structures
+* Fantasy Land compatible
 
 ![](https://raw.github.com/puffnfresh/fantasy-land/master/logo.png)
 
@@ -258,7 +258,7 @@ Creates a disjoint union of constructors, with a catamorphism.
             }
         });
     }
-    listLength(List.Cons(1, List.Cons(2, List.Nil))) == 2;
+    listLength(List.Cons(1, new List.Cons(2, List.Nil()))) == 2;
 
 ## error(s)
     
@@ -856,129 +856,6 @@ Represents an empty list (absence of a list).
 ## isList(a)
     
 Returns `true` if `a` is a `cons` or `nil`.
-
-## Stream(fork)
-    
-The Stream type represents a flow of data ever evolving values over time.
-    
-Here is an example of a number piped through to the console.
-    
-      Stream.of(1).map(
-          function (a) {
-              return a + 1;
-          }
-      ).fork(console.log);
-    
-    
- * `ap(a, b)` - Applicative ap(ply)
- * `concat(a, b)` - Appends two stream objects.
- * `drop(a, n)` - Returns the stream without its n first elements. If this stream has less than n elements, the empty stream is returned.
- * `filter(a, f)` - Returns all the elements of this stream that satisfy the predicate p.
- * `chain(a, f)` - Applies the given function f to each element of this stream, then concatenates the results.
- * `fold(a, v, f)` - Combines the elements of this stream together using the binary function f, from Left to Right, and starting with the value v.
- * `map(a, f)` - Returns the stream resulting from applying the given function f to each element of this stream.
- * `scan(a, f)` - Combines the elements of this stream together using the binary operator op, from Left to Right
- * `take(n)` - Returns the n first elements of this stream.
- * `zip(a, b)` - Returns a stream formed from this stream and the specified stream that by associating each element of the former with the element at the same position in the latter.
- * `zipWithIndex(a)` -  Returns a stream form from this stream and a index of the value that is associated with each element index position.
-
-### of(x)
-    
-Creates a stream that contains a successful value.
-
-### empty()
-    
-Creates a Empty stream that contains no value.
-
-### ap(b)
-    
-Apply a function in the environment of the success of this stream
-Applicative ap(ply)
-
-### chain(f)
-    
-Returns a new stream that evaluates `f` when the current stream
-is successfully fulfilled. `f` must return a new stream.
-
-### concat(s, f)
-    
-Concatenate two streams associatively together.
-Semigroup concat
-
-### drop(f)
-    
-Returns the stream without its n first elements.
-
-### equal(a)
-    
-Compare two stream values for equality
-
-### extract(a)
-    
-Extract the value from the stream.
-
-### filter(f)
-    
-Returns all the elements of this stream that satisfy the predicate p.
-
-### fold(v, f)
-    
-Combines the elements of this stream together using the binary function f
-
-### length()
-    
-Returns the length of the stream
-
-### map(f)
-    
-Returns the stream resulting from applying the given function f to each
-element of this stream.
-
-### merge(a)
-    
-Merge the values of two streams in to one stream
-
-### pipe(a)
-    
-Pipe a stream to a state or writer monad.
-
-### scan(a)
-    
-Combines the elements of this stream together using the binary operator
-op, from Left to Right
-
-### take(v, f)
-    
-Returns the n first elements of this stream.
-
-### zip(b)
-    
-Returns a stream formed from this stream and the specified stream that
-by associating each element of the former with the element at the same
-position in the latter.
-
-### zipWithIndex()
-    
-Returns a stream form from this stream and a index of the value that
-is associated with each element index position.
-
-## fromArray(a)
-    
-Returns a new stream which iterates over each element of the array.
-
-## isStream(a)
-    
-Returns `true` if `a` is `Stream`.
-
-## streamOf(type)
-    
-Sentinel value for when an stream of a particular type is needed:
-    
-     streamOf(Number)
-
-## isStreamOf(a)
-    
-Returns `true` if `a` is `streamOf`.
 
 # QuickCheck
     
