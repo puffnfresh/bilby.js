@@ -26,21 +26,6 @@
                   _.State.get.map(snd)
               );
 
-          function on(element, name) {
-              return _.Stream.create(
-                  function(handler) {
-                      event(element, name, handler);
-                      return function() {};
-                  },
-                  function() {
-                      var args = [].slice.call(arguments);
-                      return _.cont(function() {
-                          return args;
-                      });
-                  }
-              );
-          }
-
           function sum(a, b) {
               return a + b;
           }
@@ -76,10 +61,8 @@
               return sequence(replicate(n, next)).evalState(initial);
           }
 
-          on(document.getElementById('clicker'), 'click').map(function() {
-              return 1;
-          }).fold(0, sum).forEach(function(x) {
-              document.getElementById('output').innerHTML = factorial(x);
+          event(document.getElementById('clicker'), 'click', function() {
+              document.getElementById('output').innerHTML = factorial(Math.floor(_.randomRange(1, 20)));
           });
       });
     </script>

@@ -19,21 +19,6 @@
               Person = _.tagged('Person', ['name', 'age', 'postcode']),
               f = _.curry(Person);
 
-          function on(element, name) {
-              return _.Stream.create(
-                  function(handler) {
-                      event(element, name, handler);
-                      return function() {};
-                  },
-                  function() {
-                      var args = [].slice.call(arguments);
-                      return _.cont(function() {
-                          return args;
-                      });
-                  }
-              );
-          }
-
           function showPerson(p) {
               return 'Person is ' + p.name + '. ' + p.name + ' is '
                   + p.age + ' years old and lives in ' + p.postcode + '.';
@@ -85,12 +70,12 @@
           }
           updateOutput();
 
-          on(document.getElementById('name'), 'keyup').foreach(updateOutput);
-          on(document.getElementById('name'), 'change').foreach(updateOutput);
-          on(document.getElementById('age'), 'keyup').foreach(updateOutput);
-          on(document.getElementById('age'), 'change').foreach(updateOutput);
-          on(document.getElementById('postcode'), 'keyup').foreach(updateOutput);
-          on(document.getElementById('postcode'), 'change').foreach(updateOutput);
+          event(document.getElementById('name'), 'keyup', updateOutput);
+          event(document.getElementById('name'), 'change', updateOutput);
+          event(document.getElementById('age'), 'keyup', updateOutput);
+          event(document.getElementById('age'), 'change', updateOutput);
+          event(document.getElementById('postcode'), 'keyup', updateOutput);
+          event(document.getElementById('postcode'), 'change', updateOutput);
       });
     </script>
   </head>
