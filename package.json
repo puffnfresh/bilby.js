@@ -12,6 +12,7 @@
     "url": "git://github.com/pufuwozu/bilby.js.git"
   },
   "scripts": {
+    "prepublish": "grunt rig jshint nodeunit",
     "test": "grunt rig jshint nodeunit uglify emu"
   },
   "devDependencies": {
@@ -24,6 +25,6 @@
     "grunt-cli": "0.1.9",
     "emu": "0.0.2"
   },
-  "main": "bilby.js",
+  "main": "dist/bilby.js",
   "version": "0.1.0"
 }
